@@ -1,0 +1,14 @@
+1.疾病名称更改及删除		sql已完成
+
+2.病例分类校验变更
+	完成：
+		东阳疾控：	szjk_snapshot_2.3.11.1\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
+		安吉疾控：	tzjk_dq\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
+		长兴疾控：	tzjk_snapshot_2.3.11.3\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
+	未完成：
+		东阳弹卡：
+		安吉弹卡：
+		长兴弹卡：
+
+3.打印
+	未开始
