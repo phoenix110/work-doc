@@ -6,9 +6,9 @@
 		安吉疾控：	tzjk_dq\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
 		长兴疾控：	tzjk_snapshot_2.3.11.3\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
 	未完成：
-		东阳弹卡：
-		安吉弹卡：
-		长兴弹卡：
+		东阳弹卡：	dyzntxbg_1/src/main/webapp/application/modules/jsp/js/check_crbV1.js
+		安吉弹卡：	tzzntxbg_dq\src\main\webapp\application\modules\jsp\js\check_crbV1.js
+		长兴弹卡：	tzzntxbg_snapshot_2.4.2\src\main\webapp\application\modules\jsp\js\check_crb.js
 
 3.打印
 	未开始
