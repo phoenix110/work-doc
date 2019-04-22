@@ -1,14 +1,22 @@
-1.疾病名称更改及删除		sql已完成
+1.疾病名称更改及删除
+	sql已完成,见 rename_delete.sql
 
 2.病例分类校验变更
-	完成：
-		东阳疾控：	szjk_snapshot_2.3.11.1\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
-		安吉疾控：	tzjk_dq\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
-		长兴疾控：	tzjk_snapshot_2.3.11.3\WebRoot\application\modules\jsp\CrbCgBgkDetail.jsp
-	未完成：
-		东阳弹卡：	dyzntxbg_1/src/main/webapp/application/modules/jsp/js/check_crbV1.js
-		安吉弹卡：	tzzntxbg_dq\src\main\webapp\application\modules\jsp\js\check_crbV1.js
-		长兴弹卡：	tzzntxbg_snapshot_2.4.2\src\main\webapp\application\modules\jsp\js\check_crb.js
+	完成，代码提交到svn。
+	涉及的项目：
+		安吉疾控平台  https://172.16.110.38/svn/TZJK/德清吴兴安吉/tzjk_dq
+		长兴疾控平台  https://172.16.110.38/svn/TZJK/branches/cx/tzjk/tzjk_snapshot_2.3.11.3
+		安吉弹卡系统  https://172.16.110.38/svn/TZJK/德清吴兴安吉/tzzntxbg_dq
+		长兴弹卡系统  https://172.16.110.38/svn/TZJK/branches/cx/tzzntxbg/tzzntxbg_snapshot_2.4.2
+		东阳疾控平台  https://172.16.110.38/svn/TZJK/branches/tzjk/szjk_snapshot_2.3.11.1
+		东阳弹卡系统  https://172.16.110.38/svn/TZJK/tags/tzzntxbg/dyzntxbg/dyzntxbg_1
 
-3.打印
-	未开始
+3.打印变更
+	完成，代码提交到svn。
+	涉及的项目：
+		安吉疾控平台  https://172.16.110.38/svn/TZJK/德清吴兴安吉/tzjk_dq
+		长兴疾控平台  https://172.16.110.38/svn/TZJK/branches/cx/tzjk/tzjk_snapshot_2.3.11.3
+		东阳疾控平台  东阳疾控平台现在的打印，和湖州的打印页面格式是不同的，相差很大，经沟通先不改。
+
+
+
