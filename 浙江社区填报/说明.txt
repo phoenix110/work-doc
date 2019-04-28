@@ -1,0 +1,72 @@
+数据库
+用户名：zjmbsq
+表空间：ZJMBSQ_DATA
+
+
+报表下发流程
+
+1、生成报表总控，执行存储过程
+--季报
+call exe_rp_bdkz_jb('2018'，'04'，'1');
+--半年报
+call exe_rp_bdkz_bnb('2018', '07', '2');
+--季报
+call exe_rp_bdkz_jb('2018', '10', '3');
+--年报
+call exe_rp_bdkz_nb('2018');
+
+2、执行具体的报表下发，报表下发完成；
+call exe_rp_detail();
+
+
+机构处理
+--修改机构名
+update code_info set name='上虞人民医院' where code='330682001';
+update organ_node set name='上虞人民医院' where code='330682001';
+update sc_user set name='上虞人民医院' where login_name='330682001';
+
+
+------------------新增机构
+--义乌市福田街道社区卫生服务中心  330782067
+insert into SC_USER (ID, EXT1, EXT2, EXT3, EXT4, EXT5, EXT6, EXT7, EXT8, EMAIL, ADDRESS, MOBILE1, MOBILE2, FAX, HOME_PHONE, OFFICE_PHONE, AUTHENTIC_TYPE, CERTIFICATE, STATUS, LOGIN_NAME, NAME, SEX, PASSWORD, USERTYPE, ACCOUNTTYPE, OPERATE_TIME, OPERATOR, REMOVED, OPENID)
+values (330782067, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, 1, '330782067', '义乌市福田街道社区卫生服务中心', null, '24c72134b6f5828f29fc6f316081f72b7ec31b9c', 0, 1, null, null, 0, null);
+
+insert into organ_node (ID, CREATE_TIME, ORGAN_TYPE, RANK, ICON, PARENT_RESOURCE_ID, NODETYPE, OWNERORGAN, ORDERS, OPERATE_TIME, OPERATOR, REMOVED, CODE, NAME, DESCRIPTION)
+values (330782067, null, 1003, null, 1, 330782009, 1, null, 0, 1383638419842, null, 0, '330782067', '义乌市福田街道社区卫生服务中心', null);
+
+insert into NODE_USER (ORGAN_NODE_ID, SECURITY_USER_ID, ORDERS)
+values (330782067, 330782067, null);
+
+insert into SC_USER_GROUP (SECURITY_GROUP_ID, SECURITY_USER_ID)
+values (1003, 330782067);
+
+insert into code_info (ID, CODE_INFO_ID, TYPE_ID, DISP_ORDER, REMARK1, REMARK2, OPERATE_TIME, OPERATOR, REMOVED, CODE, NAME, DESCRIPTION)
+values (330782067, 122, 1021, 0, null, null, null, null, 0, '330782067', '义乌市福田街道社区卫生服务中心', '义乌市福田街道社区卫生服务中心');
+
+insert into organ_model (ID, CHILD_NODE_ID, CREATE_TIME, NAME, PARENT_NODE_ID, ORGAN_REALTION_ID, DESCRIPTION, OPERATE_TIME, OPERATOR, REMOVED)
+values (330782067, 330782067, '08-1月 -14 05.20.54.000000 下午', '330000000', 330782009, null, null, 1383638419842, null, 0);
+
+INSERT INTO SC_ROLE(ID ,NAME,TYPE,REMOVED)VALUES(330782067,'义乌市福田街道社区卫生服务中心','D',0);
+INSERT INTO SC_USER_ROLE VALUES (330782067,330782067);
+
+------------------机构合并------------------------------------
+注销其中一个机构
+update code_info set removed='1' where code in('330185021');
+update organ_node set removed='1',description='' where code in('330185021');
+update sc_user set removed='1' where login_name in('330185021');
+
+
+------------------机构删除------------------------------------
+update code_info set removed='1' where code in('330185021');
+update organ_node set removed='1',description='' where code in('330185021');
+update sc_user set removed='1' where login_name in('330185021');
+
+------------------机构拆分---------------------------------
+新增一个机构
+
+
+----------------增加35岁首诊测压---------------------
+插入
+inTB_GXY_YYSZCXYYYMX
+ORG_CODE --疾控中心代码
+HOSPITAL_CODE --增加的医院代码

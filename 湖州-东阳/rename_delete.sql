@@ -18,6 +18,11 @@ update CK_RULE set JBMC = '病原学阳性', JBBM = '376' where JBBM = '130';
 update CK_RULE set JBMC = '病原学阴性', JBBM = '377' where JBBM = '131';
 update CK_RULE set JBMC = '无病原学结果', JBBM = '378' where JBBM = '132';
 
+-- 名称更改 CODE_INFO
+update CODE_INFO set code='376'， name='病原学阳性' where code='130';
+update CODE_INFO set code='377'， name='病原学阴性' where code='131';
+update CODE_INFO set code='378'， name='无病原学结果' where code='132';
+
 -- 编码删除
 update T_ICD10 set TYPE_SFTK = '0' where (card_type != '99' or card_type is null) and CRB_CODEINFO = '134';
 update T_ICD10 set TYPE_SFTK = '0' where (card_type != '99' or card_type is null) and CRB_CODEINFO = '197';
