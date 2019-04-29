@@ -1,0 +1,69 @@
+慢病监测
+文件服务器
+t_file_server 表
+dm：前端调用传入
+lx：2-sftp 3-普通文件读写 1-ftp
+ip：文件服务器ip （sftp、ftp使用）
+prot：端口 （sftp、ftp使用）
+filepath：文件保存路径
+username：用户名（sftp、ftp使用）
+pwd：密码（sftp、ftp使用）
+
+地市数据交换
+地市数据交换授权配置表
+zjsjk_ws_config
+
+地址数据交换日志记录表
+zjjk_dz
+
+国家死因上传
+国家死因上传日志表
+ZJMB_SW_BGK
+
+svn地址：
+慢病监测
+zjmb：https://172.16.110.38:8443/svn/XM_ZJ/浙江省慢病监测系统/zjmb
+zjmpapi：https://172.16.110.38:8443/svn/XM_ZJ/浙江省慢病监测系统/zjmbapi
+
+地市数据交换
+zjjkjk：https://172.16.110.38/svn/zjjk/02code/zjjkjk2019
+国家死因上传
+CauseOfDeathUpload：https://172.16.110.38/svn/zjjk/02code/CauseOfDeathUpload
+省cdc数据交换
+ZjjkMbUpload：https://172.16.110.38/svn/zjjk/02code/ZjjkMbUpload
+
+代谢病慢病
+dxbmf:https://172.16.110.38:8443/svn/XM_ZJ/代谢病面访系统/dxbmf
+dxbmfapi:https://172.16.110.38:8443/svn/XM_ZJ/代谢病面访系统/dxbmfService
+dxbmfapp:https://172.16.110.38:8443/svn/XM_ZJ/代谢病面访系统/dxbmfApp
+
+不见面审批
+bjmsp:https://172.16.110.38:8443/svn/XM_ZJ/不见面审批/bjmsp
+bjmsp_wx:https://172.16.110.38:8443/svn/XM_ZJ/不见面审批/bjmsp_wx
+bjmspapi:https://172.16.110.38:8443/svn/XM_ZJ/不见面审批/bjmsp_api
+
+社区填报
+zjmbsq：https://172.16.110.38/svn/zjjk/02code/zjmbsq
+zjmbsqbirt：https://172.16.110.38/svn/zjjk/02code/zjmbsqbirt
+
+数据库
+慢病监测
+正式：10.44.0.126/CMIDB zjjk/zjjk
+测试（老）：10.44.25.125/orcl zjjk/2
+测试（新）：10.44.25.125/orcl zjjk_new/zjjk_new
+
+社区填报
+正式：10.44.0.126/CMIDB zjmbsq/zjmbsq
+测试：10.44.0.126/CMIDB zjmbsq_cs/zjmbsq_cs/
+
+
+代谢病面访
+正式：10.44.3.133/orcl dxbmf/dxbmf
+测试：正式：10.44.3.133/orcl dxbmf_cs/dxbmf_cs
+
+
+不见面审批:
+正式：10.42.73.105:1521/orcl bjmsp/bjmsp
+
+
+
