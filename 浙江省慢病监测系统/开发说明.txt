@@ -42,9 +42,6 @@ bjmsp:https://172.16.110.38:8443/svn/XM_ZJ/不见面审批/bjmsp
 bjmsp_wx:https://172.16.110.38:8443/svn/XM_ZJ/不见面审批/bjmsp_wx
 bjmspapi:https://172.16.110.38:8443/svn/XM_ZJ/不见面审批/bjmsp_api
 
-社区填报
-zjmbsq：https://172.16.110.38/svn/zjjk/02code/zjmbsq
-zjmbsqbirt：https://172.16.110.38/svn/zjjk/02code/zjmbsqbirt
 
 数据库
 慢病监测
@@ -64,6 +61,23 @@ zjmbsqbirt：https://172.16.110.38/svn/zjjk/02code/zjmbsqbirt
 
 不见面审批:
 正式：10.42.73.105:1521/orcl bjmsp/bjmsp
+
+
+
+sql语句刷新
+
+代谢病面访：
+http://10.44.3.134:8079/dxbmfapi（测试）
+http://10.44.3.134:8081/dxbmfapi（正式）
+
+浙江慢病
+http://10.44.3.144:7001/zjmbapi/refreshSql.jsp
+http://10.44.3.145:7001/zjmbapi/refreshSql.jsp
+http://10.44.3.146:7001/zjmbapi/refreshSql.jsp
+
+不见面审批
+http://sys.yxwsjdw.com/bjmspapi
+
 
 
 
