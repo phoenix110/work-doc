@@ -75,8 +75,7 @@ select vc_bgkcode as vc_bgkcode,
        vc_gldw as vc_gldw,
        vc_qybz,
        vc_qcjddm,
-       vc_qcxxdz,
-       to_char(dt_sczdrq, 'yyyy-mm-dd') dt_sczdrq
+       vc_qcxxdz
   from (select vc_bgkcode,
                vc_bgklx,
                vc_hzxm,
@@ -214,32 +213,80 @@ select vc_bgkcode as vc_bgkcode,
                        t.vc_qcxxdz
                 from zjjk_tnb_bgk t, zjjk_tnb_hzxx h
                   where t.vc_hzid = h.vc_personid
-                   and t.vc_cfzt in ('1', '3')
-                   and t.vc_bgkzt = '0'
-                   and t.vc_tnblx in ('1', '2', '4')
-                   and t.vc_scbz = '0'
-                   and t.vc_shbz in ('3', '5', '6', '7', '8')
-                   and t.vc_sdqrzt = '1'
-                   and t.vc_gldw like #{vc_gldw} || '%'
-                   <if if(StringUtils.isNotBlank(#{vc_hks}))>
-                       and (h.vc_hks like #{vc_hks})
-                   </if>
-                   <if if(StringUtils.isNotBlank(#{vc_hkqx}))>
-                       and (h.vc_hkqx like #{vc_hkqx})
-                   </if>
-                   <if if(StringUtils.isBlank(#{dt_sfsj_ks}) && StringUtils.isBlank(#{dt_sfsj_js}))>
-                       and t.dt_sfsj <= add_months(sysdate,-11)
-                   </if>
-                   <if if(StringUtils.isNotBlank(#{dt_sfsj_ks}))>
-                       and t.dt_sfsj >= std(#{dt_sfsj_ks},1)
-                   </if>
-                   <if if(StringUtils.isNotBlank(#{dt_sfsj_js}))>
-                       and t.dt_sfsj <= std(#{dt_sfsj_js},1)
+                    and t.vc_gldw like #{vc_gldw} || '%'
+                    and t.vc_scbz = '0'
+                    and t.vc_shbz IN ('3', '5', '6', '7', '8')
+                    and t.vc_sdqrzt = '1'
+                    and t.vc_bgkzt = '0'
+                    and t.vc_cfzt = '0'
+                   <if if(StringUtils.isNotBlank(#{vc_bgkcode}))>
+                     and t.vc_bgkcode like #{vc_bgkcode}||'%'
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_hzxm}))>
-                       and h.vc_hzxm = #{vc_hzxm}
+                     and h.vc_hzxm like '%'||#{vc_hzxm}||'%'
                    </if>
-                 order by t.dt_sfsj)
+                   <if if(StringUtils.isNotBlank(#{vc_hzxb}))>
+                     and h.vc_hzxb = #{vc_hzxb}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
+                     and h.vc_sfzh = #{vc_sfzh}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
+                     and t.vc_bgkzt = #{vc_bgkzt}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{fbnl_ks}))>
+                     and t.sznl >= #{fbnl_ks}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{fbnl_js}))>
+                     and t.sznl <= #{fbnl_js}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_sczdrq_ks}))>
+                     and t.dt_sczdrq <= std(#{dt_sczdrq_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_sczdrq_js}))>
+                     and t.dt_sczdrq <= std(#{dt_sczdrq_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{VC_ICD10}))>
+                     and t.VC_ICD10 <= #{VC_ICD10}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_bgrq_ks}))>
+                     and t.dt_bgrq >= std(#{dt_bgrq_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_bgrq_js}))>
+                     and t.dt_bgrq <= std(#{dt_bgrq_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_swrq_ks}))>
+                     and t.dt_swrq >= std(#{dt_swrq_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_swrq_js}))>
+                     and t.dt_swrq <= std(#{dt_swrq_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_cjsj_ks}))>
+                     and t.dt_cjsj >= std(#{dt_cjsj_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_cjsj_js}))>
+                     and t.dt_cjsj <= std(#{dt_cjsj_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_qxshsj_ks}))>
+                     and t.dt_qxshsj >= std(#{dt_qxshsj_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_qxshsj_js}))>
+                     and t.dt_qxshsj <= std(#{dt_qxshsj_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_wxystz_ks}))>
+                     and h.vc_wxystz >= #{vc_wxystz_ks}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_wxystz_js}))>
+                     and h.vc_wxystz <= #{vc_wxystz_js}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hkxxdz}))>
+                     and h.vc_hkxxdz = #{vc_hkxxdz}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bgdw}))>
+                     and t.vc_bgdw = #{vc_bgdw}
+                   </if>
+                   order by t.vc_bgkid
+                   )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}
+ where rn >= #{rn_s}  
  
