@@ -3,7 +3,9 @@ select a.vc_bgkid,
        a.vc_xzqybm,
        a.vc_bqygzbr,
        pkg_zjmb_tnb.fun_getcommdic('C_ZL_JCZDBW',a.vc_icd10) zdbw_text,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_ICDO',substr(a.vc_icdo,1,instr(a.vc_icdo,',',-1)-1)) icdo_text,
+       case when vc_icdo like '%,%' then
+         pkg_zjmb_tnb.fun_getcommdic('C_COMM_ICDO',substr(a.vc_icdo,1,instr(a.vc_icdo,',',-1)-1))
+       else pkg_zjmb_tnb.fun_getcommdic('C_COMM_ICDO',a.vc_icdo) end icdo_text,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_ICDM',a.vc_icdm) icdm_text,
        a.vc_mzh,
        a.vc_zyh,
