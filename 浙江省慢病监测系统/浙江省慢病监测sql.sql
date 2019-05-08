@@ -11,11 +11,12 @@ SELECT * FROM TB_LOG where rownum < 2;
 SELECT * FROM ZJJK_YW_LOG where rownum < 2;
 
 select * from sqldy where mkbh = '020205';-- ÌÇÄò²¡³õËæ·Ã
-select * from sqldy where mkbh = '020302' for update;-- Ö×Áö³õ·Ã
+select * from sqldy where mkbh = '020302';-- Ö×Áö³õ·Ã
 select * from sqldy where mkbh = '020303'; -- Ö×ÁöËæ·Ã
 select * from sqldy where mkbh = '020601'; -- ÉúÃüÍ³¼ÆËÀÍö¹ÜÀí
 select * from sqldy where mkbh = '020401'; -- ÐÄÄÔÑª¹Ü
-
+select * from sqldy where mkbh = '020301';-- Ö×Áö±¨¸æ¿¨
+select * from sqldy where mkbh = '020201';    -- ÌÇÄò²¡±¨¸æ¿¨
 
 
 -- ×Ô¼ºÌí¼ÓÖ×ÁöËæ·ÃÌáÐÑ VC_GLDW = '331002'ÎªÇøÏØ¼¶±ðµÄ
