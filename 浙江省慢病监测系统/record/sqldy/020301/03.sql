@@ -154,8 +154,6 @@ select a.vc_bgkid,
   from zjjk_zl_bgk a, zjjk_zl_hzxx b, zjjk_zl_bgk_zfgx c, p_yljg d
  where a.vc_hzid = b.vc_personid
    and a.vc_bgkid = c.vc_fkid(+)
-   and (a.vc_cjdw like #{vc_gldw} || '%' or
-       a.vc_gldw like #{vc_gldw} || '%')
    and a.vc_scbz = '0'
    and a.vc_bgkid = #{vc_bgkid}  
    and a.vc_bgdw = d.dm(+)        
