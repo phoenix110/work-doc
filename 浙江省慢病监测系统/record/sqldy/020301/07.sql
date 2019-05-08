@@ -6,34 +6,25 @@ select vc_bgkid as vc_bgkid,
        vc_icd9,
        vc_bqygzbr,
        vc_hzxm,
-       vc_hzxb || '  ' ||
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_XB', vc_bgklx) as vc_hzxb,
+       pkg_zjmb_tnb.fun_getcommdic('C_COMM_XB', vc_hzxb) as vc_hzxb,
        to_char(dt_hzcsrq, 'yyyy-mm-dd') as dt_hzcsrq,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_BGKZT', vc_bgkzt) as vc_bgkzt,
-       vc_zydm || '  ' || pkg_zjmb_tnb.fun_getcommdic('C_COMM_HY', vc_zydm) as vc_zydm,
-       vc_jtgz || '  ' || pkg_zjmb_tnb.fun_getcommdic('C_COMM_ZY', vc_jtgz) as vc_jtgz,
+       pkg_zjmb_tnb.fun_getcommdic('C_COMM_HY', vc_zydm) as vc_zydm,
+       pkg_zjmb_tnb.fun_getcommdic('C_COMM_ZY', vc_jtgz) as vc_jtgz,
        vc_bksznl,
-       vc_hzmz || '  ' || pkg_zjmb_tnb.fun_getcommdic('C_COMM_MZ', vc_hzmz) as vc_hzmz,
+       pkg_zjmb_tnb.fun_getcommdic('C_COMM_MZ', vc_hzmz) as vc_hzmz,
        vc_sfzh as vc_sfzh,
        vc_gzdw,
        vc_jtdh as vc_jtdh,
-       vc_hksfdm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SHEDM', vc_hksfdm) as vc_hksfdm,
-       vc_hksdm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SJDM', vc_hksdm) as vc_hksdm,
-       vc_hkqxdm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_QXDM', vc_hkqxdm) as vc_hkqxdm,
-       vc_hkjddm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_JDDM', vc_hkjddm) as vc_hkjddm,
        vc_hkjwdm,
        vc_hkxxdz,
-       vc_sjsfdm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SHEDM', vc_sjsfdm) as vc_sjsfdm,
-       vc_sjsdm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SJDM', vc_sjsdm) as vc_sjsdm,
-       vc_sjqxdm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_QXDM', vc_sjqxdm) as vc_sjqxdm,
-       vc_sjjddm || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_JDDM', vc_sjjddm) as vc_sjjddm,
        vc_sjjwdm,
        vc_sjxxdz,
@@ -48,12 +39,10 @@ select vc_bgkid as vc_bgkid,
        vc_zdqbN,
        vc_zdqbM,
        vc_zdsqb,
-       vc_zgzddw || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_XNXG_ZGZDDW', vc_zgzddw) as vc_zgzddw,
        to_char(dt_zdrq, 'yyyy-mm-dd') as dt_zdrq,
        vc_yzd,
        to_char(dt_yzdrq, 'yyyy-mm-dd') as dt_yzdrq,
-       vc_bgdw || '  ' ||
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_YYDM', vc_bgdw) as vc_bgdw,
        vc_bgys,
        to_char(dt_bgrq, 'yyyy-mm-dd') as dt_bgrq,
@@ -144,7 +133,7 @@ select vc_bgkid as vc_bgkid,
                        a.vc_bgklx,
                        a.vc_mzh,
                        a.vc_zyh,
-                       (select c.icd10_name from T_ICD10 c where c.icd10_code = a.vc_icd10) as vc_icd10,
+                       a.vc_icd10,
                        a.vc_icd9,
                        a.vc_bqygzbr,
                        b.vc_hzxm,
@@ -204,45 +193,95 @@ select vc_bgkid as vc_bgkid,
                        a.vc_qcxxdz,
                        count(1) over() as total
                   from ZJJK_ZL_BGK a, ZJJK_ZL_HZXX b
-                where a.VC_HZID = b.VC_PERSONID(+)
-                     AND (a.VC_GLDW like #{vc_gldw} || '%')
-                     and a.vc_sdqrzt like '%1%'
-                     and a.vc_shbz = '3'
-                     and a.vc_sfcf in ('1', '3')
-                     and a.vc_bgkzt = '0'
-                     and a.dt_swrq is null
-                     and a.vc_swyy is null
-                     and a.vc_shbz in ('3', '5', '6', '7', '8')
-                     and a.vc_bgkzt = '0'
-                     and ((a.nb_kspf > 0 and a.nb_kspf <= 49 and
-                         a.dt_sfrq <= add_months(sysdate, -2)) or
-                         (a.nb_kspf > 50 and a.nb_kspf <= 79 and
-                         a.dt_sfrq <= add_months(sysdate, -5)) or
-                         (a.nb_kspf >= 80 and a.dt_sfrq <= add_months(sysdate, -11)))
-                         <if if(StringUtils.isNotBlank(#{vc_hzxm}))>
-                             and b.vc_hzxm = #{vc_hzxm}
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{dt_sfrq_ks}))>
-                             and a.dt_sfrq >= std(#{dt_sfrq_ks},1)
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{dt_sfrq_js}))>
-                             and a.dt_sfrq <= std(#{dt_sfrq_js},1)
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{vc_hkshen}))>
-                             and b.VC_HKSFDM = #{vc_hkshen}
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{vc_hksdm}))>
-                             and (b.VC_HKSDM = #{vc_hks})
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{vc_hkqxdm}))>
-                             and b.VC_HKQXDM = #{vc_hkqx}
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{vc_hkjddm}))>
-                             and b.VC_HKJDDM = #{vc_hkjd}
-                         </if>
-                         <if if(StringUtils.isNotBlank(#{vc_hkjw}))>
-                             and b.VC_HKJWDM = #{vc_hkjw}
-                         </if>
-                          order by a.DT_CJSJ)
-                         where rownum <= #{rn_e})
-                 where rn >= #{rn_s}
+                 where a.VC_HZID = b.VC_PERSONID
+                   and a.vc_scbz = '0'
+                      AND (a.VC_CJDW = #{vc_cjjgdm} OR
+                      a.VC_GLDW like #{vc_gldw} || '%')
+                   and a.VC_SHBZ in ('1', '3', '4', '5', '6', '7', '8')
+                   <if if(StringUtils.isNotBlank(#{czyjgjb}) && ("1".equals(#{czyjgjb})||"2".equals(#{czyjgjb})))>
+                       and a.VC_SHBZ in ('1', '3', '5', '6', '7', '8')
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bghks}))>
+                       and a.VC_BGDWS = #{vc_bghks}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bghkqx}))>
+                       and a.VC_BGDWQX = #{vc_bghkqx}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bgdw}))>
+                       and a.VC_BGDW = #{vc_bgdw}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_icd10}))>
+                       and a.vc_icd10 LIKE '%'||#{vc_icd10}||'%'
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bgkid}))>
+                       and a.VC_BGKID = #{vc_bgkid}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hzxb}))>
+                       and b.Vc_Hzxb = #{vc_hzxb}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
+                       and b.Vc_Sfzh = #{vc_sfzh}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}))>
+                       and instr(#{vc_shbz},a.VC_SHBZ)  > 0
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_sfhs}))>
+                       and b.Vc_Sfhs = #{vc_sfhs}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
+                       and a.VC_BGKZT = #{vc_bgkzt}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_sfsw}))>
+                       and b.vc_sfsw = #{vc_sfsw}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_zdrq_ks}))>
+                       and a.DT_SCZDRQ >= std(#{dt_zdrq_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_zdrq_js}))>
+                       and a.DT_SCZDRQ <= std(#{dt_zdrq_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_bgrq_ks}))>
+                       and a.dt_bgrq >= std(#{dt_bgrq_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_bgrq_js}))>
+                       and a.dt_bgrq <= std(#{dt_bgrq_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_xm}))>
+                       and b.vc_hzxm like '%' ||#{vc_xm} || '%'
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_cjsj_ks}))>
+                       and a.dt_cjsj >= std(#{dt_cjsj_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_cjsj_js}))>
+                       and a.dt_cjsj <= std(#{dt_cjsj_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_sznl_ks}))>
+                       and a.vc_sznl >= to_number(#{vc_sznl_ks})
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_sznl_js}))>
+                       and a.vc_sznl <=to_number(#{vc_sznl_js})
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hkshen}))>
+                       and b.VC_HKSFDM = #{vc_hkshen}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hks}))>
+                       and (b.VC_HKSDM = #{vc_hks})
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hkqx}))>
+                       and b.VC_HKQXDM = #{vc_hkqx}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hkjd}))>
+                       and b.VC_HKJDDM = #{vc_hkjd}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_hkjw}))>
+                       and b.VC_HKJWDM = #{vc_hkjw}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_mzh}))>
+                       and b.VC_MZH = #{vc_mzh}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_zyh}))>
+                       and b.VC_ZYH = #{vc_zyh}
+                   </if>
+                 order by a.vc_bgkid)
+         where rownum <= #{rn_e})
+ where rn >= #{rn_s}
