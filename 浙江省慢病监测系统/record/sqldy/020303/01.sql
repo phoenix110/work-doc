@@ -151,13 +151,13 @@ select vc_bgkid,
              and hzxx.VC_HKSFDM = #{vc_hkshen}
          </if>
          <if if(StringUtils.isNotBlank(#{vc_hksdm}))>
-             and (hzxx.VC_HKSDM = #{vc_hks})
+             and (hzxx.VC_HKSDM = #{vc_hksdm})
          </if>
          <if if(StringUtils.isNotBlank(#{vc_hkqxdm}))>
-             and hzxx.VC_HKQXDM = #{vc_hkqx}
+             and hzxx.VC_HKQXDM = #{vc_hkqxdm}
          </if>
          <if if(StringUtils.isNotBlank(#{vc_hkjddm}))>
-             and hzxx.VC_HKJDDM = #{vc_hkjd}
+             and hzxx.VC_HKJDDM = #{vc_hkjddm}
          </if>
          <if if(StringUtils.isNotBlank(#{vc_hkjw}))>
              and hzxx.VC_HKJWDM = #{vc_hkjw}
