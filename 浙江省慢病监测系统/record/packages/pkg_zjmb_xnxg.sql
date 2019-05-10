@@ -946,7 +946,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
              vc_sfsw     = v_vc_sfsw,
              vc_bgklx    = v_vc_bgklx,
              vc_hzicd    = v_vc_hzicd,
-             vc_bgkbh    = v_vc_bgkbh,
              vc_mzh      = v_vc_mzh,
              VC_ZYH      = v_vc_zyh,
              vc_hzxm     = v_vc_hzxm,
