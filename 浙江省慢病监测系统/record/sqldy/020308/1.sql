@@ -127,7 +127,7 @@ select  count(1) over(partition by
        vc_bgys,
        dts(dt_bgrq,0) dt_bgrq,
        vc_sfcf,
-       decode(vc_sfcf, '1', '已访', '未访') vc_sfcf_text,
+       decode(vc_sfcf, '1', '已访', '3', '已访','未访') vc_sfcf_text,
        vc_icdo3ms,
        decode(vc_bgkzt,
               '0',
