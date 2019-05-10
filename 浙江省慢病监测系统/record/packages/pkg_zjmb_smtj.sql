@@ -9401,10 +9401,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       v_err := '未获取到操作员信息!';
       raise err_custom;
     end if;
-    if v_czyjgjb not in ('1', '2', '3') then
+    /*if v_czyjgjb not in ('1', '2', '3') then
       v_err := '当前机构无导入权限!';
       raise err_custom;
-    end if;
+    end if;*/
     --写入数据
     if v_json_list_cs.count > 0 then
       for i in 1 .. v_json_list_cs.count loop
