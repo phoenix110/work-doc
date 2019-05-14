@@ -123,7 +123,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
     v_vc_shbz        zjmb_sw_bgk.vc_shbz%TYPE; --审核标志
     v_vc_hkqxdm_bgq  zjmb_sw_bgk.vc_hkqxdm%TYPE; --变更前区县代码
     v_vc_hkjddm_bgq  zjmb_sw_bgk.vc_hkjddm%TYPE; --变更前街道代码
-		v_vc_hkjw_bgq    zjmb_sw_bgk.vc_hkjw%TYPE; --户口居委		
+    v_vc_hkjw_bgq    zjmb_sw_bgk.vc_hkjw%TYPE; --户口居委   
   
     v_ywrzid      zjjk_yw_log.id%TYPE; --业务日志id
     v_tab_bgk_old zjmb_sw_bgk%rowtype; --死亡报告卡变更前
@@ -670,7 +670,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
                v_vc_hkqxdm_bgq,
                v_vc_hkjddm_bgq,
                v_vc_gldwdm,
-							 v_vc_hkjw_bgq
+               v_vc_hkjw_bgq
           from zjmb_sw_bgk
          where vc_bgkid = v_vc_bgkid
            and vc_scbz = '2';
@@ -685,14 +685,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           v_err := '非管理单位无此操作权限!';
           raise err_custom;
         end if;
-				if v_vc_hkhs_bgq is not null THEN
-					if v_vc_hkqxdm_bgq <> v_vc_hkqxdm or v_vc_hkjddm_bgq <> v_vc_hkjddm 
-						  OR v_vc_hkjw_bgq <> v_vc_hkjw THEN
+        if v_vc_hkhs_bgq is not null THEN
+          if v_vc_hkqxdm_bgq <> v_vc_hkqxdm or v_vc_hkjddm_bgq <> v_vc_hkjddm 
+              OR v_vc_hkjw_bgq <> v_vc_hkjw THEN
             v_err := '已做户口核实操作,当前机构无操作权限!';
             raise err_custom;
-					END IF;
+          END IF;
         end if;
-				
+        
       end if;
       if v_czyjgjb = '4' then
         --社区
@@ -857,18 +857,18 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
              vc_xgyh        = v_czyyhid,
              nb_gbsybm      = v_nb_gbsybm,
              dt_shsj = case
-                         when vc_shbz = '3' and dt_shsj is null then
+                         when v_vc_shbz = '3' and dt_shsj is null then
                           v_sysdate
-                         when vc_shbz = '3' and dt_shsj is not null then
+                         when v_vc_shbz = '3' and dt_shsj is not null then
                           dt_shsj
                          else
                           null
                        end,
              dt_xgsj        = v_sysdate,
              dt_qxzssj = case
-                           when vc_shbz = '3' and dt_shsj is null then
+                           when v_vc_shbz = '3' and dt_qxzssj is null then
                             null
-                           when vc_shbz = '3' and dt_shsj is not null then
+                           when v_vc_shbz = '3' and dt_qxzssj is not null then
                             v_sysdate
                            else
                             null
@@ -7697,7 +7697,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       v_err := '如果受伤者的交通工具选择步行，则受伤者的情况只能选择行人!';
       raise err_custom;
     end if;
-    if v_vc_sszjtgj = 'B' and v_vc_sszqk != '1' then
+    if v_vc_sszjtgj = 'B' and v_vc_sszqk != '1' and v_vc_sszqk != '3' then
       v_err := '如果受伤者的交通工具选择非机动车，则受伤者的情况只能选择非机动车驾驶员或非机动车乘客!';
       raise err_custom;
     end if;
