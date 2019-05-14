@@ -501,6 +501,8 @@ SELECT decode(vc_bgklb,
                    AND (bgk.VC_CJDWDM like #{vc_gldw} || '%' OR
                        bgk.VC_GLDWDM like #{vc_gldw} || '%')
                    and (bgk.VC_HKHS is null)
+                   and bgk.vc_hkqcs = '0'
+                   and to_number(to_char(bgk.dt_cjsj,'yyyy')) >= (to_number(to_char(SYSDate, 'YYYY')) - 1)
                    <if if(StringUtils.isNotBlank(#{vc_xm}))>
                       and bgk.vc_xm like '%'||#{vc_xm}||'%'
                    </if>
@@ -514,7 +516,5 @@ SELECT decode(vc_bgklb,
                       and bgk.vc_hkjddm = #{vc_hkjddm}
                    </if>
                  order by bgk.DT_CJSJ DESC)
-                <if if(1==1)>
-         WHERE rownum <= #{rn_e})
- WHERE rn >= #{rn_s}  
- </if>                                                      
+         )
+                                                     
