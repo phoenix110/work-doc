@@ -17,21 +17,21 @@ SELECT decode(vc_bgklb,
        vc_bgkid bgkbh,
        vc_xm xm,
        decode(vc_xb, '1', '男', '2', '女') xb,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_MZ', vc_mz) mz,
-       pkg_zjmb_tnb.fun_getcommdic('C_SMTJSW_GRSF', vc_zy) grsf,
+       vc_mz || '  ' || pkg_zjmb_tnb.fun_getcommdic('C_COMM_MZ', vc_mz) mz,
+       vc_zy || '  ' || pkg_zjmb_tnb.fun_getcommdic('C_SMTJSW_GRSF', vc_zy) grsf,
        vc_sfzhm zjhm,
-       decode(vc_hkqcs, '0', '浙江省', '1', '外省') hjdzs,
-       (SELECT NAME
+       vc_hkqcs || '  ' || decode(vc_hkqcs, '0', '浙江省', '1', '外省') hjdzs,
+       vc_hksdm || '  ' || (SELECT NAME
           FROM code_info
          WHERE code = vc_hksdm
            AND code_info_id =
                (SELECT id FROM code_info WHERE code = 'C_COMM_SJDM')) hkdzsi,
-       (SELECT NAME
+       vc_hkqxdm || '  ' || (SELECT NAME
           FROM code_info
          WHERE code = vc_hkqxdm
            AND code_info_id =
                (SELECT id FROM code_info WHERE code = 'C_COMM_QXDM')) hkdzqx,
-       (SELECT NAME
+       vc_hkjddm || '  ' || (SELECT NAME
           FROM code_info
          WHERE code = vc_hkjddm
            AND code_info_id =
@@ -129,12 +129,13 @@ SELECT decode(vc_bgklb,
        to_char(dt_sfsj, 'yyyy-mm-dd') cfrq,
        vc_jslxdh jslxdh,
        vc_gjhdq gjhdq,
+       vc_zjlx zjlx,
        vc_zjlx || '  ' ||
        (SELECT t.name
           FROM code_info t
          WHERE t.code = vc_zjlx
            AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_SMTJSW_ZJLX')) zjlx,
+               (SELECT f.id FROM code_info f WHERE f.code = 'C_SMTJSW_ZJLX')) zjlx_text,
        vc_rsqk rsqk,
        vc_wshkshendm || '  ' ||
        (SELECT t.name FROM area_qg t WHERE t.code = vc_wshkshendm) wshksdm,
@@ -145,31 +146,35 @@ SELECT decode(vc_bgklb,
        vc_wshkjddm || '  ' ||
        (SELECT t.name FROM area_qg t WHERE t.code = vc_wshkjddm) wshkjddm,
        vc_wshkjw wshkxxdz,
+       vc_jzqcs jzsdm,
+       vc_jzsdm jzsidm,
+       vc_jzqxdm jzqdm,
+       vc_jzjddm jzjddm,
        vc_jzqcs || '  ' ||
        (SELECT t.name
           FROM code_info t
          WHERE t.code = vc_jzqcs
            AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_SHEDM')) jzsdm,
+               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_SHEDM')) jzsdm_text,
        vc_jzsdm || '  ' ||
        (SELECT t.name
           FROM code_info t
          WHERE t.code = vc_jzsdm
            AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_SJDM')) jzsidm,
+               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_SJDM')) jzsidm_text,
        vc_jzqxdm || '  ' ||
        (SELECT t.name
           FROM code_info t
          WHERE t.code = vc_jzqxdm
            AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_QXDM')) jzqdm,
+               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_QXDM')) jzqdm_text,
        vc_jzjddm || '  ' ||
        (SELECT t.name
           FROM code_info t
          WHERE t.code = vc_jzjddm
            AND removed = '0'
            AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_JDDM')) jzjddm,
+               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_JDDM')) jzjddm_text,
        vc_jzjw jzxxdz,
        vc_wsjzshendm || '  ' ||
        (SELECT t.name FROM area_qg t WHERE t.code = vc_wsjzshendm) wsjzdm,
@@ -503,6 +508,7 @@ SELECT decode(vc_bgklb,
                 <if if(StringUtils.isNotBlank(#{vc_shbz}))>
                      AND (instr(#{vc_shbz},BGK.VC_SHBZ) > 0) 
                 </if>
+                /*
                 <if if(StringUtils.isNotBlank(#{jgjb}) && "1".equals(#{jgjb}))>
                      AND (BGK.VC_SHBZ IN ('1', '3', '5', '6', '7', '8'))
                 </if>
@@ -512,6 +518,7 @@ SELECT decode(vc_bgklb,
                 <if if(StringUtils.isNotBlank(#{jgjb}) && !"2".equals(#{jgjb}) && !"1".equals(#{jgjb}))>
                      AND (BGK.VC_SHBZ IN ('1', '3', '4', '5', '6', '7', '8'))
                 </if>
+                */
                 <if if(StringUtils.isNotBlank(#{vc_qx}))>
                      AND (BGK.VC_JKDW like #{vc_qx}||'%')
                 </if>
@@ -591,4 +598,4 @@ SELECT decode(vc_bgklb,
                  ORDER BY bgk.dt_cjsj)
          WHERE rownum <= #{rn_e})
  WHERE rn >= #{rn_s}  
- </if>                                                                                 
+ </if>                                                                                                                                                                                                                        
