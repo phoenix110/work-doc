@@ -147,7 +147,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
     v_vc_nczzd         zjjk_xnxg_bgk.vc_nczzd%TYPE; --脑卒中诊断
     v_vc_hkjd_bgq      zjjk_xnxg_bgk.vc_czhkjd%type; --原本户口街道
     v_vc_hkqx_bgq      zjjk_xnxg_bgk.vc_czhkqx%type; --原本户口区县
-		v_vc_hkjw_bgq      zjjk_xnxg_bgk.vc_czhkjw%TYPE; --户口居委
+        v_vc_hkjw_bgq      zjjk_xnxg_bgk.vc_czhkjw%TYPE; --户口居委
     v_vc_hkxx_bgq      zjjk_xnxg_bgk.vc_czhkxxdz%TYPE; --户口详细地址
   
     --公共变量
@@ -444,10 +444,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       v_err := '病史不能为空!';
       raise err_custom;
     end if;
+    /*
     if v_vc_nczzd is not null and v_vc_syzz is null then
       v_err := '当脑卒中诊断非空时，首要症状(脑卒中)不能为空!';
       raise err_custom;
     end if;
+    */
     if v_dt_fbrq is null then
       v_err := '发病日期不能为空!';
       raise err_custom;
@@ -508,8 +510,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       if v_vc_swys is null then
         --未死亡
         v_vc_sfsw := '0';
-      elsif v_vc_swys = '1' then
-        --死亡原因为糖尿病
+      elsif v_vc_swys = '0' then
+        --死亡原因为心脑
         v_vc_sfsw    := '1';
         v_vc_swysicd := v_vc_hzicd;
         v_vc_kzt     := '7';
@@ -800,10 +802,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
                vc_gldwdm,
                vc_kzt,
                vc_sfsw,
-               vc_swysicd,
-							 vc_czhkjw,
-							 vc_czhkxxdz,
-							 vc_sfcf
+                             vc_czhkjw,
+                             vc_czhkxxdz,
+                             vc_sfcf
           into v_vc_hkjd_bgq,
                v_vc_hkqx_bgq,
                v_vc_shbz,
@@ -811,10 +812,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
                v_vc_gldwdm,
                v_vc_kzt,
                v_vc_sfsw,
-               v_vc_swysicd,
-							 v_vc_hkjw_bgq,
-							 v_vc_hkxx_bgq,
-							 v_vc_sfcf
+                             v_vc_hkjw_bgq,
+                             v_vc_hkxx_bgq,
+                             v_vc_sfcf
           from zjjk_xnxg_bgk
          where vc_bgkid = v_vc_bgkid;
       exception
@@ -923,7 +923,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
         if v_vc_kzt = '7' then
           v_vc_kzt := '0';
         end if;
-      elsif v_vc_swys = '1' then
+      elsif v_vc_swys = '0' then
         --死亡原因为心脑
         v_vc_sfsw    := '1';
         v_vc_swysicd := v_vc_hzicd;
@@ -1001,7 +1001,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
              vc_bszy     = v_vc_bszy,
              dt_xgsj     = sysdate,
              dt_qxshsj = case
-                           when v_vc_shbz = '3' and dt_qxshsj is null then
+                           when v_vc_shbz = '3' and vc_sfcf <> '1' and vc_sfcf <> '3' then
                             v_sysdate
                            else
                             dt_qxshsj
@@ -2957,12 +2957,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
     b_dt_cfsj     := v_dt_cfrq;
     b_dt_sfsj     := v_dt_cfrq;
     b_vc_sfqc     := v_vc_hjqc;
-    b_vc_czhks    := v_vc_qcd;
-    b_vc_czhksi   := v_vc_qcsdm;
-    b_vc_czhkqx   := v_vc_qcqxdm;
-    b_vc_czhkjd   := v_vc_qcjddm;
-    b_vc_czhkjw   := v_vc_qcjw;
-    b_vc_czhkxxdz := v_vc_qcxxdz;
     b_vc_hzsfzh   := v_vc_hzsfzh;
     b_dt_qcsj     := v_dt_qyrq;
     b_dt_qrsj     := v_dt_cfrq;
@@ -3158,23 +3152,32 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
        v_vc_hjqc);
   
     --属地确认
-    select count(1), wm_concat(a.dm)
-      into v_count, v_vc_gldwdm
-      from p_yljg a
-     where a.bz = 1
-       and a.lb = 'B1'
-       and a.xzqh = b_vc_czhkjd;
-    if v_count = 1 then
-      --确定属地
-      v_vc_sdqrzt := '1';
-    else
-      v_vc_gldwdm := b_vc_czhkqx;
-      v_vc_sdqrzt := '0';
-    end if;
-    if b_vc_czhks = '1' then
-      v_vc_gldwdm := '99999999';
-      v_vc_sdqrzt := '1';
-    end if;
+    if v_vc_qcd <> b_vc_czhks or b_vc_czhksi <> v_vc_qcsdm
+      or  b_vc_czhkqx <> b_vc_czhkqx or b_vc_czhkjd <> v_vc_qcjddm  then
+      select count(1), wm_concat(a.dm)
+        into v_count, v_vc_gldwdm
+        from p_yljg a
+       where a.bz = 1
+         and a.lb = 'B1'
+         and a.xzqh = b_vc_czhkjd;
+      if v_count = 1 then
+        --确定属地
+        v_vc_sdqrzt := '1';
+      else
+        v_vc_gldwdm := b_vc_czhkqx;
+        v_vc_sdqrzt := '0';
+      end if;
+      if b_vc_czhks = '1' then
+        v_vc_gldwdm := '99999999';
+        v_vc_sdqrzt := '1';
+      end if;
+     end if;
+    b_vc_czhks    := v_vc_qcd;
+    b_vc_czhksi   := v_vc_qcsdm;
+    b_vc_czhkqx   := v_vc_qcqxdm;
+    b_vc_czhkjd   := v_vc_qcjddm;
+    b_vc_czhkjw   := v_vc_qcjw;
+    b_vc_czhkxxdz := v_vc_qcxxdz;
     --第二步：更新报告卡信息
     update zjjk_xnxg_bgk
        set vc_sfsw     = b_vc_sfsw,
