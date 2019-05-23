@@ -895,10 +895,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
              vc_shbz     = v_vc_shbz,
              vc_bgkzt    = v_vc_bgkzt,
              dt_qxshsj = case
-                           when v_vc_shbz = '3' and vc_cfzt <> '1' and vc_cfzt <> '3' then
+                           when v_vc_shbz = '3' and dt_qxshsj is null then
                             v_sysdate
-                           else
+                           when v_vc_shbz = '3' and dt_qxshsj is not null then
                             dt_qxshsj
+                           else
+                            null
                          end
        where vc_bgkid = v_vc_bgkid
          and vc_scbz = '0';

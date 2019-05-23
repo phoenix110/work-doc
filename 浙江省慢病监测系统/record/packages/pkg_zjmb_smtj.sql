@@ -859,10 +859,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
              vc_xgyh        = v_czyyhid,
              nb_gbsybm      = v_nb_gbsybm,
              dt_shsj = case
-                         when v_vc_shbz = '3' and vc_hkhs is null then
+                         when v_vc_shbz = '3' and dt_shsj is null then
                           v_sysdate
-                         else
+                         when v_vc_shbz = '3' and dt_shsj is not null then
                           dt_shsj
+                         else
+                          null
                        end,
              dt_xgsj        = v_sysdate,
              dt_qxzssj = case

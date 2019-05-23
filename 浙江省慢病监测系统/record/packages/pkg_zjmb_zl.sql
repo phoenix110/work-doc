@@ -1035,10 +1035,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
              DT_XGSJ    = v_dt_xgsj,
              VC_XGYH    = v_vc_xgyh,
              dt_qxshsj = case
-                           when v_vc_shbz = '3' and vc_sfcf <> '1' and vc_sfcf <> '3' then
+                           when v_vc_shbz = '3' and dt_qxshsj is null then
                             v_sysdate
-                           else
+                           when v_vc_shbz = '3' and dt_qxshsj is not null then
                             dt_qxshsj
+                           else
+                            null
                          end
        where vc_bgkid = v_vc_bgkid;
       --记录报卡变更日志
