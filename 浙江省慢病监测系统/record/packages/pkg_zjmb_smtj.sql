@@ -404,7 +404,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       raise err_custom;
     end if;
     --校验身份证号码合法性
-    if v_vc_sfzhm is not null then
+    if v_vc_sfzhm is not null and (v_vc_zjlx = '1' or v_vc_zjlx = '2') then
       if substr(v_vc_sfzhm, 7, 8) <> to_char(v_dt_csrq, 'yyyymmdd') then
         v_err := '身份证号码与出生日期不匹配!';
         raise err_custom;
