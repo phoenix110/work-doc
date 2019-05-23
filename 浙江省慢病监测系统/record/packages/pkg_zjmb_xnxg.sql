@@ -830,7 +830,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
         end if;
         if v_vc_sfcf in ('1', '3') THEN
           if v_vc_hkjd_bgq <> v_vc_czhkjd or v_vc_hkqx_bgq <> v_vc_czhkqx
-              OR v_vc_hkjw_bgq <> v_vc_czhkjw OR v_vc_hkxx_bgq <> v_vc_czhkxxdz THEN
+              /* OR v_vc_hkjw_bgq <> v_vc_czhkjw OR v_vc_hkxx_bgq <> v_vc_czhkxxdz */ THEN
             v_err := '该报卡已初访，不能修改户籍地址!';
             raise err_custom;
           END IF;
@@ -839,10 +839,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       v_ywjl_czlx := '02';
       if v_czyhjgjb = '4' then
         --医院社区
+        /* 医院社区可以修改已初访的卡，前端限制只能修改 户籍地址和目前居住地址中的居委会和详细地址四个字段
         if v_vc_sfcf in ('1', '3') then
           v_err := '该报卡已初访，当前机构无权修改!';
           raise err_custom;
         end if;
+        */
         /*if v_vc_shbz = '3' then
           v_err := '该报卡已区县审核通过，当前机构无权修改!';
           raise err_custom;

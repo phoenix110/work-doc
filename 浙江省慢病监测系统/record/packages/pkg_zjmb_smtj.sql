@@ -687,7 +687,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
         end if;
         if v_vc_hkhs_bgq is not null THEN
           if v_vc_hkqxdm_bgq <> v_vc_hkqxdm or v_vc_hkjddm_bgq <> v_vc_hkjddm 
-              OR v_vc_hkjw_bgq <> v_vc_hkjw THEN
+              /* OR v_vc_hkjw_bgq <> v_vc_hkjw */ THEN
             v_err := '已做户口核实操作,当前机构无操作权限!';
             raise err_custom;
           END IF;
@@ -696,10 +696,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       end if;
       if v_czyjgjb = '4' then
         --社区
+        /* 医院社区可以修改已初访的卡，前端限制只能修改 户籍地址和目前居住地址中的居委会和详细地址四个字段
         if v_vc_hkhs_bgq is not null then
           v_err := '已做户口核实操作,当前机构无操作权限!';
           raise err_custom;
         end if;
+        */
         --审核不通过
         if v_vc_shbz in ('0', '2', '4') then
           --修改为审核通过
