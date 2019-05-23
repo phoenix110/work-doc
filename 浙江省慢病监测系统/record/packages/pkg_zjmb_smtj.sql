@@ -4587,7 +4587,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       return '';
     end if;
     v_dm := prm_jgdm || to_char(sysdate, 'yyyy');
-    select nvl(max(VC_BGKID) + 1, v_dm || '0001')
+    select nvl(max(VC_BGKID) + 1, v_dm || '00000001')
       into v_id
       from zjmb_sw_bgk_wm
      where vc_bgkid like v_dm || '%';
