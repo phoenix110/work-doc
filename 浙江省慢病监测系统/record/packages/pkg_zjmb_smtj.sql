@@ -2592,7 +2592,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
            vc_shwtgyy  = v_shwtgyy,
            vc_shwtgyy1 = v_shwtgyy1,
            dt_shsj     = v_sysdate,
-           dt_xgsj     = sysdate
+           dt_xgsj     = sysdate,
+           vc_hkhs = case
+                           when v_shbz = '4' then
+                            null
+                           else
+                            vc_hkhs
+                         end
      where vc_bgkid = v_bkid;
     --添加操作日志
     v_json_yw_log := Json_ext.get_json(v_json_data, 'ywjllog');
