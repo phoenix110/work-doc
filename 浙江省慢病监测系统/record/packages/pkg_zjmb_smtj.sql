@@ -5819,14 +5819,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       v_err := '新生儿母亲年龄不能为空!';
       raise err_custom;
     end if;
-    if v_vc_fqxm is null then
+/*    if v_vc_fqxm is null then
       v_err := '新生儿父亲姓名不能为空!';
       raise err_custom;
     end if;
     if v_vc_fqnl is null then
       v_err := '新生儿父亲年龄不能为空!';
       raise err_custom;
-    end if;
+    end if;*/
     if v_vc_csddfl is null then
       v_err := '新生儿出生地点分类不能为空!';
       raise err_custom;
