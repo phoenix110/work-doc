@@ -1,0 +1,267 @@
+insert into zjjk_zl_bgk (vc_bgkid, vc_bgklx, vc_xzqybm, vc_bqygzbr, vc_mzh, vc_zyh, vc_hzid, vc_icd10, vc_icdo, vc_sznl, vc_zdbw, vc_blxlx, vc_blh, vc_zdsqb, dt_zdrq, vc_zgzddw, vc_bgdwqx, vc_bgys, dt_bgrq, vc_swxx, dt_swrq, vc_swyy, vc_swicd10, vc_zdyh, vc_bszy, vc_dcr, dt_dcrq, vc_bz, vc_scbz, vc_ccid, vc_ckbz, vc_xxly, vc_sfbb, vc_sdqrzt, dt_qrsj, vc_sdqrid, dt_cjsj, vc_cjyh, dt_xgsj, vc_xgyh, vc_qcbz, vc_sfbz, vc_cjdw, vc_gldw, vc_smtjid, vc_shbz, vc_bgdws, vc_ylfffs, vc_zdqbt, vc_zdqbn, vc_zdqbm, vc_bgdw, vc_bgkzt, vc_yzd, dt_yzdrq, dt_sczdrq, vc_dbwyfid, dt_sfrq, nb_kspf, vc_zdjg, vc_khjg, dt_cxglrq, vc_cxglyy, vc_sfcx, vc_cxglqtyy, vc_icdm, vc_dlw, vc_khzt, vc_icd9, vc_khid, vc_sfcf, dt_zhycsfrq, vc_shid, vc_swicdmc, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_hjhs, vc_khbz, vc_shzt, vc_shwtgyy, vc_shwtgyy1, vc_wtzt, vc_ywtdw, vc_sqsl, vc_jjsl, vc_ywtjd, vc_ywtjw, vc_ywtxxdz, vc_ywtjgdm, vc_lszy, vc_state, dt_yyshsj, dt_qxshsj, vc_bksznl, dt_cfsj, dt_sfsj, vc_zdbwmc, dt_qxzssj, vc_gxbz, vc_id, vc_yyrid, vc_zdbmms, upload_areaeport, vc_sfbyzd, vc_zdyy, vc_icdo3bm, vc_icdo3ms)
+select vc_bgkid, vc_bgklx, vc_xzqybm, vc_bqygzbr, vc_mzh, vc_zyh, vc_hzid, vc_icd10, vc_icdo, vc_sznl, vc_zdbw, vc_blxlx, vc_blh, vc_zdsqb, dt_zdrq, vc_zgzddw, vc_bgdwqx, vc_bgys, dt_bgrq, vc_swxx, dt_swrq, vc_swyy, vc_swicd10, vc_zdyh, vc_bszy, vc_dcr, dt_dcrq, vc_bz, vc_scbz, vc_ccid, vc_ckbz, vc_xxly, vc_sfbb, vc_sdqrzt, dt_qrsj, vc_sdqrid, dt_cjsj, vc_cjyh, dt_xgsj, vc_xgyh, vc_qcbz, vc_sfbz, vc_cjdw, vc_gldw, vc_smtjid, vc_shbz, vc_bgdws, vc_ylfffs, vc_zdqbt, vc_zdqbn, vc_zdqbm, vc_bgdw, vc_bgkzt, vc_yzd, dt_yzdrq, dt_sczdrq, vc_dbwyfid, dt_sfrq, nb_kspf, vc_zdjg, vc_khjg, dt_cxglrq, vc_cxglyy, vc_sfcx, vc_cxglqtyy, vc_icdm, vc_dlw, vc_khzt, vc_icd9, vc_khid, vc_sfcf, dt_zhycsfrq, vc_shid, vc_swicdmc, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_hjhs, vc_khbz, vc_shzt, vc_shwtgyy, vc_shwtgyy1, vc_wtzt, vc_ywtdw, vc_sqsl, vc_jjsl, vc_ywtjd, vc_ywtjw, vc_ywtxxdz, vc_ywtjgdm, vc_lszy, vc_state, dt_yyshsj, dt_qxshsj, vc_bksznl, dt_cfsj, dt_sfsj, vc_zdbwmc, dt_qxzssj, vc_gxbz, vc_id, vc_yyrid, vc_zdbmms, upload_areaeport, vc_sfbyzd, vc_zdyy, vc_icdo3bm, vc_icdo3ms from (
+select *
+  from zjjk_zl_bgk@zjjk126 b
+ where substr(vc_bgdw, 1, 4) <> '3305'
+   and vc_bgkzt in ('0', '2', '6', '7')
+   and vc_shbz in ('1', '3', '5', '6', '7', '8')
+   and exists (select 1
+          from zjjk_zl_hzxx@zjjk126 a
+         where b.vc_hzid = a.vc_personid
+           and a.vc_hkqxdm like '3305%')
+   and not exists(select 1 from zjjk_zl_bgk c where b.vc_bgkid = c.vc_bgkid)
+) where rownum <= 50;
+
+
+
+insert into zjjk_zl_hzxx (vc_personid, vc_hzxm, vc_hzxb, vc_hzmz, dt_hzcsrq, vc_sfzh, vc_jtdh, vc_gzdw, vc_zydm, vc_jtgz, vc_hksfdm, vc_hksdm, vc_hkjddm, vc_hkqxdm, vc_hkjwdm, vc_hkxxdz, vc_sjsfdm, vc_sjsdm, vc_sjqxdm, vc_sjjddm, vc_sjjwdm, vc_sjxxdz, vc_gldwdm, vc_sfsw, vc_sfhs, vc_sjhm, vc_dydz, vc_jzyb, vc_hkyb, vc_bak_hy, vc_bak_zy,  vc_id, vc_bak_sfzh, upload_areaeport)
+select * from (
+select b.*
+  from zjjk_zl_hzxx@zjjk126 b, zjjk_zl_bgk a
+ where b.vc_personid = a.vc_hzid
+   and b.vc_hkqxdm like '3305%'
+   and  substr(a.vc_bgdw, 1, 4) <> '3305'
+   and  a.vc_bgkzt in ('0', '2', '6', '7')
+   and  a.vc_shbz in ('1', '3', '5', '6', '7', '8')
+   and not exists (select 1
+          from zjjk_zl_hzxx c
+          where c.vc_personid = b.vc_personid
+         )
+) where rownum <= 50;
+
+update zjjk_zl_bgk b set dt_xgsj = sysdate - 1, vc_ccid= '湖州'
+   where substr(vc_bgdw, 1, 6) <> '3305'
+    and vc_bgkzt in ('0', '2', '6', '7')
+    and vc_shbz in ('1', '3', '5', '6', '7', '8')
+    and exists (select 1
+          from zjjk_zl_hzxx a
+         where b.vc_hzid = a.vc_personid
+           and a.vc_hkqxdm like '3305%')
+   and not exists(select 1 from AREA_UPLOAD_LOG a where a.operation_id = b.vc_bgkid)
+   and rownum <= 50
+
+
+insert into ZJJK_ZL_CCSFK (vc_sfkid, vc_bgkid, vc_hzid, dt_sfrq, nb_zgjg, nb_zgjg_qcdz, nb_zgjg_sfyy, dt_swrq, vc_swyy, vc_swdd, vc_scq, vc_zlxm, vc_ssyy, vc_hlyy, vc_flyy, vc_sfzy, dt_zysj, vc_czlqk, vc_mqqk, nb_kspf, vc_ysqm, vc_hzqm, vc_scbz, vc_cjyh, dt_cjsj, dt_xgsj, vc_xgyh, vc_sfcf, vc_sczzrq, vc_scjzsj, vc_scssyy, vc_scssrq, vc_scssxz, vc_zyh, vc_blh, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_hjhs, vc_zybw, vc_zljzs, vc_gx, vc_lb, vc_cxglrq, vc_cxglyy, vc_jzdhs, vc_whsyy, vc_ssyy1, vc_ssyy2, vc_hlyy1, vc_hlyy2, vc_flyy1, vc_flyy2, vc_hjwhsyy, vc_swicd, vc_swicdmc, vc_xys, vc_rjxyzs, vc_scxyrqn, vc_scxyrqy, vc_mcxyrqn, vc_mcxyrqy, vc_hjxysjn, vc_hjxysjy, nb_tz, nb_sg, vc_gxbz, vc_id, vc_jzdhsyy, upload_areaeport, vc_sfhzl, vc_sfzh)
+select a.* from ZJJK_ZL_CCSFK@zjjk126 a, zjjk_zl_bgk b
+ where a.vc_bgkid = b.vc_bgkid
+ and b.vc_ccid = '湖州'
+ and not exists (select 1 from ZJJK_ZL_CCSFK c where a.VC_SFKID = c.VC_SFKID)
+ 
+ update ZJJK_ZL_CCSFK a set vc_hzid = '湖州',     dt_xgsj = sysdate - 1 
+ where  a.vc_bgkid in (select vc_bgkid from zjjk_zl_bgk b where b.vc_ccid = '湖州') 
+
+ 
+insert into ZJJK_ZL_sfk (vc_sfkid, vc_bgkid, vc_hzid, dt_sfrq, nb_zgjg, nb_zgjg_qcdz, nb_zgjg_sfyy, dt_swrq, vc_swyy, vc_swdd, vc_scq, vc_zlxm, vc_ssyy, vc_hlyy, vc_flyy, vc_sfzy, dt_zysj, vc_czlqk, vc_mqqk, nb_kspf, vc_ysqm, vc_hzqm, vc_scbz, vc_cjyh, dt_cjsj, dt_xgsj, vc_xgyh, dt_sczdrq, dt_cxglrq, vc_cxglyy, vc_sfcx, vc_cxglqtyy, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_zybw, vc_ssyy1, vc_ssyy2, vc_hlyy1, vc_hlyy2, vc_flyy1, vc_flyy2, vc_sfff, vc_ffcs, vc_ffsj, vc_ffsj1, vc_ffsj2, vc_swicd, vc_swicdmc, nb_tz, nb_sg, vc_bz, vc_sfxy, vc_gxbz, vc_id, upload_areaeport)
+select a.*
+ from ZJJK_ZL_sfk@zjjk126 a, zjjk_zl_bgk b
+ where a.vc_bgkid = b.vc_bgkid
+ and b.vc_ccid = '湖州'
+ --and a.vc_bgkid in (select vc_bgkid from zjjk_zl_bgk where vc_ccid = '湖州')
+ and not exists (select 1 from ZJJK_ZL_sfk c where a.VC_SFKID = c.VC_SFKID)
+ 
+ 
+ update ZJJK_ZL_SFK a set vc_hzid = '湖州',     dt_xgsj = sysdate - 1 
+ where  a.vc_bgkid in (select vc_bgkid from zjjk_zl_bgk b where b.vc_ccid = '湖州') 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ insert into zjjk_tnb_bgk (vc_bgkid, vc_bgklx, vc_hzid, vc_icd10, vc_tnblx, vc_wxys, vc_wxystz, vc_wxyssg, vc_tnbs, vc_jzsrs, vc_ywbfz, vc_zslcbx, vc_zslcbxqt, nb_kfxtz, nb_sjxtz, nb_xjptt, nb_zdgc, nb_e4hdlc, nb_e5ldlc, nb_gysz, nb_nwldb, nbthxhdb, vc_bszyqt, dt_sczdrq, vc_zddw, vc_bgdw, vc_bgys, dt_bgrq, vc_sfsw, dt_swrq, vc_swyy, vc_swicd10, vc_swicdmc, vc_bszy, vc_scbz, vc_ccid, vc_ckbz, vc_sfbb, vc_sdqrzt, dt_qrsj, vc_sdqrid, dt_cjsj, vc_cjdw, dt_xgsj, vc_xgdw, vc_gldw, vc_shbz, vc_shwtgyy1, vc_shwtgyy2, vc_khbz, vc_khjg, vc_smtjid, vc_qybz, vc_hkhs, vc_hkwhsyy, vc_jzhs, vc_jzwhsyy, vc_cxgl, vc_qcbz, vc_xgyh, vc_cjyh, vc_xxly, vc_bz, dt_dcrq, vc_dcr, vc_zdyh, vc_swxx, vc_bgdwqx, vc_zgzddw, vc_sznl, vc_icdo, vc_zyh, vc_mzh, vc_bqygzbr, vc_xzqybm, vc_bgkzt, vc_bgkcode, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_shid, vc_khid, vc_khzt, vc_shzt, vc_cfzt, vc_shwtgyy, vc_bks, vc_bkq, vc_bmi, vc_wtzt, vc_ywtdw, vc_sqsl, vc_jjsl, vc_ywtjd, vc_ywtjw, vc_ywtxxdz, vc_ywtjgdm, vc_lszy, vc_state, dt_yyshsj, dt_qxshsj, vc_bksznl, dt_cfsj, dt_sfsj, vc_id, dt_qxzssj, upload_areaeport)
+select vc_bgkid, vc_bgklx, vc_hzid, vc_icd10, vc_tnblx, vc_wxys, vc_wxystz, vc_wxyssg, vc_tnbs, vc_jzsrs, vc_ywbfz, vc_zslcbx, vc_zslcbxqt, nb_kfxtz, nb_sjxtz, nb_xjptt, nb_zdgc, nb_e4hdlc, nb_e5ldlc, nb_gysz, nb_nwldb, nbthxhdb, vc_bszyqt, dt_sczdrq, vc_zddw, vc_bgdw, vc_bgys, dt_bgrq, vc_sfsw, dt_swrq, vc_swyy, vc_swicd10, vc_swicdmc, vc_bszy, vc_scbz, vc_ccid, vc_ckbz, vc_sfbb, vc_sdqrzt, dt_qrsj, vc_sdqrid, dt_cjsj, vc_cjdw, dt_xgsj, vc_xgdw, vc_gldw, vc_shbz, vc_shwtgyy1, vc_shwtgyy2, vc_khbz, vc_khjg, vc_smtjid, vc_qybz, vc_hkhs, vc_hkwhsyy, vc_jzhs, vc_jzwhsyy, vc_cxgl, vc_qcbz, vc_xgyh, vc_cjyh, vc_xxly, vc_bz, dt_dcrq, vc_dcr, vc_zdyh, vc_swxx, vc_bgdwqx, vc_zgzddw, vc_sznl, vc_icdo, vc_zyh, vc_mzh, vc_bqygzbr, vc_xzqybm, vc_bgkzt, vc_bgkcode, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_shid, vc_khid, vc_khzt, vc_shzt, vc_cfzt, vc_shwtgyy, vc_bks, vc_bkq, vc_bmi, vc_wtzt, vc_ywtdw, vc_sqsl, vc_jjsl, vc_ywtjd, vc_ywtjw, vc_ywtxxdz, vc_ywtjgdm, vc_lszy, vc_state, dt_yyshsj, dt_qxshsj, vc_bksznl, dt_cfsj, dt_sfsj,  vc_id,  dt_qxzssj, upload_areaeport from (
+select *
+  from zjjk_tnb_bgk@zjjk126 b
+ where substr(vc_bgdw, 1, 4) <> '3305'
+   and vc_bgkzt in ('0', '2', '6', '7')
+   and vc_shbz in ('1', '3', '5', '6', '7', '8')
+   and exists (select 1
+          from zjjk_tnb_hzxx@zjjk126 a
+         where b.vc_hzid = a.vc_personid
+           and a.vc_hkqx like '3305%')
+) where rownum <= 50
+ 
+ 
+ insert into zjjk_tnb_hzxx (vc_personid, vc_hzxm, vc_hzxb, vc_hzmz, vc_whcd, dt_hzcsrq, vc_sznl, vc_sfzh, vc_lxdh, vc_hydm, vc_zydm, vc_gzdw, vc_hkshen, vc_hks, vc_hkqx, vc_hkjd, vc_hkjw, vc_hkxxdz, vc_jzds, vc_jzs, vc_jzqx, vc_jzjd, vc_jzjw, vc_jzxxdz, vc_bak_hy, vc_bak_zy, vc_id, vc_bak_sfzh, upload_areaeport)
+select * from (
+select b.*
+  from zjjk_tnb_hzxx@zjjk126 b, zjjk_tnb_bgk a
+ where b.vc_personid = a.vc_hzid
+   and b.vc_hkqx like '3305%'
+   and  substr(a.vc_bgdw, 1, 4) <> '3305'
+   and  a.vc_bgkzt in ('0', '2', '6', '7')
+   and  a.vc_shbz in ('1', '3', '5', '6', '7', '8')
+   and not exists (select 1
+          from zjjk_tnb_hzxx c
+          where c.vc_personid = b.vc_personid
+         )
+) where rownum <= 50
+
+update zjjk_tnb_bgk b set dt_xgsj = sysdate - 1, vc_ccid= '湖州'
+   where substr(vc_bgdw, 1, 4) <> '3305'
+    and vc_bgkzt in ('0', '2', '6', '7')
+    and vc_shbz in ('1', '3', '5', '6', '7', '8')
+    and exists (select 1
+          from zjjk_tnb_hzxx a
+         where b.vc_hzid = a.vc_personid
+           and a.vc_hkqx like '3305%')
+   and not exists(select 1 from AREA_UPLOAD_LOG a where a.operation_id = b.vc_bgkid)
+   and rownum <= 50
+
+insert into ZJJK_TNB_SFK
+select a.* from ZJJK_TNB_SFK@zjjk126 a, zjjk_tnb_bgk b
+ where a.vc_bgkid = b.vc_bgkid
+ and a.vc_sflx = '2'
+ and b.vc_ccid = '湖州'
+ and not exists (select 1 from ZJJK_TNB_SFK c where a.VC_SFKID = c.VC_SFKID)
+ 
+ insert into ZJJK_TNB_SFK
+select a.* from ZJJK_TNB_SFK@zjjk126 a, zjjk_tnb_bgk b
+ where a.vc_bgkid = b.vc_bgkid
+ and a.vc_sflx = '1'
+ and b.vc_ccid = '湖州'
+ and not exists (select 1 from ZJJK_TNB_SFK c where a.VC_SFKID = c.VC_SFKID)
+ 
+ 
+update ZJJK_TNB_SFK a
+   set vc_hzid = '湖州', dt_xgsj = sysdate - 1
+ where a.vc_bgkid in
+       (select vc_bgkid from zjjk_tnb_bgk b where b.vc_ccid = '湖州') 
+ 
+ 
+ 
+ insert into zjjk_xnxg_bgk (vc_bgkid, vc_mzh, vc_zyh, vc_bgkbh, vc_bgklx, vc_hzxm, vc_hzxb, vc_hzhy, vc_hzicd, dt_hzcsrq, vc_sznl, vc_hzzy, vc_hzsfzh, vc_jtgz, vc_hzwhcd, vc_hzmz, vc_hzjtdh, vc_gzdw, vc_czhks, vc_czhksi, vc_czhkjd, vc_mqjzs, vc_mqjzsi, vc_mqjzjd, vc_mqjzjw, vc_gxbzd, vc_nczzd, vc_lczz, vc_xdt, vc_xqm, vc_njy, vc_ndt, vc_xgzy, vc_ct, vc_ckz, vc_sj, vc_sjkysjc, vc_bs, dt_fbrq, dt_qzrq, vc_sfsf, vc_qzdw, vc_bkdw, vc_bkys, dt_bkrq, dt_swrq, vc_swys, vc_bszy, vc_scbz, vc_gldwdm, vc_cjdwdm, vc_ckbz, vc_sfbb, vc_sdqrzt, dt_qrsj, vc_sdqrid, dt_cjsj, vc_cjyh, dt_xgsj, vc_xgyh, vc_shbz, vc_smtjid, vc_qcbz, vc_mqxxdz, vc_czhkjw, vc_czhkxxdz, vc_czhkqx, vc_mqjzqx, vc_swysicd, vc_swysmc, vc_bkdwqx, vc_bkdwyy, vc_sfcf, vc_kzt, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_sfqc, dt_qcsj, vc_qcxxdz, vc_shid, vc_khzt, vc_khid, vc_khjg, vc_ccid, vc_khbz, vc_shzt, vc_sfsw, vc_shwtgyy, vc_shwtgyy1, vc_wtzt, vc_ywtdw, vc_sqsl, vc_jjsl, vc_ywtjd, vc_ywtjw, vc_ywtxxdz, vc_ywtjgdm, vc_lszy, vc_cgzsjjg, vc_syzz, vc_shtd, vc_state, dt_yyshsj, dt_qxshsj, vc_bksznl, dt_cfsj, dt_sfsj, vc_bak_hy, vc_bak_zy, vc_zssj, vc_bak_sfzh, vc_gxbz, vc_id, vc_kz, vc_yyrid, dt_qxshrq, vc_nzzzyzz, upload_areaeport)
+
+select * from (
+select * from zjjk_xnxg_bgk@zjjk126 b
+   where b.VC_CZHKQX like '3305%'
+   and substr(vc_bkdwyy, 1, 4) <> '3305'
+   and vc_kzt in ('0','2','6','7')
+   and vc_shbz in ('1','3','5','6','7','8')
+    and not exists(select 1 from zjjk_xnxg_bgk a where a.vc_bgkid = b.vc_bgkid)
+   )
+   where rownum <= 50
+ 
+ update zjjk_xnxg_bgk b set dt_xgsj = sysdate - 1, vc_ccid= '湖州'
+   where b.VC_CZHKQX like '3305%'
+   and substr(vc_bkdwyy, 1, 4) <> '3305'
+   and vc_kzt in ('0','2','6','7')
+   and vc_shbz in ('1','3','5','6','7','8')
+   and not exists(select 1 from AREA_UPLOAD_LOG a where a.operation_id = b.vc_bgkid)
+  --and vc_ccid= '湖州'
+   and rownum <= 50
+ 
+ insert into ZJJK_XNXG_CFK (vc_cfkid, vc_bgkid, dt_cfrq, vc_cfys, vc_hjhs, vc_hjwhsyy, vc_jzdhs, vc_jzdhsyy, vc_hjqc, vc_qydz, dt_qyrq, dt_zzrq, dt_jzrq, dt_fbrq, vc_sfhyz, dt_cxglrq, vc_cxyy, vc_cxyyzm, vc_sffbsw, dt_swrq, vc_swyy, vc_swdd, nb_scqn, nb_scqy, vc_scbz, vc_cjyh, dt_cjsj, dt_xgsj, vc_xgyh, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_qcxxdz, vc_swicd, vc_swicdmc, vc_zlqk, vc_jzs, vc_gx, vc_sfdyyjz, dt_qzrq, vc_xys, vc_jyyf, vc_fzqrkpf, vc_cfrkpf, vc_ywzl, vc_ywzlqt, vc_gxbz, vc_id, upload_areaeport, vc_sfscfb, vc_hzsfzh)
+select a.*
+ from ZJJK_XNXG_CFK@zjjk126 a, zjjk_xnxg_bgk b
+ where a.vc_bgkid = b.vc_bgkid
+ and b.vc_ccid = '湖州'
+ --and a.vc_bgkid in (select vc_bgkid from zjjk_zl_bgk where vc_ccid = '湖州')
+ and not exists (select 1 from ZJJK_XNXG_CFK c where a.VC_CFKID = c.VC_CFKID)
+
+update ZJJK_XNXG_CFK a set vc_hzsfzh = '湖州',     dt_xgsj = sysdate - 1 
+where  a.vc_bgkid in (select vc_bgkid from zjjk_xnxg_bgk b where b.vc_ccid = '湖州') 
+
+
+insert into ZJJK_XNXG_SFK (vc_sfkid, vc_bgkid, dt_sfrq, vc_sfys, vc_hjqc, vc_qydz, dt_qyrq, vc_sfzlqk, vc_sfqfzqk, nb_sfqfzcs, dt_dycfbsj, dt_dycqzsj, dt_decfbsj, dt_decqzsj, dt_dscfbsj, dt_dscqzsj, vc_mqqk, vc_sfhyz, dt_cxglrq, vc_cxyy, vc_cxyyzm, nb_qzsjn, nb_qzsjy, dt_swrq, vc_swyy, vc_swdd, nb_scqn, nb_scqy, vc_scbz, vc_cjyh, dt_cjsj, dt_xgsj, vc_xgyh, vc_qcd, vc_qcsdm, vc_qcqxdm, vc_qcjddm, vc_qcjw, vc_qcxxdz, vc_swicd, vc_swicdmc, vc_zlqk, vc_jzs, vc_gx, vc_sfdyyjz, dt_qzrq, vc_xys, vc_jyyf, vc_fzqrkpf, vc_cfrkpf, vc_ywzl, vc_ywzlqt, vc_zlqk2, vc_zlqk3, vc_sffbsw1, vc_sffbsw2, vc_sffbsw3, vc_cfrkpf2, vc_cfrkpf3, vc_ywzl2, vc_ywzl3, vc_bfz1, vc_bfz2, vc_bfz3, vc_gxbz, vc_id, upload_areaeport)
+select a.vc_sfkid,
+       a.vc_bgkid,
+       a.dt_sfrq,
+       a.vc_sfys,
+       a.vc_hjqc,
+       a.vc_qydz,
+       a.dt_qyrq,
+       a.vc_sfzlqk,
+       a.vc_sfqfzqk,
+       a.nb_sfqfzcs,
+       a.dt_dycfbsj,
+       a.dt_dycqzsj,
+       a.dt_decfbsj,
+       a.dt_decqzsj,
+       a.dt_dscfbsj,
+       a.dt_dscqzsj,
+       a.vc_mqqk,
+       a.vc_sfhyz,
+       a.dt_cxglrq,
+       a.vc_cxyy,
+       a.vc_cxyyzm,
+       a.nb_qzsjn,
+       a.nb_qzsjy,
+       a.dt_swrq,
+       a.vc_swyy,
+       a.vc_swdd,
+       a.nb_scqn,
+       a.nb_scqy,
+       a.vc_scbz,
+       a.vc_cjyh,
+       a.dt_cjsj,
+       a.dt_xgsj,
+       a.vc_xgyh,
+       a.vc_qcd,
+       a.vc_qcsdm,
+       a.vc_qcqxdm,
+       a.vc_qcjddm,
+       a.vc_qcjw,
+       a.vc_qcxxdz,
+       a.vc_swicd,
+       a.vc_swicdmc,
+       a.vc_zlqk,
+       a.vc_jzs,
+       a.vc_gx,
+       a.vc_sfdyyjz,
+       a.dt_qzrq,
+       a.vc_xys,
+       a.vc_jyyf,
+       a.vc_fzqrkpf,
+       a.vc_cfrkpf,
+       a.vc_ywzl,
+       a.vc_ywzlqt,
+       a.vc_zlqk2,
+       a.vc_zlqk3,
+       a.vc_sffbsw1,
+       a.vc_sffbsw2,
+       a.vc_sffbsw3,
+       a.vc_cfrkpf2,
+       a.vc_cfrkpf3,
+       a.vc_ywzl2,
+       a.vc_ywzl3,
+       a.vc_bfz1,
+       a.vc_bfz2,
+       a.vc_bfz3,
+       a.vc_gxbz,
+       a.vc_id,
+       a.upload_areaeport
+ from ZJJK_XNXG_SFK@zjjk126 a, zjjk_xnxg_bgk b
+ where a.vc_bgkid = b.vc_bgkid
+ and b.vc_ccid = '湖州'
+ --and a.vc_bgkid in (select vc_bgkid from zjjk_zl_bgk where vc_ccid = '湖州')
+ and not exists (select 1 from ZJJK_XNXG_SFK c where a.VC_sfKID = c.VC_sfKID)
+ 
+update ZJJK_XNXG_SFK a set vc_qydz = '湖州',     dt_xgsj = sysdate - 1
+where  a.vc_bgkid in (select vc_bgkid from zjjk_xnxg_bgk b where b.vc_ccid = '湖州') 
+
+ 
+ insert into zjmb_sw_bgk
+select * from (
+select * from zjmb_sw_bgk@zjjk126 b
+   where b.vc_hkqxdm like '3305%'
+   and substr(VC_CJDWDM, 1, 4) <> '3305'
+   and vc_bgklb in ('0','2','6','7')
+   and vc_shbz in ('1','3','5','6','7','8')
+    and not exists(select 1 from zjmb_sw_bgk a where a.vc_bgkid = b.vc_bgkid)
+   )
+   where rownum <= 50
+   
+ update zjmb_sw_bgk b set dt_xgsj = sysdate - 1, vc_ccid= '湖州'
+   where b.vc_hkqxdm like '3305%'
+   and substr(VC_CJDWDM, 1, 4) <> '3305'
+   and vc_bgklb in ('0','2','6','7')
+   and vc_shbz in ('1','3','5','6','7','8')
+   and not exists(select 1 from AREA_UPLOAD_LOG a where a.operation_id = b.vc_bgkid)
+   and vc_ccid= '湖州'
+   and rownum <= 50
+   
+   
