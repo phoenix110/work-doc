@@ -876,7 +876,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
              vc_swyy     = v_vc_swyy,
              vc_swicd10  = v_vc_swicd10,
              vc_swicdmc  = v_vc_swicdmc,
-             vc_bszy     = vc_bszy,
+             vc_bszy     = v_vc_bszy,
              dt_xgsj     = v_sysdate,
              vc_xgdw     = v_czyjgdm,
              vc_xgyh     = v_czyyhid,
