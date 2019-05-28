@@ -10014,7 +10014,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
              v_vc_ccid,
              v_vc_ckbz,
              v_vc_xsrid,
-             v_vc_jkdw,
+             v_czyjgdm,
              v_vc_jkys,
              v_dt_jksj,
              v_vc_qyid,
