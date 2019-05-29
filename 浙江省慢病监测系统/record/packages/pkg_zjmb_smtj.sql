@@ -861,10 +861,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
              dt_shsj = case
                          when v_vc_shbz = '3' and dt_shsj is null then
                           v_sysdate
-                         when v_vc_shbz = '3' and dt_shsj is not null then
-                          dt_shsj
                          else
-                          null
+                          dt_shsj
                        end,
              dt_xgsj        = v_sysdate,
              dt_qxzssj = case
