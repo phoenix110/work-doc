@@ -2299,11 +2299,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
           sfk_err := '本人是否患有糖尿病必填！';
           raise err_custom;
         end if;
-        if sfk_vc_hjhs is null then
+        if sfk_vc_brsftnb <> '2' and sfk_vc_hjhs is null then
           sfk_err := '户籍核实不能为空！';
           raise err_custom;
         end if;
-        if sfk_vc_jzdhs is null then
+        if sfk_vc_brsftnb <> '2' and sfk_vc_jzdhs is null then
           sfk_err := '居住地核实不能为空！';
           raise err_custom;
         end if;
@@ -2823,30 +2823,45 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
         sfk_vc_hzid := bgk_vc_hzid;
       end if;
       --赋值操作结束
-      --更新糖尿病报卡字段
-      update zjjk_tnb_bgk
-         set vc_hkhs    = bgk_vc_hkhs,
-             vc_jzhs    = bgk_vc_jzhs,
-             vc_qcqxdm  = bgk_vc_qcqxdm,
-             vc_qcjw    = bgk_vc_qcjw,
-             vc_qcjddm  = bgk_vc_qcjddm,
-             vc_qcxxdz  = bgk_vc_qcxxdz,
-             vc_qcsdm   = bgk_vc_qcsdm,
-             dt_qcsj    = bgk_dt_qcsj,
-             vc_hkwhsyy = bgk_vc_hkwhsyy,
-             vc_jzwhsyy = bgk_vc_jzwhsyy,
-             vc_cxgl    = bgk_vc_cxgl,
-             dt_sczdrq  = bgk_dt_sczdrq,
-             vc_qybz    = bgk_vc_qybz,
-             vc_bgkzt   = bgk_vc_bgkzt,
-             vc_sfsw    = bgk_vc_sfsw,
-             vc_cfzt    = bgk_vc_cfzt,
-             dt_cfsj    = bgk_dt_cfsj,
-             dt_sfsj    = bgk_dt_sfsj,
-             vc_swyy    = bgk_vc_swyy,
-             dt_swrq    = bgk_dt_swrq,
-             dt_xgsj    = sysdate
-       where vc_bgkid = sfk_vc_bgkid;
+      
+      --新增初访卡，并且是否患有糖尿病选否
+      if sfk_fl = '1' and sfk_vc_brsftnb = '2' then
+          bgk_vc_bgkzt := '3';
+          --更新糖尿病报卡, 只更新初访状态和时间等字段
+          update zjjk_tnb_bgk
+             set vc_bgkzt   = bgk_vc_bgkzt,
+                 vc_cfzt    = bgk_vc_cfzt,
+                 dt_cfsj    = bgk_dt_cfsj,
+                 dt_sfsj    = bgk_dt_sfsj,
+                 dt_xgsj    = sysdate
+           where vc_bgkid = sfk_vc_bgkid;
+      else
+          --更新糖尿病报卡字段
+          update zjjk_tnb_bgk
+             set vc_hkhs    = bgk_vc_hkhs,
+                 vc_jzhs    = bgk_vc_jzhs,
+                 vc_qcqxdm  = bgk_vc_qcqxdm,
+                 vc_qcjw    = bgk_vc_qcjw,
+                 vc_qcjddm  = bgk_vc_qcjddm,
+                 vc_qcxxdz  = bgk_vc_qcxxdz,
+                 vc_qcsdm   = bgk_vc_qcsdm,
+                 dt_qcsj    = bgk_dt_qcsj,
+                 vc_hkwhsyy = bgk_vc_hkwhsyy,
+                 vc_jzwhsyy = bgk_vc_jzwhsyy,
+                 vc_cxgl    = bgk_vc_cxgl,
+                 dt_sczdrq  = bgk_dt_sczdrq,
+                 vc_qybz    = bgk_vc_qybz,
+                 vc_bgkzt   = bgk_vc_bgkzt,
+                 vc_sfsw    = bgk_vc_sfsw,
+                 vc_cfzt    = bgk_vc_cfzt,
+                 dt_cfsj    = bgk_dt_cfsj,
+                 dt_sfsj    = bgk_dt_sfsj,
+                 vc_swyy    = bgk_vc_swyy,
+                 dt_swrq    = bgk_dt_swrq,
+                 dt_xgsj    = sysdate
+           where vc_bgkid = sfk_vc_bgkid;         
+      end if;
+
       --更新副卡vc_bgkzt,dt_swrq，vc_swyy
       update zjjk_tnb_bgk a
          set vc_bgkzt  = bgk_vc_bgkzt,

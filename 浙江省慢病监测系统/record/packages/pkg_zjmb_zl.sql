@@ -2978,7 +2978,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
       v_err := '本人是否患有肿瘤不能为空!';
       raise err_custom;
     end if;
-    if v_vc_qcd is null then
+    if v_vc_sfhzl <> '2' and v_vc_qcd is null then
       v_err := '确认户籍地址省不能为空!';
       raise err_custom;
     end if;
@@ -3007,7 +3007,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
       end if;
     end if;
   
-    if v_vc_hjhs is null then
+    if v_vc_sfhzl <> '2' and v_vc_hjhs is null then
       v_err := '户籍核实不能为空!';
       raise err_custom;
     end if;
@@ -3015,7 +3015,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
       v_err := '户籍未核实原因不能为空!';
       raise err_custom;
     end if;
-    if v_vc_jzdhs is null then
+    if v_vc_sfhzl <> '2' and v_vc_jzdhs is null then
       v_err := '居住地核实不能为空!';
       raise err_custom;
     end if;
@@ -3210,41 +3210,55 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
         b_vc_gldw   := '99999999';
         v_vc_sdqrzt := '1';
       end if;
-      --更新报告卡信息
-      UPDATE zjjk_zl_bgk
-         SET vc_bgkzt  = b_vc_bgkzt,
-             vc_swyy   = b_vc_swyy,
-             vc_qcbz   = b_vc_qcbz,
-             dt_swrq   = b_dt_swrq,
-             vc_sfcf   = b_vc_sfcf,
-             vc_sfqc   = b_vc_sfqc,
-             vc_hjhs   = b_vc_hjhs,
-             nb_kspf   = b_nb_kspf,
-             dt_cfsj   = b_dt_cfsj,
-             dt_sfrq   = b_dt_sfrq,
-             vc_qcd    = b_vc_qcd,
-             vc_qcsdm  = b_vc_qcsdm,
-             vc_qcqxdm = b_vc_qcqxdm,
-             vc_qcjddm = b_vc_qcjddm,
-             vc_qcjw   = b_vc_qcjw,
-             vc_qcxxdz = b_vc_qcxxdz,
-             dt_qcsj   = b_dt_qcsj,
-             dt_sczdrq = b_dt_sczdrq,
-             vc_gldw   = b_vc_gldw,
-             vc_sdqrzt = v_vc_sdqrzt,
-             dt_xgsj   = sysdate
-       where vc_bgkid = v_vc_bgkid;
-      --更新患者信息
-      update zjjk_zl_hzxx
-         set vc_sfsw   = h_vc_sfsw,
-             vc_hksfdm = h_vc_hksfdm,
-             vc_hksdm  = h_vc_hksdm,
-             vc_hkqxdm = h_vc_hkqxdm,
-             vc_hkjddm = h_vc_hkjddm,
-             vc_hkjwdm = h_vc_hkjwdm,
-             vc_sfzh   = h_vc_sfzh,
-             vc_hkxxdz = h_vc_hkxxdz
-       where VC_PERSONID = b_vc_hzid;
+      
+      if v_vc_sfhzl = '2' then
+        b_vc_bgkzt := '3';
+        --更新肿瘤报卡, 只更新初访状态和时间等字段
+        UPDATE zjjk_zl_bgk
+           SET vc_bgkzt  = b_vc_bgkzt,
+               vc_sfcf   = b_vc_sfcf,
+               dt_cfsj   = b_dt_cfsj,
+               dt_sfrq   = b_dt_sfrq,
+               dt_xgsj   = sysdate
+         where vc_bgkid = v_vc_bgkid;        
+      else
+        --更新报告卡信息
+        UPDATE zjjk_zl_bgk
+           SET vc_bgkzt  = b_vc_bgkzt,
+               vc_swyy   = b_vc_swyy,
+               vc_qcbz   = b_vc_qcbz,
+               dt_swrq   = b_dt_swrq,
+               vc_sfcf   = b_vc_sfcf,
+               vc_sfqc   = b_vc_sfqc,
+               vc_hjhs   = b_vc_hjhs,
+               nb_kspf   = b_nb_kspf,
+               dt_cfsj   = b_dt_cfsj,
+               dt_sfrq   = b_dt_sfrq,
+               vc_qcd    = b_vc_qcd,
+               vc_qcsdm  = b_vc_qcsdm,
+               vc_qcqxdm = b_vc_qcqxdm,
+               vc_qcjddm = b_vc_qcjddm,
+               vc_qcjw   = b_vc_qcjw,
+               vc_qcxxdz = b_vc_qcxxdz,
+               dt_qcsj   = b_dt_qcsj,
+               dt_sczdrq = b_dt_sczdrq,
+               vc_gldw   = b_vc_gldw,
+               vc_sdqrzt = v_vc_sdqrzt,
+               dt_xgsj   = sysdate
+         where vc_bgkid = v_vc_bgkid;
+        --更新患者信息
+        update zjjk_zl_hzxx
+           set vc_sfsw   = h_vc_sfsw,
+               vc_hksfdm = h_vc_hksfdm,
+               vc_hksdm  = h_vc_hksdm,
+               vc_hkqxdm = h_vc_hkqxdm,
+               vc_hkjddm = h_vc_hkjddm,
+               vc_hkjwdm = h_vc_hkjwdm,
+               vc_sfzh   = h_vc_sfzh,
+               vc_hkxxdz = h_vc_hkxxdz
+         where VC_PERSONID = b_vc_hzid;
+      end if;
+      
       --更新副卡vc_bgkzt,dt_swrq，vc_swyy
       update zjjk_zl_bgk a
          set a.vc_bgkzt = b_vc_bgkzt,
