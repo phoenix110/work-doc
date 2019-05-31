@@ -819,7 +819,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
              vc_hkjddm      = v_vc_hkjddm,
              dt_csrq        = v_dt_csrq,
              vc_ysqm        = v_vc_ysqm,
-             vc_hkhs        = v_vc_hkhs,
+             vc_hkhs = case
+                 when v_vc_shbz = '1' then
+                  null
+                 else
+                  v_vc_hkhs
+             end,
              vc_whsyy       = v_vc_whsyy,
              vc_hkjw        = v_vc_hkjw,
              fenleitj       = v_fenleitj,
