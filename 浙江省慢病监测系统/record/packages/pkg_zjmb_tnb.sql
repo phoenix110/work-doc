@@ -3966,16 +3966,16 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
       v_err := '当前机构无操作权限!';
       raise err_custom;
     end if;
-    if v_tnb_bgkid is null then
-      v_err := '未获取到糖尿病报卡id!';
-      raise err_custom;
-    end if;
     if v_sw_bgkid is null then
       v_err := '未获取到死亡报卡id!';
       raise err_custom;
     end if;
     --更新报告，匹配
     if v_pplx = '1' then
+      if v_tnb_bgkid is null then
+        v_err := '未获取到糖尿病报卡id!';
+        raise err_custom;
+      end if;      
       update zjmb_sw_bgk a
          set a.vc_tnbbfzt = '1'
        where a.vc_bgkid = v_sw_bgkid;
