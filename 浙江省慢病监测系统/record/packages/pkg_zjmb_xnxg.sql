@@ -3560,7 +3560,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
           raise err_custom;
         end if;
         --浙江省
-        if v_vc_hjqc = '1' then
+        if v_vc_qcd = '0' then
           if v_vc_qcsdm is null then
             v_err := '迁出市不能为空!';
             raise err_custom;
