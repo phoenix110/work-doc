@@ -1,12 +1,9 @@
 -- 所有的sql语句，要新增或者修改，手动改数据库
 select * from sqldy where rownum < 2;
-
 -- 存储过程，包名 GCMC 包名.过程名
 select * from prody where rownum < 2;
-
 -- 系统日志，存储过程执行的记录
 SELECT * FROM TB_LOG where rownum < 2;
-
 -- 业务日志
 SELECT * FROM ZJJK_YW_LOG where rownum < 2;
 
@@ -40,27 +37,131 @@ select pt.mc from p_tyzdml pt where pt.fldm = 'DICT_SHJC_HZJZKB'; --患者就诊科别
 -- 医院
 select DM , MC  from P_YLJG a where a.lb in ('B1', 'A1') and dm = '';
 
--- cdc数据交换 zjjkjk 日志查询 
-select * from area_upload_log;
-select * from zjsjk_ws_config;
+/*begin zjjkjk (zjjkjk2019) 数据回传记录查询 begin*/
+-- 每天凌晨3点会定时回传
+-- area_upload_log 表的 upresult 1为成功的，2为失败的
+/* area_upload_log 表的 DATATYPE 
+  DISEASE_TUMOR_ZX("1", "肿瘤报卡", "ZjjkZlHzxxBgks"),
+  DISEASE_DIABETES_ZX("2", "糖尿病报卡", "ZjjkTnbHzxxBgks"),
+  DISEASE_HEART_ZX("3", "心脑报卡", "ZjjkXnxgBgks"),
+  DISEASE_HARM("4", "伤害报卡", "ZjmbShjcBgks"),
+  DISEASE_DIE("5", "死亡报卡", "ZjmbSwBgks"),
+  DISEASE_DIABETES_CF("6", "糖尿病初访卡", "ZjjkTnbSfks"),
+  DISEASE_DIABETES_SF("7", "糖尿病随访卡", "ZjjkTnbSfks"),
+  DISEASE_HEART_CF("8", "心脑初访卡", "ZjjkXnxgCfks"),
+  DISEASE_HEART_SF("9", "心脑随访卡", "ZjjkXnxgSfks"),
+  DISEASE_TUMOR_CF("10", "肿瘤初访卡", "ZjjkZlCcsfks"),
+	DISEASE_TUMOR_SF("11", "肿瘤随访卡", "ZjjkZlSfks"),
+	BACK_DISEASE("12", "校验结果", "ZjjkDzCxs");*/
+  
+-- 所有病种失败的记录 
+select log.* from area_upload_log log, zjsjk_ws_config conf
+where log.aera = conf.areacode
+and conf.areaname = '嘉兴'
+and upresult = '2'
+and insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
 
-select log.* from area_upload_log log, zjsjk_ws_config confwhere 
-log.aera = conf.areacode
-and conf.areaname = '义乌'
-
-select log.*, bgk.* from area_upload_log log, zjsjk_ws_config conf, ZJJK_ZL_BGK bgk, ZJJK_ZL_HZXX hzxx where 
-log.aera = conf.areacode
+-- 肿瘤失败的记录 
+select count(*) from area_upload_log log, zjsjk_ws_config conf, ZJJK_ZL_BGK bgk, ZJJK_ZL_HZXX hzxx
+where log.aera = conf.areacode
 and log.operation_id = bgk.VC_BGKID
 and BGK.VC_HZID = HZXX.VC_PERSONID
-and conf.areaname = '义乌'
-and hzxx.vc_sfzh like '%33072519360804%'
+and log.datatype = '1'
+and conf.areaname = '嘉兴'
+and log.upresult = '2'
+and log.insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+
+-- 糖尿病失败的记录 
+select count(*) from area_upload_log log, zjsjk_ws_config conf, ZJJK_TNB_BGK bgk, ZJJK_TNB_HZXX hzxx
+where log.aera = conf.areacode
+and log.operation_id = bgk.VC_BGKID
+and BGK.VC_HZID = HZXX.VC_PERSONID
+and log.datatype = '2'
+and conf.areaname = '嘉兴'
+and upresult = '2'
+and insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+
+-- 心脑血管失败的记录 
+select count(*) from area_upload_log log, zjsjk_ws_config conf, ZJJK_XNXG_BGK bgk
+where log.aera = conf.areacode
+and log.operation_id = bgk.VC_BGKID
+and log.datatype = '3'
+and conf.areaname = '嘉兴'
+and log.upresult = '2'
+and log.insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+
+-- 死亡失败的记录 
+select count(*) from area_upload_log log, zjsjk_ws_config conf, ZJMB_SW_BGK bgk
+where log.aera = conf.areacode
+and log.operation_id = bgk.VC_BGKID
+and conf.areaname = '嘉兴'
+and log.datatype = '5'
+and upresult = '2'
+and insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+/*end zjjkjk (zjjkjk2019) 数据回传记录查询 end*/
+
+
+
+/*begin zjjkjk (zjjkjk2019) 数据回传重传 begin*/
+-- 把相应报告卡的 dt_xgsj改成 sysdate，每天凌晨3点会定时回传
+-- 肿瘤重传
+update ZJJK_ZL_BGK t set t.dt_xgsj = sysdate where t.vc_bgkid in (
+    select distinct bgk.vc_bgkid from area_upload_log log, zjsjk_ws_config conf, ZJJK_ZL_BGK bgk, ZJJK_ZL_HZXX hzxx
+    where log.aera = conf.areacode
+    and log.operation_id = bgk.VC_BGKID
+    and BGK.VC_HZID = HZXX.VC_PERSONID
+    and log.datatype = '1'
+    and conf.areaname = '嘉兴'
+    and log.upresult = '2'
+    and log.insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+ )
+ 
+ -- 糖尿病重传
+update ZJJK_TNB_BGK t set t.dt_xgsj = sysdate where t.vc_bgkid in (
+    select distinct bgk.vc_bgkid from area_upload_log log, zjsjk_ws_config conf, ZJJK_TNB_BGK bgk, ZJJK_TNB_HZXX hzxx
+    where log.aera = conf.areacode
+    and log.operation_id = bgk.VC_BGKID
+    and BGK.VC_HZID = HZXX.VC_PERSONID
+    and log.datatype = '2'
+    and conf.areaname = '嘉兴'
+    and upresult = '2'
+    and insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+ )
+ 
+  -- 心脑血管重传
+update ZJJK_XNXG_BGK t set t.dt_xgsj = sysdate  where t.vc_bgkid in (
+    select distinct bgk.vc_bgkid from area_upload_log log, zjsjk_ws_config conf, ZJJK_XNXG_BGK bgk
+    where log.aera = conf.areacode
+    and log.operation_id = bgk.VC_BGKID
+    and log.datatype = '3'
+    and conf.areaname = '嘉兴'
+    and log.upresult = '2'
+    and log.insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+ )
+
+  -- 死亡重传
+update ZJMB_SW_BGK t set t.dt_xgsj = sysdate where t.vc_bgkid in (
+    select distinct bgk.vc_bgkid from area_upload_log log, zjsjk_ws_config conf, ZJMB_SW_BGK bgk
+    where log.aera = conf.areacode
+    and log.operation_id = bgk.VC_BGKID
+    and conf.areaname = '嘉兴'
+    and log.datatype = '5'
+    and upresult = '2'
+    and insert_time >= to_date('2019-05-01 00:00:00','yyyy-mm-dd hh24:mi:ss') 
+ )
+/*end zjjkjk (zjjkjk2019) 数据回传重传 end*/
+
 
 -- 数据交换 对账表，VC_SCBZ 1接收成功，未回传对账结果；2表示已回传对账结果到地市， vc_dzjg 1表示成功了
 select * from zjjk_dz;
 
 -- 查询用户信息
 select a.*, b.* from xtyh a, p_ryxx b where a.ryid = b.id
-select * from p_xzdm -- 行政区划
+-- 清除门户账号绑定
+--把某用户在 xtyh 表中对应的数据的  ptyhid 字段清除
+
+select * from p_xzdm -- 行政区划/行政代码
+select * from p_yljg -- 医疗机构
 
 -- 报告卡状态;0.可用卡；2.死卡；3.误诊卡；4.重复卡；5.删除卡；6.失访卡；7.死亡卡
 -- zjjk_zl_bgk.vc_sfcf 1为初访，3为随访，2为未初访，0为异常数据
@@ -71,7 +172,7 @@ select * from p_xzdm -- 行政区划
 -- update zjjk_zl_bgk set VC_GLDW = '331002', vc_sdqrzt = '1', vc_sfcf = '3', dt_swrq = null, vc_swyy = null, vc_shbz = '3', vc_bgkzt = '0',NB_KSPF = 40, DT_SFSJ = add_months(sysdate, -2),dt_sfrq = add_months(sysdate, -2) where VC_BGKID in ('ex1800000003696','ex1800000003697','ex1800000003698');
  
 -- 自己添加糖尿病初访提醒
--- update zjjk_tnb_bgk set vc_scbz = '0', vc_bgkzt = '0', vc_sdqrzt = '1', vc_cfzt = '0', vc_gldw = '331002009' where vc_bgkid = '702916FF01546408E05010AC296E1C6D'
+-- update zjjk_tnb_bgk set vc_scbz = '0', vc_bgkzt = '0', vc_sdqrzt = '1', vc_cfzt = '0', vc_gldw = '331002009' where vc_bgkid = '6E69C432D3B050E6E05010AC296E5189'
 
 -- 自己添加糖尿病随访提醒 VC_GLDW = '331002'为区县级别的
 -- update zjjk_tnb_bgk set vc_gldw = '331002', vc_sdqrzt = '1', vc_shbz = '3', vc_scbz = '0', vc_tnblx = '1', vc_bgkzt = '0', vc_cfzt = '3', dt_sfsj = add_months(sysdate,-11) where vc_bgkid in ('2c90ee26699f5d6001699f64d2470003','6E69C432D3B050E6E05010AC296E5189');
@@ -104,3 +205,35 @@ alter system kill session '643,11' immediate;
 
 
 
+-- 导入情况统计增加删除按钮 --
+select * from sqldy where mkbh = '020801' and ywdm = '1' 
+select * from sqldy where mkbh = '020801' and ywdm = '2' 
+
+
+select vc_personid, count(vc_personid) n from zjjk_tnb_hzxx_ex_bak group by vc_personid order by n desc
+select vc_yyrid, count(vc_yyrid) n from zjjk_tnb_bgk_ex_bak group by vc_yyrid order by n desc
+select vc_yyrid, count(vc_yyrid) n from zjjk_xnxg_bgk_ex_bak group by vc_yyrid order by n desc
+select vc_personid, count(vc_personid) n from zjjk_zl_hzxx_ex_bak group by vc_personid order by n desc 
+select vc_yyrid, count(vc_yyrid) n from zjjk_zl_bgk_ex_bak group by vc_yyrid order by n desc
+select vc_yyrid, count(vc_yyrid) n from zjjk_shjc_bgk_ex_bak group by vc_yyrid order by n desc
+select vc_yyrid, count(vc_yyrid) n from zjjk_sw_bgk_ex_bak_new group by vc_yyrid order by n desc
+
+select * from zjjk_tnb_hzxx_ex_bak group by vc_personid order by n desc
+select *  from zjjk_tnb_bgk_ex_bak group by vc_yyrid order by n desc
+select *  from zjjk_xnxg_bgk_ex_bak group by vc_yyrid order by n desc
+select *  from zjjk_zl_hzxx_ex_bak group by vc_personid order by n desc 
+select *  from zjjk_zl_bgk_ex_bak group by vc_yyrid order by n desc
+select *  from zjjk_shjc_bgk_ex_bak group by vc_yyrid order by n desc
+select *  from zjjk_sw_bgk_ex_bak_new group by vc_yyrid order by n desc
+
+select '糖尿病报告卡' sbxt,
+       count(1) hjsbs,
+       nvl(sum(decode(is_pass, 1, 1)),0) zqsbs,
+       nvl(sum(decode(is_pass, 2, 1)),0) cwsbs,
+       '2' type
+  from zjjk_tnb_bgk_ex_bak b1
+  where b1.vc_bgdw = '330102026'
+ -- group by vc_bgdw
+ 
+ update zjjk_tnb_bgk_ex_bak set vc_bgdw = '330102026' where vc_bgdw = '330303003'
+-- 导入情况统计增加删除按钮 --
