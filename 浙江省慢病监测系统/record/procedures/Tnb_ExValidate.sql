@@ -56,8 +56,8 @@ CREATE OR REPLACE Procedure Tnb_ExValidate as
     commit;
 
     insert into zjjk_tnb_hzxx_ex_bak
-          (vc_personid, vc_hzxm, vc_hzxb, vc_hzmz, vc_whcd, dt_hzcsrq, vc_sfzh, vc_lxdh, vc_hydm, vc_zydm, vc_gzdw, vc_hkshen, vc_hks, vc_hkqx, vc_hkjd, vc_hkjw, vc_hkxxdz, vc_jzds, vc_jzs, vc_jzqx, vc_jzjd, vc_jzjw, vc_jzxxdz, is_pass, validate_detail, validate_date)
-    select vc_personid, vc_hzxm, vc_hzxb, vc_hzmz, vc_whcd, dt_hzcsrq, trim(vc_sfzh), vc_lxdh, vc_hydm, vc_zydm, vc_gzdw, vc_hkshen, vc_hks, vc_hkqx, vc_hkjd, vc_hkjw, vc_hkxxdz, vc_jzds, vc_jzs, vc_jzqx, vc_jzjd, vc_jzjw, vc_jzxxdz, is_pass, validate_detail, sysdate
+          (uuid, vc_personid, vc_hzxm, vc_hzxb, vc_hzmz, vc_whcd, dt_hzcsrq, vc_sfzh, vc_lxdh, vc_hydm, vc_zydm, vc_gzdw, vc_hkshen, vc_hks, vc_hkqx, vc_hkjd, vc_hkjw, vc_hkxxdz, vc_jzds, vc_jzs, vc_jzqx, vc_jzjd, vc_jzjw, vc_jzxxdz, is_pass, validate_detail, validate_date)
+    select sys_guid(), vc_personid, vc_hzxm, vc_hzxb, vc_hzmz, vc_whcd, dt_hzcsrq, trim(vc_sfzh), vc_lxdh, vc_hydm, vc_zydm, vc_gzdw, vc_hkshen, vc_hks, vc_hkqx, vc_hkjd, vc_hkjw, vc_hkxxdz, vc_jzds, vc_jzs, vc_jzqx, vc_jzjd, vc_jzjw, vc_jzxxdz, is_pass, validate_detail, sysdate
     from zjjk_tnb_hzxx_ex ;
     v_bgkmc:='inserttnbhzxxexbak';
     insert into zjjk_tnb_hzxx
@@ -161,8 +161,8 @@ CREATE OR REPLACE Procedure Tnb_ExValidate as
       commit;
 
     insert into zjjk.zjjk_tnb_bgk_ex_bak
-          (vc_yyrid, vc_icd10, vc_tnblx, vc_wxys, vc_wxystz, vc_wxyssg, vc_tnbs, vc_jzsrs, vc_ywbfz, vc_zslcbx, vc_zslcbxqt, nb_kfxtz, nb_sjxtz, nb_xjptt, nb_zdgc, nb_e4hdlc, nb_e5ldlc, nb_gysz, nb_nwldb, nbthxhdb, vc_bszyqt, dt_sczdrq, vc_zddw, vc_bgdw, vc_bgys, dt_bgrq, dt_swrq, vc_swyy, vc_swicd10, vc_swicdmc, vc_hzid, vc_zyh, vc_mzh, vc_shbz, is_pass, validate_detail, validate_date)
-    select vc_yyrid, vc_icd10, vc_tnblx, vc_wxys, vc_wxystz, vc_wxyssg, vc_tnbs, vc_jzsrs, vc_ywbfz, vc_zslcbx, vc_zslcbxqt, nb_kfxtz, nb_sjxtz, nb_xjptt, nb_zdgc, nb_e4hdlc, nb_e5ldlc, nb_gysz, nb_nwldb, nbthxhdb, vc_bszyqt, dt_sczdrq, vc_zddw, vc_bgdw, vc_bgys, dt_bgrq, dt_swrq, vc_swyy, vc_swicd10, vc_swicdmc, vc_hzid, vc_zyh, vc_mzh, vc_shbz, is_pass, validate_detail, sysdate
+          (uuid, vc_yyrid, vc_icd10, vc_tnblx, vc_wxys, vc_wxystz, vc_wxyssg, vc_tnbs, vc_jzsrs, vc_ywbfz, vc_zslcbx, vc_zslcbxqt, nb_kfxtz, nb_sjxtz, nb_xjptt, nb_zdgc, nb_e4hdlc, nb_e5ldlc, nb_gysz, nb_nwldb, nbthxhdb, vc_bszyqt, dt_sczdrq, vc_zddw, vc_bgdw, vc_bgys, dt_bgrq, dt_swrq, vc_swyy, vc_swicd10, vc_swicdmc, vc_hzid, vc_zyh, vc_mzh, vc_shbz, is_pass, validate_detail, validate_date)
+    select sys_guid(), vc_yyrid, vc_icd10, vc_tnblx, vc_wxys, vc_wxystz, vc_wxyssg, vc_tnbs, vc_jzsrs, vc_ywbfz, vc_zslcbx, vc_zslcbxqt, nb_kfxtz, nb_sjxtz, nb_xjptt, nb_zdgc, nb_e4hdlc, nb_e5ldlc, nb_gysz, nb_nwldb, nbthxhdb, vc_bszyqt, dt_sczdrq, vc_zddw, vc_bgdw, vc_bgys, dt_bgrq, dt_swrq, vc_swyy, vc_swicd10, vc_swicdmc, vc_hzid, vc_zyh, vc_mzh, vc_shbz, is_pass, validate_detail, sysdate
     from zjjk_tnb_bgk_ex ex where ex.is_pass is not null;
     v_bgkmc:='inserttnbbgkexbak';
      commit;

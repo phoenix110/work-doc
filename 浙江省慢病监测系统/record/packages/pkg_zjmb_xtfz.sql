@@ -2356,5 +2356,86 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
       v_err      := SQLERRM;
       result_out := return_fail(v_err, 0);
   END prc_t_file_source_update;
+  
+     /*--------------------------------------------------------------------------
+  || 功能描述 ：导入情况统计-删除校验失败的记录
+  ||------------------------------------------------------------------------*/
+  PROCEDURE prc_err_record_delete(data_In    In Clob, --入参
+                                   result_out OUT VARCHAR2) --返回
+   is
+    v_json_data   json;
+    v_json_return json := json();
+    err_custom EXCEPTION;
+    v_err VARCHAR2(2000);
+    --公共变量
+    v_type     varchar2(3);
+    v_uuid varchar2(60);
+  BEGIN
+    json_data(data_in, '删除导入情况统计校验失败的记录', v_json_data);
+    v_type := Json_Str(v_Json_Data, 'type');
+    v_uuid     := Json_Str(v_Json_Data, 'uuid');
+    if v_type = '1' then
+      --糖尿病患者信息
+      delete from zjjk_tnb_hzxx_ex_bak where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    elsif v_type = '2' then
+      --糖尿病报告卡
+      delete from zjjk_tnb_bgk_ex_bak where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    elsif v_type = '3' then
+      --心脑血管报告卡
+      delete from zjjk_xnxg_bgk_ex_bak  where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    elsif v_type = '4' then
+      --肿瘤患者信息
+      delete from zjjk_zl_hzxx_ex_bak where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    elsif v_type = '5' then
+      --肿瘤报告卡
+      delete from zjjk_zl_bgk_ex_bak where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    elsif v_type = '6' then
+      --伤害监报告卡
+      delete from zjjk_shjc_bgk_ex_bak where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    elsif v_type = '7' then
+      --死因报告卡
+      delete from zjjk_sw_bgk_ex_bak_new where uuid = v_uuid;
+      if sql%rowcount <> 1 then
+        v_err := 'id[' || v_uuid || ']未获取到要删除的记录!';
+        raise err_custom;
+      end if;
+    else
+      v_err := '类型错误';
+      raise err_custom;
+    end if;
+    
+    v_Json_Return.put('id', v_uuid);
+    result_out := Return_Succ_Json(v_json_return);
+  EXCEPTION
+    WHEN err_custom THEN
+      result_out := return_fail(v_err, 2);
+    WHEN OTHERS THEN
+      v_err      := SQLERRM;
+      result_out := return_fail(v_err, 0);
+  END prc_err_record_delete;
 
 END pkg_zjmb_xtfz;
