@@ -1,0 +1,423 @@
+190506014 初随访导出bug
+	糖尿病随访提醒导出，肿瘤初访提醒导出，肿瘤随访提醒导出，文件名修复
+	/浙江省慢病监测系统/zjmb/web/tnbgl/csfgl/tnbsftx.js
+	/浙江省慢病监测系统/zjmb/web/zlgl/csfgl/zlglcftx.js
+	/浙江省慢病监测系统/zjmb/web/zlgl/csfgl/zlglsftx.js
+	/浙江省慢病监测系统/zjmb/web/tnbgl/csfgl/tnbcftx.js
+
+
+	sqldy 020205-8, 020302-03, 020303-06, 20205-6, 020205-7
+
+
+190506001		死亡卡实足年龄查询bug
+	sqldy 020601-1, 020601-8
+
+
+190505017		心脑随访提醒bug
+	sqldy	020401-10
+
+190507016		心脑随访模块检索条件bug
+	sqldy	020401-10
+
+
+0508
+肿瘤报告卡查看-icdo显示异常
+	sqldy	020301-03
+
+190507019  	属地确认模块查看报告卡bug
+	sqldy	020301-03
+
+190506013  肿瘤随访导出文件bug
+	sqldy	020303-06
+
+
+0509
+190505009	初随访户籍地址查询bug  已发布
+	sqldy 020302 01 不用改
+	sqldy 020303 01
+	sqldy 020401 10 不用改
+
+190507023 	死亡补发模块出现历史卡 已发布
+	sqldy 020203-1
+	sqldy 020307-1
+	sqldy 020403-1
+	and a.DT_CJSJ >= add_months(sysdate,-12)
+
+肿瘤报告卡 icdo有M显示 null处理    已发布
+
+190508007	5.7修改遗漏，或未处理问题
+	已发布
+
+
+0510
+190508008	肿瘤查重中初访状态与实际不符 已发布
+	sqldy 020308-1
+
+麻烦把医院和社区账号都开放出生卡导入，excel导入 的权限吧  已发布
+	pkg_zjmb_smtj.prc_cs_bgk_temp_imp   
+
+心脑血管-报告卡 卡片编号 为空修复
+	pkg_zjmb_xnxg.prc_xnxg_bgk_update
+
+=================
+0513
+心脑 的vc_bgkbh 重复数据处理，添加唯一约束
+	zjjk_xnxg_bgk 的vc_bgkbh 字段加唯一约束
+	alter table zjjk_xnxg_bgk add constraint UNIQUE_VC_BGKBH_ZJJK_XNXG_BGK unique(vc_bgkbh)
+
+bug 190509003 肿瘤报告看icd-O-3字段规则变更开发
+	zjmb/web/zlgl/bbgl/zlbgk_edit.html
+	zjmb/web/zlgl/bbgl/zlbgk_edit.js
+
+需求 190510012	心脑卡编辑首要症状字段修改
+	zjmb\web\xnxggl\bbgl\xnxg_edit.js
+	pkg_zjmb_xnxg.prc_xnxg_bgk_update
+
+bug 190510011	部分报告卡导出excel文件数据问题
+	sqldy 020301-07
+	sqldy 020201-6
+	sqyly 020401-11
+
+bug 190513007   糖尿病，心脑血管，肿瘤，出生，死亡相关的时间字段格式处理
+	zjmb\web\swdjgl\bgkgl\swbgkgl.js
+	sqldy 020601-1
+	sqldy 020601-7
+
+
+0514
+bug 190508011	死亡初访提醒导出数据和页面表格数据异常	已发
+	sqldy 020601-11
+bug 190508009	区县账号审核死亡报卡后不生成区县审核时间	已发
+	pkg_zjmb_smtj.prc_sw_bgk_update
+bug 190514004   报告卡，初访模块bug	   已发
+    pkg_zjmb_smtj.prc_sw_bgk_update 已修复
+	 
+
+
+0515
+需求 190514003 死亡，伤害和出生报告卡导出模板更换	
+	zjmb/web/csdjgl/bgkgl/csbgkgl.js
+	sqldy 020501-1
+	zjmb/web/swdjgl/bgkgl/swbgkgl.js
+	sqldy 020601-9
+	zjmb/web/shjcgl/bgkgl/shjcbgkgl.js
+	sqldy 020701-1
+bug	190514007 导出问题bug
+	zjmb/web/csdjgl/sdqr/csbgksdqr.js
+	zjmb/web/swdjgl/sdqr/swbgksdqr.js
+	zjmb/web/swdjgl/zlgl/swbgkccgl.js
+
+0516
+bug 肿瘤死亡补发匹配不到报告卡问题定位		已解决，匹配时限制了只匹配最近一年的
+bug	义乌数据下发确认						已确认解决
+bug 190516005  糖尿病，肿瘤，心脑血管，的初访和随访，查询及导出中的户籍条件修复
+	sqldy 020205-1
+	sqldy 020205-7
+	sqldy 020205-6
+	sqldy 020205-8
+	sqldy 020302-03
+	sqldy 020303-06
+	sqldy 020401-13
+bug 190514006 报告卡报告单位查询问题
+	sqldy 020201-6		n已发
+bug 190508010 糖尿病，肿瘤，心脑，死亡在检索及导出问题修复
+
+
+0517
+bug 街道行政区划问题 已解决
+bug 肿瘤查询异常处理，肿瘤中，武义县中医院，肿瘤表中，报告单位为武义县中医院的数据 中，报卡单位市和区县字段没有存，是空的，所以通过报卡单位查不出数据，
+
+bug    190517002    缺少首诊日期这个字段dt_sczdrq  已发
+	zjmb\web\tnbgl\bbgl\tnbbgkgl.js
+	sqldy 020201-6
+需求   190516010	死亡卡保存提示内容修改   已发
+	zjmb\web\swdjgl\bgkgl\swbgk_edit.js
+
+
+0520
+bug	  190517010	心脑报告卡死亡ICD10字段修改后，点击保存后，该字段未改变
+	pkg_zjmb_xnxg.prc_xnxg_bgk_update  已发
+需求 190517009 心脑肿瘤报告卡管理增加查询条件 已发
+	zjmb\web\zlgl\bbgl\zlbgkgl.html
+	zjmb\web\zlgl\bbgl\zlbgkgl.js
+	zjmb\web\xnxggl\bbgl\xnxggl.html
+	zjmb\web\xnxggl\bbgl\xnxggl.js
+	sqldy 020301-01
+	sqldy 020401-01
+需求 190517008 三个病种的随访提醒里，查询列表项目增加上一次随访时间dt_sfsj这个项目，并支持排序 已发
+	zjmb/web/tnbgl/csfgl/tnbsftx.js
+	zjmb/web/xnxggl/csfgl/xnxgsftx.js
+	zjmb/web/zlgl/csfgl/zlglsftx.js	
+需求 190520023 初访时户口街道被修改 ，审核状态不变为医院审核通过状态，仍保持区县审核通过状态。 已发
+	四个存储过程
+
+
+0521
+需求 190520012	初访后编辑报告卡点保存不更新区县审核时间，初访前编辑点保存更新。 已发
+	pkg_zjmb_tnb.prc_tnbbgk_update
+	pkg_zjmb_zl.prc_zlbgk_update
+	pkg_zjmb_xnxg.prc_xnxg_bgk_update
+	pkg_zjmb_smtj.prc_sw_bgk_update
+
+需求   190516007  初访时，乡镇修改了该报卡的户籍，该卡片进入重审流程，其他地方修改了都不用变审核状态。
+
+0522
+bug 190520022  接口导入一批出生卡片并接收了，但在报告卡管理中未查到这批卡片
+	经排查为数据导入时的户籍街道有误，已处理数据
+bug 190520021  死亡报卡区县审核是否初访状态问题
+bug 190520020 死亡补发问题
+bug 医院社区在修改糖尿病，肿瘤，心脑血管，死亡报卡时，户口街道修改后要更新医院审核状态   已发
+
+0523
+需求 190522024 报告卡初访后，所有账号能对该报告卡的户籍地址中的居委会，详细地址两个字段进行编辑修改。且修改这两个字段的结果不影响该报告卡的审核状态，不会更新区县审核时间。 
+	zjmb\web\tnbgl\bbgl\tnbbgkgl_edit.js
+	zjmb\web\tnbgl\bbgl\tnbbgkgl.html
+	pkg_zjmb_tnb
+	zjmb\web\zlgl\bbgl\zlbgkgl.html
+	zjmb\web\zlgl\bbgl\zlbgk_edit.js
+	pkg_zjmb_zl
+	zjmb\web\xnxggl\bbgl\xnxggl.html
+	zjmb\web\xnxggl\bbgl\xnxg_edit.js
+	pkg_zjmb_xnxg
+	zjmb\web\swdjgl\bgkgl\swbgkgl.html
+	zjmb\web\swdjgl\bgkgl\swbgk_edit.js
+	pkg_zjmb_smtj
+需求 190523007  	区县审核时间更新修改  已发
+	pkg_zjmb_tnb，pkg_zjmb_zl，pkg_zjmb_xnxg，pkg_zjmb_smtj
+湖州数据交换问题处理
+
+bug 190523002  无名尸卡编码规则修改   已发
+	pkg_zjmb_smtj
+bug	190523006	死亡报告卡证件校验问题   已发
+	zjmb\web\swdjgl\bgkgl\swbgk_edit.js
+	pkg_zjmb_smtj
+
+
+0524
+bug 190522042	糖尿病，心脑血管，死亡补发查询-不匹配新增报告卡时的录入日期更改 已发
+	zjmb/web/tnbgl/bbgl/tnbbgkgl_edit.js
+	zjmb/web/xnxggl/bbgl/xnxg_edit.js
+
+bug 190522041	出生导入系统后，提示导入成功，但未查到任何数据可接收，
+	导入时，根据出生证编号去查是否已经存在，如果不存在，就正常新增。如果已经存在并且未接收就更新，如果已经存在并已接收就跳过。
+	用户导入的正好出生证编号全重复，所以全跳过了。但这些已存在的出生证编号对应的数据，并不是用户要导入的这批数据。
+
+bug 190520015 肿瘤随访提醒和随访卡管理中的随访日期问题 已发
+	zjmb/web/zlgl/csfgl/zl_sfkgl.js
+	zjmb/web/zlgl/csfgl/zlglsftx.js
+	sqldy 020303-01
+	sqldy 020303-02
+bug 190522030 死亡报告卡新增编辑证件号码校验修改
+
+死亡卡只有查看按钮排查
+	街道下有两个卫生院，需要做属地确认
+
+需求 190516009 初访地址问题
+
+bug 190517012 审核不通过时修改
+	pkg_zjmb_smtj
+
+
+0527
+需求	 190527006 死亡补发功能修改
+	sqldy 020307-4
+	sqldy 020403-4
+	zjmb/web/tnbgl/bbgl/tnbbgkgl_edit.js
+	zjmb/web/tnbgl/swkbf/tnbbgkswbfcx.html
+	zjmb/web/tnbgl/swkbf/tnbbgkswbfcx.js
+	zjmb/web/xnxggl/bbgl/xnxg_edit.js
+	zjmb/web/xnxggl/swbf/xnxgswbfcx.html
+	zjmb/web/xnxggl/swbf/xnxgswbfcx.js
+	zjmb/web/zlgl/bbgl/zlbgk_edit.js
+	zjmb/web/zlgl/swbfgl/zlbgkswbfcx.html
+	zjmb/web/zlgl/swbfgl/zlbgkswbfcx.js
+需求 190527013 	关于5.31慢病系统只能由门户访问的修改
+	zjmb\web\login\login.html
+bug 190527023	出生报卡新增父亲等字段修改
+	zjmb/web/csdjgl/bgkgl/csbgk_edit.html
+bug	190527036 报告卡管理中编辑报告卡更新户籍单位的街道时，管理单位问题
+
+0528
+bug 190527033 死亡卡社区卫生院能看到其他卫生院报告卡的bug以及死卡修改 已发
+	zjmb/web/swdjgl/bgkgl/swbgk_edit.html
+bug 190516006 死亡补发补发卡片问题
+bug 190516004 死亡补发对慢病卡的开放全历史库  已发
+	sqldy 020203-3
+	sqldy 020307-3
+	sqldy 020403-3
+bug 190527017 	糖尿病编辑问题	已发
+	pkg_zjmb_tnb
+bug 190528020	出生导入报卡单位问题 已发
+	pkg_zjmb_smtj
+
+
+
+0529
+bug 190528019 初访修改地址后区县审核时间显示问题 已发
+	pkg_zjmb_tnb.prc_tnbbgk_update
+	pkg_zjmb_zl.prc_zlbgk_update
+	pkg_zjmb_xnxg.prc_xnxg_bgk_update
+	pkg_zjmb_smtj.prc_sw_bgk_update
+bug 190528024 出生报告卡编辑和导出修改   已发
+	zjmb/web/csdjgl/bgkgl/csbgk_edit.js
+	zjmb/web/csdjgl/bgkgl/csbgkgl.js
+bug 190528009 机构分配错上级机构问题
+
+
+0531
+bug	190515008 糖尿病初访bug
+	pkg_zjmb_tnb
+	pkg_zjmb_zl
+	zjmb/web/tnbgl/csfgl/cfk_edit.js
+	zjmb/web/zlgl/csfgl/zlglcf_edit.html
+	zjmb/web/zlgl/csfgl/zlglcf_edit.js
+bug 190530001  糖尿病死亡补发bug
+	pkg_zjmb_tnb
+需求 190530020 修改户籍地址时，户口核实字段修改
+	pkg_zjmb_smtj
+bug 190531012 	随访卡中迁出地址问题
+	pkg_zjmb_xnxg
+	zjmb/web/xnxggl/csfgl/xnxgsf_edit_nc.js
+需求 190530011 报告卡标红显示修改
+	zjmb/web/csdjgl/bgkgl/csbgkgl.js
+	zjmb/web/swdjgl/bgkgl/swbgkgl.js
+	zjmb/web/tnbgl/bbgl/tnbbgkgl.js
+	zjmb/web/xnxggl/bbgl/xnxggl.js
+	zjmb/web/zlgl/bbgl/zlbgkgl.js
+
+
+这个是衢州那边数据交换要测试回传的数据范围
+需要你这边把正式库的这些数据先导到测试库 然后回传给他们
+在六月一号之前得弄完
+
+0603
+bug 190531011 对报告卡操作后跳转回第一页问题
+	zjmb/public/js/commonUtil.js
+	zjmb/web/csdjgl/bgkgl/csbgkgl.js
+	zjmb/web/shjcgl/bgkgl/shjcbgkgl.js
+	zjmb/web/swdjgl/bgkgl/swbgkgl.js
+	zjmb/web/tnbgl/bbgl/tnbbgkgl.js
+	zjmb/web/xnxggl/bbgl/xnxggl.js
+	zjmb/web/zlgl/bbgl/zlbgkgl.js
+
+
+管理单位确认
+
+login 128 去除
+
+长兴弹卡问题
+
+向超乱码
+
+0604
+嘉兴数据回传处理
+bug 190517011 有排序功能的字段只排序当前页
+	sqldy 020201-1
+	zjmb/web/tnbgl/bbgl/tnbbgkgl.html
+	zjmb/web/tnbgl/bbgl/tnbbgkgl.js
+	--以上三个已发
+
+
+
+0605
+bug 190527026 代谢报表问题
+	dxbmf/web/mfdlgl/ywtj/mfqktjb.js
+	sqldy 040103-1
+	sqldy 040103-2
+
+0606
+需求 190505005 导入情况统计增加删除按钮
+	7张表，添加uuid字段，并设置为主键
+	zjjk_tnb_hzxx_ex_bak
+	zjjk_tnb_bgk_ex_bak
+	zjjk_xnxg_bgk_ex_bak 
+	zjjk_zl_hzxx_ex_bak
+	zjjk_zl_bgk_ex_bak
+	zjjk_shjc_bgk_ex_bak
+	zjjk_sw_bgk_ex_bak_new
+
+	alter table zjjk_tnb_hzxx_ex_bak add uuid varchar2(60);
+update zjjk_tnb_hzxx_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_tnb_hzxx_ex_bak add constraint pk_zjjk_tnb_hzxx_ex_bak primary key(uuid);
+
+alter table zjjk_tnb_bgk_ex_bak add uuid varchar2(60);
+update zjjk_tnb_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_tnb_bgk_ex_bak add constraint pk_zjjk_tnb_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_zl_hzxx_ex_bak add uuid varchar2(60);
+update zjjk_zl_hzxx_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_zl_hzxx_ex_bak add constraint pk_zjjk_zl_hzxx_ex_bak primary key(uuid);
+
+alter table zjjk_zl_bgk_ex_bak add uuid varchar2(60);
+update zjjk_zl_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_zl_bgk_ex_bak add constraint pk_zjjk_zl_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_xnxg_bgk_ex_bak add uuid varchar2(60);
+update zjjk_xnxg_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_xnxg_bgk_ex_bak add constraint pk_zjjk_xnxg_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_shjc_bgk_ex_bak add uuid varchar2(60);
+update zjjk_shjc_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_shjc_bgk_ex_bak add constraint pk_zjjk_shjc_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_sw_bgk_ex_bak_new add uuid varchar2(60);
+update zjjk_sw_bgk_ex_bak_new set uuid = sys_guid();
+commit;
+alter table zjjk_sw_bgk_ex_bak_new add constraint pk_zjjk_sw_bgk_ex_bak_new primary key(uuid);
+
+	procedures
+		Tnb_ExValidate
+		zl_ExValidate
+	packages
+		ZJJK_DATAEX_VALIDATE_NEW
+		pkg_zjmb_xtfz.prc_err_record_delete   定义和body都要加
+
+	sqldy 020801-2345678  修改
+
+	prody 020802-01   新增
+insert into prody (ID, MKBH, YWDM, GCMC, SM, QSBB, ZT, XGSJ, CJSJ)
+values ('02080201', '020802', '01', 'pkg_zjmb_xtfz.prc_err_record_delete', '导入情况统计删除失败记录', '1.0', 1, to_date('06-06-2019 15:00:00', 'dd-mm-yyyy hh24:mi:ss'), to_date('06-06-2019 15:00:00', 'dd-mm-yyyy hh24:mi:ss'));
+
+
+	zjmb/web/xtfz/sjdr/excel_dr_tj.html
+	zjmb/web/xtfz/sjdr/excel_dr_tj.js
+
+
+
+肿瘤报告卡诊断日期问题   已发
+	sqydy 020301-01
+
+
+性能问题
+	zjmb\public\js\commonUtil.js 获取serviceUrl更改，未提交，未发
+
+
+待确认，暂时不发不提交
+bub 190515009  1.糖尿病，肿瘤，心脑的死亡补发查询和匹配，查重，初随访，以及死亡的初访，查重模块中不出现外地户籍的报告卡（社区医院号，如白云街道的账号这些模块下只出现白云街
+          道的报告卡；区县账号，如椒江区疾控这些模块下只出现户籍为椒江区的报告卡）2.糖尿病，肿瘤，心脑的死亡补发匹配了之后，该报告卡的卡状态要变成死亡卡，即vc_ bgkzt=7
+    糖尿病-死亡补发
+    zjmb\web\tnbgl\swkbf\tnbbgkswbfcx.js 未提交到svn
+    sqldy 020203-1  41上已改
+
+
+
+
+
+
+
+			    // 不出现外地户籍的
+				if(window.user.jgjb == '1'){
+					param.vc_hkjddm_like = window.user.xzqh.substr(0, 2);
+				}else if(user.jgjb == '2'){
+					param.vc_hkjddm_like = window.user.xzqh.substr(0, 4);
+				}else if(user.jgjb == '3'){
+					param.vc_hkjddm_like = window.user.xzqh.substr(0, 6);
+				}else{
+					param.vc_hkjddm_like = window.user.xzqh;
+				}
