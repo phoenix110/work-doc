@@ -203,7 +203,10 @@ select /*+ rule*/  SID from V$ACCESS WHERE object='PKG_ZJMB_SMTJ'
 )
 alter system kill session '643,11' immediate;
 
-
+-- 在所有存入过程或者包和函数等，中查找字符
+select t.* from all_source t where 1=1
+--  and  type = 'PACKAGE' 
+and text like '%ZJJK_DATAEX_VALIDATE%'
 
 -- 导入情况统计增加删除按钮 --
 select * from sqldy where mkbh = '020801' and ywdm = '1' 
@@ -237,3 +240,53 @@ select '糖尿病报告卡' sbxt,
  
  update zjjk_tnb_bgk_ex_bak set vc_bgdw = '330102026' where vc_bgdw = '330303003'
 -- 导入情况统计增加删除按钮 --
+
+select distinct is_pass from zjjk_tnb_bgk_ex_bak
+update zjjk_tnb_bgk_ex_bak set is_pass = '2' where vc_bgdw = '330102026'
+
+Tnb_ExValidate
+zl_ExValidate
+ZJJK_DATAEX_VALIDATE_NEW
+
+select * from zjjk_tnb_bgk
+
+select sys_guid() from zjjk_tnb_hzxx_ex_bak;
+
+
+--    ============
+alter table zjjk_tnb_hzxx_ex_bak add uuid varchar2(60);
+update zjjk_tnb_hzxx_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_tnb_hzxx_ex_bak add constraint pk_zjjk_tnb_hzxx_ex_bak primary key(uuid);
+
+alter table zjjk_tnb_bgk_ex_bak add uuid varchar2(60);
+update zjjk_tnb_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_tnb_bgk_ex_bak add constraint pk_zjjk_tnb_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_zl_hzxx_ex_bak add uuid varchar2(60);
+update zjjk_zl_hzxx_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_zl_hzxx_ex_bak add constraint pk_zjjk_zl_hzxx_ex_bak primary key(uuid);
+
+alter table zjjk_zl_bgk_ex_bak add uuid varchar2(60);
+update zjjk_zl_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_zl_bgk_ex_bak add constraint pk_zjjk_zl_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_xnxg_bgk_ex_bak add uuid varchar2(60);
+update zjjk_xnxg_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_xnxg_bgk_ex_bak add constraint pk_zjjk_xnxg_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_shjc_bgk_ex_bak add uuid varchar2(60);
+update zjjk_shjc_bgk_ex_bak set uuid = sys_guid();
+commit;
+alter table zjjk_shjc_bgk_ex_bak add constraint pk_zjjk_shjc_bgk_ex_bak primary key(uuid);
+
+alter table zjjk_sw_bgk_ex_bak_new add uuid varchar2(60);
+update zjjk_sw_bgk_ex_bak_new set uuid = sys_guid();
+commit;
+alter table zjjk_sw_bgk_ex_bak_new add constraint pk_zjjk_sw_bgk_ex_bak_new primary key(uuid);
+
+-- ===============
