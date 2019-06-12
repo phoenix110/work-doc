@@ -153,12 +153,15 @@ update ZJMB_SW_BGK t set t.dt_xgsj = sysdate where t.vc_bgkid in (
 
 
 -- 数据交换 对账表，VC_SCBZ 1接收成功，未回传对账结果；2表示已回传对账结果到地市， vc_dzjg 1表示成功了
+-- 每一小时定时推送
 select * from zjjk_dz;
+-- 重新推送结果，把 zjjk_dz 表的要重推的数据的 VC_SCBZ 改成 1
+-- update zjjk_dz set vc_scbz = '1' where vc_bgkid = 'xxxx'
 
 -- 查询用户信息
 select a.*, b.* from xtyh a, p_ryxx b where a.ryid = b.id
 -- 清除门户账号绑定
---把某用户在 xtyh 表中对应的数据的  ptyhid 字段清除
+-- update xtyh set ptyhid = null where yhm ='xxxx'
 
 select * from p_xzdm -- 行政区划/行政代码
 select * from p_yljg -- 医疗机构
@@ -248,12 +251,7 @@ Tnb_ExValidate
 zl_ExValidate
 ZJJK_DATAEX_VALIDATE_NEW
 
-select * from zjjk_tnb_bgk
-
-select sys_guid() from zjjk_tnb_hzxx_ex_bak;
-
-
---    ============
+/*
 alter table zjjk_tnb_hzxx_ex_bak add uuid varchar2(60);
 update zjjk_tnb_hzxx_ex_bak set uuid = sys_guid();
 commit;
@@ -289,4 +287,5 @@ update zjjk_sw_bgk_ex_bak_new set uuid = sys_guid();
 commit;
 alter table zjjk_sw_bgk_ex_bak_new add constraint pk_zjjk_sw_bgk_ex_bak_new primary key(uuid);
 
+*/
 -- ===============
