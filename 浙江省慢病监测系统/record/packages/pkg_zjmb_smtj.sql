@@ -2360,6 +2360,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           v_vc_sdqr   := '1';
           v_vc_gldwdm := substr(v_czyjgdm, 1, 6) || '00';
         end if;
+        --更新报告卡属地确认
+        update zjmb_sw_bgk a
+           set a.vc_sdqr = v_vc_sdqr, a.vc_gldwdm = v_vc_gldwdm
+        where a.vc_bgkid = v_vc_bgkid;
       end if;
     else
       v_err := '当前机构无修改权限!';
@@ -2452,8 +2456,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
            vc_hyzk        = v_vc_hyzk,
            vc_whcd        = v_vc_whcd,
            vc_shbz        = v_vc_shbz,
-           vc_sdqr        = v_vc_sdqr,
-           vc_gldwdm      = v_vc_gldwdm,
            vc_xgyh        = v_czyyhid,
            dt_shsj = case
                        when vc_shbz = '3' and dt_shsj is null then

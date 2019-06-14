@@ -3205,10 +3205,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
           b_vc_gldw   := h_vc_hkqxdm;
           v_vc_sdqrzt := '0';
         end if;
-      end if;
-      if h_vc_hksfdm = '1' then
-        b_vc_gldw   := '99999999';
-        v_vc_sdqrzt := '1';
+        if h_vc_hksfdm = '1' then
+          b_vc_gldw   := '99999999';
+          v_vc_sdqrzt := '1';
+        end if;
+        --更新报告卡属地确认
+        update zjjk_zl_bgk a
+           set a.vc_sdqrzt = v_vc_sdqrzt, a.vc_gldw = b_vc_gldw
+         where a.vc_bgkid = v_vc_bgkid;
       end if;
       
       if v_vc_sfhzl = '2' then
@@ -3242,8 +3246,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
                vc_qcxxdz = b_vc_qcxxdz,
                dt_qcsj   = b_dt_qcsj,
                dt_sczdrq = b_dt_sczdrq,
-               vc_gldw   = b_vc_gldw,
-               vc_sdqrzt = v_vc_sdqrzt,
                dt_xgsj   = sysdate
          where vc_bgkid = v_vc_bgkid;
         --更新患者信息

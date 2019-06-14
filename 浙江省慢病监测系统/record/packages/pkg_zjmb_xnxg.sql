@@ -3173,6 +3173,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
         v_vc_gldwdm := '99999999';
         v_vc_sdqrzt := '1';
       end if;
+      --更新报告卡属地确认
+      update zjjk_xnxg_bgk a
+         set a.vc_sdqrzt = v_vc_sdqrzt, a.vc_gldwdm = v_vc_gldwdm
+       where a.vc_bgkid = v_vc_bgkid;
      end if;
     b_vc_czhks    := v_vc_qcd;
     b_vc_czhksi   := v_vc_qcsdm;
@@ -3200,9 +3204,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
            vc_hzsfzh   = b_vc_hzsfzh,
            dt_qcsj     = b_dt_qcsj,
            dt_qrsj     = b_dt_qrsj,
-           dt_xgsj     = sysdate,
-           vc_sdqrzt   = v_vc_sdqrzt,
-           vc_gldwdm   = v_vc_gldwdm
+           dt_xgsj     = sysdate
      where vc_bgkid = v_vc_bgkid;
     --更新副卡vc_bgkzt,dt_swrq，vc_swyy
     update zjjk_xnxg_bgk a
