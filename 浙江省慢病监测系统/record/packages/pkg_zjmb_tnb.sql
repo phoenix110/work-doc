@@ -884,8 +884,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
              vc_sznl     = v_vc_sznl,
              vc_zyh      = v_vc_zyh,
              vc_mzh      = v_vc_mzh,
-             vc_bks      = v_vc_bks,
-             vc_bkq      = v_vc_bkq,
              vc_bmi      = v_vc_bmi,
              vc_bksznl   = v_vc_bksznl,
              vc_zddw     = v_vc_zddw,

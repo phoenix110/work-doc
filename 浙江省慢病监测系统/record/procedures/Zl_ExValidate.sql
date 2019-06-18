@@ -243,7 +243,7 @@ CREATE OR REPLACE Procedure Zl_ExValidate as
       vc_mzh, vc_zyh, vc_hzid, vc_icd9, vc_icdm, vc_icdo, vc_dlw ,
       vc_icd10, vc_blxlx, vc_blh, vc_zdsqb, vc_zdqbt, vc_zdqbn, vc_zdqbm, dt_yzdrq, vc_zdbw, vc_zdbwmc,
       --vc_icd10 与 vc_swicd10 注意原表和新表关系
-      dt_zdrq, vc_zgzddw, vc_yzd, vc_bgdw, vc_bgys, dt_bgrq, dt_swrq, vc_swyy, vc_swicd10, vc_zdyh, vc_bszy, vc_swicdmc, vc_shbz,DT_CJSJ)
+      dt_zdrq, vc_zgzddw, vc_yzd, vc_bgdw, vc_bgdws, vc_bgdwqx, vc_bgys, dt_bgrq, dt_swrq, vc_swyy, vc_swicd10, vc_zdyh, vc_bszy, vc_swicdmc, vc_shbz,DT_CJSJ)
       values
       (
       '1',
@@ -259,7 +259,7 @@ CREATE OR REPLACE Procedure Zl_ExValidate as
       '0','2',decode(e.dt_swrq,null,'0','7'),'1','0', e.vc_bqygzbr,
       e.vc_mzh, e.vc_zyh, e.vc_hzid, e.vc_icd9, e.vc_icdm, e.vc_icdo, e.vc_dlw ,
       e.vc_zdbw, e.vc_blxlx, e.vc_blh, e.vc_zdsqb, e.vc_zdqbt, e.vc_zdqbn, e.vc_zdqbm, e.dt_yzdrq,e.vc_zdbw, e.vc_zdbmms,
-      e.dt_zdrq, e.vc_zgzddw, e.vc_yzd, e.vc_bgdw, e.vc_bgys, e.dt_bgrq, e.dt_swrq, e.vc_swyy, e.vc_swicd10, e.vc_zdyh, e.vc_bszy, e.vc_swicdmc, e.vc_shbz,sysdate);
+      e.dt_zdrq, e.vc_zgzddw, e.vc_yzd, e.vc_bgdw, substr(e.vc_bgdw,1,4)||'0000', substr(e.vc_bgdw,1,6)||'00', e.vc_bgys, e.dt_bgrq, e.dt_swrq, e.vc_swyy, e.vc_swicd10, e.vc_zdyh, e.vc_bszy, e.vc_swicdmc, e.vc_shbz,sysdate);
       v_bgkid:=e.vc_yyrid;
       v_bgkmc:='insertzlbgk';
       end loop;
