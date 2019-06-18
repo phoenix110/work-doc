@@ -2974,11 +2974,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
   
     --检验字段必填
     --校验数据是否合法
-    if v_vc_sfhzl is null then
+    if v_vc_cxglyy is null and v_vc_sfhzl is null then
       v_err := '本人是否患有肿瘤不能为空!';
       raise err_custom;
     end if;
-    if v_vc_sfhzl <> '2' and v_vc_qcd is null then
+    if v_vc_sfhzl is not null and v_vc_sfhzl <> '2' and v_vc_qcd is null then
       v_err := '确认户籍地址省不能为空!';
       raise err_custom;
     end if;
@@ -3007,7 +3007,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
       end if;
     end if;
   
-    if v_vc_sfhzl <> '2' and v_vc_hjhs is null then
+    if v_vc_sfhzl is not null and v_vc_sfhzl <> '2' and v_vc_hjhs is null then
       v_err := '户籍核实不能为空!';
       raise err_custom;
     end if;
@@ -3015,7 +3015,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
       v_err := '户籍未核实原因不能为空!';
       raise err_custom;
     end if;
-    if v_vc_sfhzl <> '2' and v_vc_jzdhs is null then
+    if v_vc_sfhzl is not null and v_vc_sfhzl <> '2' and v_vc_jzdhs is null then
       v_err := '居住地核实不能为空!';
       raise err_custom;
     end if;
@@ -3224,7 +3224,34 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
                dt_cfsj   = b_dt_cfsj,
                dt_sfrq   = b_dt_sfrq,
                dt_xgsj   = sysdate
-         where vc_bgkid = v_vc_bgkid;        
+         where vc_bgkid = v_vc_bgkid;  
+          --更新副卡
+          update zjjk_zl_bgk a
+             set a.vc_bgkzt = b_vc_bgkzt,
+                 a.dt_xgsj  = sysdate
+           where exists (select 1
+                    from zjjk_zl_bgk_zfgx b
+                   where a.vc_bgkid = b.vc_fkid
+                     and b.vc_zkid <> b.vc_fkid
+                     and b.vc_zkid = v_vc_bgkid);           
+      elsif v_vc_cxglyy is not null then
+        --更新肿瘤报卡, 只更新初访状态和时间等字段
+        UPDATE zjjk_zl_bgk
+           SET vc_bgkzt  = b_vc_bgkzt,
+               vc_sfcf   = b_vc_sfcf,
+               dt_cfsj   = b_dt_cfsj,
+               dt_sfrq   = b_dt_sfrq,
+               dt_xgsj   = sysdate
+         where vc_bgkid = v_vc_bgkid;  
+          --更新副卡
+          update zjjk_zl_bgk a
+             set a.vc_bgkzt = b_vc_bgkzt,
+                 a.dt_xgsj  = sysdate
+           where exists (select 1
+                    from zjjk_zl_bgk_zfgx b
+                   where a.vc_bgkid = b.vc_fkid
+                     and b.vc_zkid <> b.vc_fkid
+                     and b.vc_zkid = v_vc_bgkid);          
       else
         --更新报告卡信息
         UPDATE zjjk_zl_bgk
@@ -3259,19 +3286,19 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
                vc_sfzh   = h_vc_sfzh,
                vc_hkxxdz = h_vc_hkxxdz
          where VC_PERSONID = b_vc_hzid;
+          --更新副卡vc_bgkzt,dt_swrq，vc_swyy
+          update zjjk_zl_bgk a
+             set a.vc_bgkzt = b_vc_bgkzt,
+                 a.dt_swrq  = b_dt_swrq,
+                 a.vc_swyy  = b_vc_swyy,
+                 a.dt_xgsj  = sysdate
+           where exists (select 1
+                    from zjjk_zl_bgk_zfgx b
+                   where a.vc_bgkid = b.vc_fkid
+                     and b.vc_zkid <> b.vc_fkid
+                     and b.vc_zkid = v_vc_bgkid);         
       end if;
       
-      --更新副卡vc_bgkzt,dt_swrq，vc_swyy
-      update zjjk_zl_bgk a
-         set a.vc_bgkzt = b_vc_bgkzt,
-             a.dt_swrq  = b_dt_swrq,
-             a.vc_swyy  = b_vc_swyy,
-             a.dt_xgsj  = sysdate
-       where exists (select 1
-                from zjjk_zl_bgk_zfgx b
-               where a.vc_bgkid = b.vc_fkid
-                 and b.vc_zkid <> b.vc_fkid
-                 and b.vc_zkid = v_vc_bgkid);
       --插入初访卡信息
       insert into zjjk_zl_ccsfk
         (nb_kspf,

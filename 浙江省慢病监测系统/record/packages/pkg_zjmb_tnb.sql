@@ -2295,15 +2295,15 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
       --再次判断是初访还是随访 分别做数据项校验
       if (sfk_fl = '1') then
         --初访数据项校验
-        if sfk_vc_brsftnb is null then
+        if sfk_vc_cxglyy is null and sfk_vc_brsftnb is null then
           sfk_err := '本人是否患有糖尿病必填！';
           raise err_custom;
         end if;
-        if sfk_vc_brsftnb <> '2' and sfk_vc_hjhs is null then
+        if sfk_vc_brsftnb is not null and sfk_vc_brsftnb <> '2' and sfk_vc_hjhs is null then
           sfk_err := '户籍核实不能为空！';
           raise err_custom;
         end if;
-        if sfk_vc_brsftnb <> '2' and sfk_vc_jzdhs is null then
+        if sfk_vc_brsftnb is not null and sfk_vc_brsftnb <> '2' and sfk_vc_jzdhs is null then
           sfk_err := '居住地核实不能为空！';
           raise err_custom;
         end if;
@@ -2835,6 +2835,34 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
                  dt_sfsj    = bgk_dt_sfsj,
                  dt_xgsj    = sysdate
            where vc_bgkid = sfk_vc_bgkid;
+             --更新副卡
+            update zjjk_tnb_bgk a
+               set vc_bgkzt  = bgk_vc_bgkzt,
+                   a.dt_xgsj = sysdate
+             where exists (select 1
+                      from zjjk_tnb_bgk_zfgx b
+                     where a.vc_bgkid = b.vc_fkid
+                       and b.vc_zkid <> b.vc_fkid
+                       and b.vc_zkid = sfk_vc_bgkid);             
+      -- 新增初访卡，并且选了撤销管理原因
+      elsif sfk_fl = '1' and sfk_vc_cxglyy is not null then
+          --更新糖尿病报卡, 只更新初访状态和时间等字段
+          update zjjk_tnb_bgk
+             set vc_bgkzt   = bgk_vc_bgkzt,
+                 vc_cfzt    = bgk_vc_cfzt,
+                 dt_cfsj    = bgk_dt_cfsj,
+                 dt_sfsj    = bgk_dt_sfsj,
+                 dt_xgsj    = sysdate
+           where vc_bgkid = sfk_vc_bgkid;
+          --更新副卡
+          update zjjk_tnb_bgk a
+             set vc_bgkzt  = bgk_vc_bgkzt,
+                 a.dt_xgsj = sysdate
+           where exists (select 1
+                    from zjjk_tnb_bgk_zfgx b
+                   where a.vc_bgkid = b.vc_fkid
+                     and b.vc_zkid <> b.vc_fkid
+                     and b.vc_zkid = sfk_vc_bgkid);           
       else
           --更新糖尿病报卡字段
           update zjjk_tnb_bgk
@@ -2859,20 +2887,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
                  vc_swyy    = bgk_vc_swyy,
                  dt_swrq    = bgk_dt_swrq,
                  dt_xgsj    = sysdate
-           where vc_bgkid = sfk_vc_bgkid;         
+           where vc_bgkid = sfk_vc_bgkid;    
+          --更新副卡vc_bgkzt,dt_swrq，vc_swyy
+          update zjjk_tnb_bgk a
+             set vc_bgkzt  = bgk_vc_bgkzt,
+                 a.vc_swyy = bgk_vc_swyy,
+                 a.dt_swrq = bgk_dt_swrq,
+                 a.dt_xgsj = sysdate
+           where exists (select 1
+                    from zjjk_tnb_bgk_zfgx b
+                   where a.vc_bgkid = b.vc_fkid
+                     and b.vc_zkid <> b.vc_fkid
+                     and b.vc_zkid = sfk_vc_bgkid);                
       end if;
 
-      --更新副卡vc_bgkzt,dt_swrq，vc_swyy
-      update zjjk_tnb_bgk a
-         set vc_bgkzt  = bgk_vc_bgkzt,
-             a.vc_swyy = bgk_vc_swyy,
-             a.dt_swrq = bgk_dt_swrq,
-             a.dt_xgsj = sysdate
-       where exists (select 1
-                from zjjk_tnb_bgk_zfgx b
-               where a.vc_bgkid = b.vc_fkid
-                 and b.vc_zkid <> b.vc_fkid
-                 and b.vc_zkid = sfk_vc_bgkid);
       sfk_json_return.put('vc_sfkid', sfk_vc_sfkid);
       result_out := Return_Succ_Json(sfk_json_return);
     else

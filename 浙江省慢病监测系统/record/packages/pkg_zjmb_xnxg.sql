@@ -2973,7 +2973,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       v_err := '初访医生不能为空!';
       raise err_custom;
     end if;
-    if v_vc_hjhs is null then
+    if v_vc_cxyy is null and v_vc_hjhs is null then
       v_err := '户籍核实不能为空!';
       raise err_custom;
     end if;
@@ -2981,7 +2981,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       v_err := '户籍未核实原因不能为空!';
       raise err_custom;
     end if;
-    if v_vc_qcd is null then
+    if v_vc_cxyy is null and v_vc_qcd is null then
       v_err := '户籍核实省不能为空!';
       raise err_custom;
     end if;
@@ -3185,38 +3185,60 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
     b_vc_czhkjw   := v_vc_qcjw;
     b_vc_czhkxxdz := v_vc_qcxxdz;
     --第二步：更新报告卡信息
-    update zjjk_xnxg_bgk
-       set vc_sfsw     = b_vc_sfsw,
-           vc_kzt      = b_vc_kzt,
-           dt_swrq     = b_dt_swrq,
-           vc_swys     = b_vc_swys,
-           vc_qcbz     = b_vc_qcbz,
-           vc_czhks    = b_vc_czhks,
-           vc_czhksi   = b_vc_czhksi,
-           vc_czhkqx   = b_vc_czhkqx,
-           vc_czhkjd   = b_vc_czhkjd,
-           vc_czhkjw   = b_vc_czhkjw,
-           vc_czhkxxdz = b_vc_czhkxxdz,
-           vc_sfcf     = b_vc_sfcf,
-           dt_cfsj     = b_dt_cfsj,
-           dt_sfsj     = b_dt_sfsj,
-           vc_sfqc     = b_vc_sfqc,
-           vc_hzsfzh   = b_vc_hzsfzh,
-           dt_qcsj     = b_dt_qcsj,
-           dt_qrsj     = b_dt_qrsj,
-           dt_xgsj     = sysdate
-     where vc_bgkid = v_vc_bgkid;
-    --更新副卡vc_bgkzt,dt_swrq，vc_swyy
-    update zjjk_xnxg_bgk a
-       set a.vc_kzt  = b_vc_kzt,
-           a.dt_swrq = b_dt_swrq,
-           a.vc_swys = b_vc_swys,
-           a.dt_xgsj = sysdate
-     where exists (select 1
-              from zjjk_xnxg_bgk_zfgx b
-             where a.vc_bgkid = b.vc_fkid
-               and b.vc_zkid <> b.vc_fkid
-               and b.vc_zkid = v_vc_bgkid);
+    if v_vc_cxyy is not null then
+      -- 只更新初访状态和时间等字段
+      update zjjk_xnxg_bgk
+         set 
+             vc_kzt      = b_vc_kzt,
+             vc_sfcf     = b_vc_sfcf,
+             dt_cfsj     = b_dt_cfsj,
+             dt_sfsj     = b_dt_sfsj,
+             dt_xgsj     = sysdate
+       where vc_bgkid = v_vc_bgkid;
+      --更新副卡vc_bgkzt,dt_swrq，vc_swyy
+      update zjjk_xnxg_bgk a
+         set a.vc_kzt  = b_vc_kzt,
+             a.dt_xgsj = sysdate
+       where exists (select 1
+                from zjjk_xnxg_bgk_zfgx b
+               where a.vc_bgkid = b.vc_fkid
+                 and b.vc_zkid <> b.vc_fkid
+                 and b.vc_zkid = v_vc_bgkid);      
+    else
+      update zjjk_xnxg_bgk
+         set vc_sfsw     = b_vc_sfsw,
+             vc_kzt      = b_vc_kzt,
+             dt_swrq     = b_dt_swrq,
+             vc_swys     = b_vc_swys,
+             vc_qcbz     = b_vc_qcbz,
+             vc_czhks    = b_vc_czhks,
+             vc_czhksi   = b_vc_czhksi,
+             vc_czhkqx   = b_vc_czhkqx,
+             vc_czhkjd   = b_vc_czhkjd,
+             vc_czhkjw   = b_vc_czhkjw,
+             vc_czhkxxdz = b_vc_czhkxxdz,
+             vc_sfcf     = b_vc_sfcf,
+             dt_cfsj     = b_dt_cfsj,
+             dt_sfsj     = b_dt_sfsj,
+             vc_sfqc     = b_vc_sfqc,
+             vc_hzsfzh   = b_vc_hzsfzh,
+             dt_qcsj     = b_dt_qcsj,
+             dt_qrsj     = b_dt_qrsj,
+             dt_xgsj     = sysdate
+       where vc_bgkid = v_vc_bgkid;
+      --更新副卡vc_bgkzt,dt_swrq，vc_swyy
+      update zjjk_xnxg_bgk a
+         set a.vc_kzt  = b_vc_kzt,
+             a.dt_swrq = b_dt_swrq,
+             a.vc_swys = b_vc_swys,
+             a.dt_xgsj = sysdate
+       where exists (select 1
+                from zjjk_xnxg_bgk_zfgx b
+               where a.vc_bgkid = b.vc_fkid
+                 and b.vc_zkid <> b.vc_fkid
+                 and b.vc_zkid = v_vc_bgkid);       
+    end if;
+
     --记录日志
     v_json_yw_log := Json_ext.get_json(v_json_data, 'ywjllog');
     if v_json_yw_log is not null then
