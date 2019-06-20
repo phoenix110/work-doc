@@ -393,7 +393,7 @@ values ('02080201', '020802', '01', 'pkg_zjmb_xtfz.prc_err_record_delete', '导�
 
 
 0611
-导入统计错误
+190612006 导入统计错误 导入情况统计bug
 	sqldy 020801-2
 	sqldy 020801-3
 	sqldy 020801-4
@@ -402,28 +402,66 @@ values ('02080201', '020802', '01', 'pkg_zjmb_xtfz.prc_err_record_delete', '导�
 	sqldy 020801-7
 	sqldy 020801-8
 
-糖尿病和心脑血管报告卡导出区县和街道修复
+bug 190612004 糖尿病心脑报告卡导出数据字段问题
 	sqldy 020201-6
 	sqldy 020401-11
 
 王程省网数据回传问题
 
-宁波访问问题
+bug 190613003 宁波访问问题
 	zjmbapi/src/main/webapp/WEB-INF/views/zjmb/index-prod.jsp
 	zjmb/public/js/commonUtil.js
 
 
 0612
-bug 肿瘤报告卡导出 icdo更改
+bug 190613004 肿瘤报告卡icdo，icdm字段导出问题
 	sqldy 020301-07
 bug 190611014 代谢面访
 	
-宁波问题
+bug 190613003 宁波访问问题继续处理，已经验证OK
 
-王程省网数据重推，糖尿病，肿瘤，心脑，死亡
+省网数据重推，糖尿病，肿瘤，心脑，死亡
+
+0613
+bug 190612005  初访卡撤销时某些字段取消必填   
+	zjmb\web\tnbgl\csfgl\cfk_edit.js
+	zjmb\web\zlgl\csfgl\zlglcf_edit.html
+	zjmb\web\zlgl\csfgl\zlglcf_edit.js
+	zjmb\web\xnxggl\csfgl\xnxgcf_edit_gx.js
+	zjmb\web\xnxggl\csfgl\xnxgcf_edit_gx.html
+	zjmb\web\xnxggl\csfgl\xnxgcf_edit_nc.js
+	pkg_zjmb_tnb
+	pkg_zjmb_zl
+	pkg_zjmb_xnxg
+
+肿瘤报告卡审核身份证问题  已解决
+
+心脑，肿瘤，死亡，初访时属地确认问题,并且处理旧数据 已发
+	pkg_zjmb_xnxg
+	pkg_zjmb_zl
+	pkg_zjmb_xmtj
+
+省平台推送到省网的各病种报告卡数据没有记录和入库，也没有回传结果的问题
 
 
-				   浙大医学院附属第二医院   330102002
+0617
+省平台推送到省网的各病种报告卡数据没有记录和入库，也没有回传结果的问题 
+bug 190612005 各个初访卡里，撤销卡片时，卡片上除了医生和日期是必填之外，其他都取消必填（优先级最高）
+
+0618
+bug 190612003 糖尿病查询到的报卡远少于实际的，及旧数据处理
+	pkg_zjmb_tnb
+	zl_ExValidate
+
+bug 190617002	肿瘤HIS导入时，是否本院报告这个字段默认为“是”
+	zl_ExValidate
+
+0619
+bug 190522031 出生导入接收修复，心脑血管报告卡查重修复
+	sqldy 020408-1
+
+
+浙大医学院附属第二医院   330102002
        上城区疾病预防控制中心    330102020
 
 
