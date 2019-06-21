@@ -62,7 +62,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate date;
     v_czyjgdm varchar2(50);
     v_czyjgjb varchar2(3);
-
+  
     v_cdlx     xtcd.cdlx%TYPE; --菜单类型1:菜单2权限3虚拟模块
     v_id       xtcd.id%TYPE; --id
     v_sjid     xtcd.sjid%TYPE; --上级id
@@ -78,7 +78,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     json_data(data_in, 'xtcd新增修改', v_json_data);
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
-
+  
     v_cdlx := Json_Str(v_Json_Data, 'cdlx');
     v_id   := Json_Str(v_Json_Data, 'id');
     v_sjid := Json_Str(v_Json_Data, 'sjid');
@@ -172,7 +172,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgdm varchar2(50);
     v_czyjgid varchar2(50);
     v_czyjgjb varchar2(3);
-
+  
     v_id jsgroup.id%TYPE; --id
     v_mc jsgroup.mc%TYPE; --标题
     v_sm jsgroup.sm%TYPE; --说明
@@ -182,7 +182,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_lx := Json_Str(v_Json_Data, 'js_lx');
     v_id := Json_Str(v_Json_Data, 'jsgroup_id');
     v_mc := Json_Str(v_Json_Data, 'js_mc');
@@ -224,13 +224,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgdm varchar2(50);
     v_czyjgid varchar2(50);
     v_czyjgjb varchar2(3);
-
+  
     v_id      xtjs.id%TYPE; --id
     v_mc      xtjs.mc%TYPE; --标题
     v_sm      xtjs.sm%TYPE; --说明
     v_lx      xtjs.lx%TYPE; --类型
     v_jsgroup xtjs.jsgroup%type; --角色组\
-
+  
     v_json_list_cd json_List; --菜单
     v_cdid         xtcd.id%type;
     v_cdid_s       varchar2(4000);
@@ -239,7 +239,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_lx           := Json_Str(v_Json_Data, 'lx');
     v_id           := Json_Str(v_Json_Data, 'jsid');
     v_mc           := Json_Str(v_Json_Data, 'mc');
@@ -324,7 +324,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_json_list_js := Json_Ext.Get_Json_List(v_Json_Data, 'jsid_arr'); --角色id
     if v_json_list_js.count > 0 then
       v_jsid_s := '';
@@ -374,7 +374,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_json_list_js := Json_Ext.Get_Json_List(v_Json_Data, 'jsid_arr'); --角色id
     if v_json_list_js.count > 0 then
       v_jsid_s := '';
@@ -418,7 +418,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgjb varchar2(3);
     v_count   number;
     v_czyyhid varchar2(50);
-
+  
     v_id      p_yljg.id%TYPE; --
     v_dm      p_yljg.dm%TYPE; --代码
     v_mc      p_yljg.mc%TYPE; --名称
@@ -434,14 +434,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_wtdm    p_yljg.wtdm%TYPE; --卫统代码
     v_zzjgdm  p_yljg.zzjgdm%TYPE; --组织机构代码
     v_kzyw    varchar2(200); --开展业务
-
+  
   BEGIN
     json_data(data_in, 'p_yljg新增修改', v_json_data);
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
     v_czyyhid := Json_Str(v_Json_Data, 'czyyhid');
-
+  
     v_id      := Json_Str(v_Json_Data, 'jgid');
     v_dm      := Json_Str(v_Json_Data, 'dm');
     v_mc      := Json_Str(v_Json_Data, 'mc');
@@ -457,7 +457,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_wtdm    := Json_Str(v_Json_Data, 'wtdm');
     v_zzjgdm  := Json_Str(v_Json_Data, 'zzjgdm');
     v_kzyw    := Json_Str(v_Json_Data, 'kzyw');
-
+  
     if v_id is null then
       --检查管理机构
       select count(1) into v_count from p_yljg where id = v_gljgid;
@@ -511,7 +511,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
          1,
          v_wtdm,
          v_zzjgdm);
-
+    
     else
       update p_yljg
          set dm      = v_dm,
@@ -531,7 +531,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
              wtdm    = v_wtdm,
              zzjgdm  = v_zzjgdm
        where id = v_id;
-
+    
     end if;
     --处理机构业务开展
     --删除业务开展
@@ -575,7 +575,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_json_list_jg := Json_Ext.Get_Json_List(v_Json_Data, 'jgid_arr'); --
     if v_json_list_jg.count > 0 then
       v_jgid_s := '';
@@ -625,7 +625,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_json_list_jg := Json_Ext.Get_Json_List(v_Json_Data, 'jgid_arr');
     if v_json_list_jg.count > 0 then
       v_jgid_s := '';
@@ -679,7 +679,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_json_list_jg := Json_Ext.Get_Json_List(v_Json_Data, 'jg_arr');
     v_json_list_cd := Json_Ext.Get_Json_List(v_Json_Data, 'cd_arr');
     if v_json_list_jg.count > 0 and v_json_list_cd.count > 0 then
@@ -739,7 +739,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_jsid_s       varchar2(4000);
     v_jsid         xtcd.id%type;
     v_json_list_js json_List; --角色
-
+  
     v_ryid   p_ryxx.id%TYPE; --id
     v_yhjgid p_ryxx.jgid%TYPE; --机构id
     v_dm     p_ryxx.dm%TYPE; --代码
@@ -754,13 +754,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_oyhm   xtyh.yhm%type; --用户名
     --计算数量
     v_count number(2);
-
+  
   BEGIN
     json_data(data_in, 'xtyh新增或修改', v_json_data);
     v_sysdate := sysdate;
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
-
+  
     v_ryid    := Json_Str(v_Json_Data, 'ryid');
     v_yhjgid  := Json_Str(v_Json_Data, 'yhjgid');
     v_dm      := Json_Str(v_Json_Data, 'dm');
@@ -853,7 +853,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
          v_sysdate,
          v_czyyhid,
          v_czyyhid);
-
+    
     else
       --校验身份证号 用户名
       select max(count(1))
@@ -978,7 +978,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
     v_czyyhid := Json_Str(v_Json_Data, 'czyyhid');
-
+  
     v_json_list_yh := Json_Ext.Get_Json_List(v_Json_Data, 'yhid_arr'); --
     if v_json_list_yh.count > 0 then
       v_yhid_s := '';
@@ -1032,7 +1032,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
     v_czyyhid := Json_Str(v_Json_Data, 'czyyhid');
-
+  
     v_json_list_yh := Json_Ext.Get_Json_List(v_Json_Data, 'yhid_arr'); --
     if v_json_list_yh.count > 0 then
       v_yhid_s := '';
@@ -1077,7 +1077,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgid varchar2(50);
     v_czyjgjb varchar2(3);
     v_czyyhid varchar2(50);
-
+  
     v_yhjgid p_ryxx.jgid%TYPE; --机构id
     v_yhm    xtyh.yhm%type; --用户名
     v_mm     xtyh.mm%type; --用户名
@@ -1100,7 +1100,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
        set a.mm = v_mm
      where a.yhm = v_yhm
        and a.jgid = v_yhjgid;
-
+  
     --返回
     result_out := Return_Succ_Json(v_json_return);
   EXCEPTION
@@ -1126,7 +1126,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgid varchar2(50);
     v_czyjgjb varchar2(3);
     v_czyyhid varchar2(50);
-
+  
     v_yhjgid p_ryxx.jgid%TYPE; --机构id
     v_yhm    xtyh.yhm%type; --用户名
     v_jmm    xtyh.mm%type; --旧密码
@@ -1192,7 +1192,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgid varchar2(50);
     v_czyjgjb varchar2(3);
     v_czyyhid varchar2(50);
-
+  
     v_jsid_s       varchar2(4000);
     v_yhm_yhjgid   varchar2(100);
     v_yhm          varchar2(100);
@@ -1206,7 +1206,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgdm := Json_Str(v_Json_Data, 'czyjgdm');
     v_czyjgid := Json_Str(v_Json_Data, 'czyjgid');
     v_czyyhid := Json_Str(v_Json_Data, 'czyyhid');
-
+  
     v_json_list_yh := Json_Ext.Get_Json_List(v_Json_Data, 'yh_arr');
     v_json_list_js := Json_Ext.Get_Json_List(v_Json_Data, 'js_arr');
     if v_json_list_yh.count > 0 and v_json_list_js.count > 0 then
@@ -1265,7 +1265,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_czyjgid varchar2(50);
     v_czyjgjb varchar2(3);
     v_czyyhid varchar2(50);
-
+  
     v_jsid_s       varchar2(4000);
     v_yhm_yhjgid   varchar2(100);
     v_yhm          varchar2(100);
@@ -1283,7 +1283,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
       v_err := '角色不能为空!';
       raise err_custom;
     end if;
-
+  
     v_json_list_yh := Json_Ext.Get_Json_List(v_Json_Data, 'yh_arr');
     if v_json_list_yh.count > 0 then
       for i in 1 .. v_json_list_yh.count loop
@@ -1441,7 +1441,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     end if;
     --机构级别
     v_json_yhxx.put('jgjb', v_jgjb);
-
+  
     --获取权限
     if nvl(v_superadmin, '0') <> '1' then
       --非超级管理员
@@ -1526,12 +1526,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
          order by cdcj, xh';
       v_json_cdqx := Json_Dyn.Executelist(v_sql);
     end if;
-
+  
     --用户信息
     v_json_out.put('ryxx', v_json_yhxx);
     --权限信息
     v_json_out.put('cdqx', v_Json_cdqx);
-
+  
     v_json_temp.Put('data', v_Json_Out);
     result_out := return_succ_clob(v_json_temp);
   EXCEPTION
@@ -1666,7 +1666,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     end if;
     --机构级别
     v_json_yhxx.put('jgjb', v_jgjb);
-
+  
     --获取权限
     if nvl(v_superadmin, '0') <> '1' then
       --非超级管理员
@@ -1748,12 +1748,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
          order by cdcj, xh';
       v_json_cdqx := Json_Dyn.Executelist(v_sql);
     end if;
-
+  
     --用户信息
     v_json_out.put('ryxx', v_json_yhxx);
     --权限信息
     v_json_out.put('cdqx', v_Json_cdqx);
-
+  
     v_json_temp.Put('data', v_Json_Out);
     result_out := return_succ_clob(v_json_temp);
   EXCEPTION
