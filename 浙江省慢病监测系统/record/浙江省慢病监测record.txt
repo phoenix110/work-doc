@@ -460,9 +460,47 @@ bug 190617002	肿瘤HIS导入时，是否本院报告这个字段默认为“是
 bug 190522031 出生导入接收修复，心脑血管报告卡查重修复
 	sqldy 020408-1
 
+台州慢病省网对账结果回推定时任务更改
+
+0620
+代谢病面访 bug 190619006 修改业务统计——质控统计——面访情况统计表：面访完成数=存活数+死亡数；
+bug 190617004	糖尿病随访卡里的撤销原因“死卡”应该改为“失访卡”
+	zjmb/web/tnbgl/csfgl/sfk_edit.js
+	zjmb/web/xnxggl/csfgl/xnxgsf_edit_gx.js
+	zjmb/web/xnxggl/csfgl/xnxgsf_edit_nc.js
+	zjmb/web/zlgl/csfgl/zlglsf_edit.js
+
+心脑血管主副卡一览问题
+
+属地确认问题
+
 
 浙大医学院附属第二医院   330102002
        上城区疾病预防控制中心    330102020
+
+
+0624 0625 0626
+代谢病面访上传问题，义乌回传数据问题
+
+宁波回传数据
+
+0627
+bug 190621002 AAP端数据上传问题，面访数据丢失问题
+
+0628
+
+数据回传条件更改，糖尿病，糖尿病初访，糖尿病随访，肿瘤，肿瘤初访，肿瘤随访，心脑，心脑初访，心脑随访，死因，去掉报告单位不等于区域的限制
+	zjjkjk2019/src/com/wondersgroup/zjjk/dao/impl/ZjjkTnbSfkDaoImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/dao/impl/ZjjkXnxgCfkDaoImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/dao/impl/ZjjkXnxgSfkDaoImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/dao/impl/ZjjkZlCcsfkDaoImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/dao/impl/ZjjkZlSfkDaoImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/service/impl/ZjjkSwbgkTempServiceImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/service/impl/ZjjkTnbBgkServiceImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/service/impl/ZjjkXnxgBgkServiceImpl.java
+	zjjkjk2019/src/com/wondersgroup/zjjk/service/impl/ZjjkZlBgkServiceImpl.java
+
+
 
 
 性能问题
@@ -496,3 +534,21 @@ bub 190515009  1.糖尿病，肿瘤，心脑的死亡补发查询和匹配，查
 
 
 
+Request URL: http://172.16.120.93:8081/dxbmfapi/rest/uploadOriginalFile/04
+{"code":"1","msg":{"file":"9a44424898034b93b993918293f0ce3d"}}
+
+
+Request URL: http://172.16.120.93:8081/dxbmfapi/rest/commitData/040101/9
+{
+  "code" : "1",
+  "msg" : ""
+}
+
+data: {"czyjgid":"1","czyyhid":"71DE7941AA956131E05010AC296E7DB8","czyyhxm":"张老师a","data":{"id":"100102012","mfid":"8C119E6004E3E557E05010AC296E10DE","dbbz":"1","GRJBXX":{"name_xg":"","sex_xg":"","brith_xg":"","idcard_xg":"","ybkh_xg":"","address_xg":"","phone1_xg":"","phone2_xg":""},"MFXX":{"zqty":"1","zqtyzp":"9a44424898034b93b993918293f0ce3d","sczt":"1","sfyy":"","name":"","yibaoka":"","birthday":"","sex":"","idcard":"","address":"","postcode":"","phone":"","mobile":"","dia":"","dia_dat":"","dia_dat9":"","insulin":"","insulin_year":"","insulin_month":"","oralantidia":"","oral_year":"","oral_month":"","su":"","met":"","tzd":"","aka":"","secre":"","dpp4":"","otherdrug":"","otherdrug_name":"","tumor":"","exing":"","litu":"","pantu":"","stotu":"","colotu":"","bretu":"","gongtu":"","luantu":"","edotu":"","qlxtu":"","pangtu":"","kidtu":"","linbaxu":"","bxtu":"","lungtu":"","thyrtu":"","othertu":"","othertu1":"","tutreat1":"","tutreat2":"","tutreat3":"","tutreat4":"","tutreat5":"","tutreat5_1":"","tutreat0":"","tutreat9":"","tupart1":"","tupart2":"","tupart3":"","tudat1":"","tudat2":"","tudat3":"","tuhos1":"","tuhos2":"","tuhos3":"","tubasis1":"","tubasis2":"","tubasis3":"","tutype1":"","tutype2":"","tutype3":"","tustage1":"","tustage2":"","tustage3":"","tutransfer1":"","tutransfer2":"","tutransfer3":"","tutran_part1":"","tutran_part2":"","tutran_part3":"","tuoper1":"","tuoper2":"","tuoper3":"","tuoper_dat1":"","tuoper_dat2":"","tuoper_dat3":"","tuoper_hos1":"","tuoper_hos2":"","tuoper_hos3":"","turadio_dat1":"","turadio_dat2":"","turadio_dat3":"","turadio_hos1":"","turadio_hos2":"","turadio_hos3":"","tuchemo_dat1":"","tuchemo_dat2":"","tuchemo_dat3":"","tuchemo_hos1":"","tuchemo_hos2":"","tuchemo_hos3":"","turecord":"","tudiagnosis":"","kd":"","kd_dat":"","kd_zhu":"","kdzhu_reason":"","kd_hos":"","kdhos_id":"","kdhos_dat":"","kd_blood":"","kd_fu":"","kd_kd":"","kdreason1":"","kdreason2":"","kdreason3":"","kdreason4":"","kdreason5":"","kd_crea":"","kd_crea1":"","kd_gfr":"","kd_gfr1":"","kd_record":"","kd_diagnosis":"","msy":"","msy_dat":"","msy_hos":"","szhz":"","szhz_dat":"","szhz_hos":"","others":"","others_dat":"","others_hos":"","death":"","cause_d1":"","cause_d2":"","ddate":"","mi_v":"","stroke_v":"","hf_v":"","mi_dat_v":"","stro_dat_v":"","hf_dat_v":"","sfyy_qt":"","mfly":"","sfhzbr":"1","mfzt":"2"},"MFXX_XJGS":[],"MFXX_NZZ":[],"MFXX_XSJ":[],"MFXX_SW":{}}}
+7	04	9	24	23	
+
+
+
+80-FA-5B-4D-55-46,80-9E-01-95-62-B2
+99001203931832
+99001203931832
