@@ -1,3 +1,11 @@
+<if if(StringUtils.isNotBlank(#{xzqh_organ}))>
+   with xzqh_list as
+     (SELECT REGEXP_SUBSTR(#{xzqh_organ}, '[^,]+', 1, LEVEL, 'i') AS xzqh_item
+        FROM DUAL
+      CONNECT BY LEVEL <=
+                 LENGTH(#{xzqh_organ}) - LENGTH(REGEXP_REPLACE(#{xzqh_organ}, ',', '')) + 1
+    )
+</if>
 SELECT decode(vc_bgklb,
               '0',
               '可用卡',
@@ -494,8 +502,13 @@ SELECT decode(vc_bgklb,
                  bgk.vc_gjhdq,
                  COUNT(1) over() AS total
             from zjmb_sw_bgk bgk                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-           where 1=1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-             and bgk.vc_hkjddm like #{jgszqh} || '%'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+           where 1=1
+             <if if(StringUtils.isNotBlank(#{xzqh_organ}))>
+                and exists (select 1 from xzqh_list xt where bgk.vc_hkjddm like xt.xzqh_item || '%')
+             </if>
+             <if if(StringUtils.isBlank(#{xzqh_organ}))>
+                and bgk.vc_hkjddm like #{jgszqh} || '%' 
+             </if>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
              and bgk.vc_sdqr = '0'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
              and bgk.vc_scbz = '2'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
              and bgk.vc_shbz = '3'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

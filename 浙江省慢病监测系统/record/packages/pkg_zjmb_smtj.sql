@@ -427,12 +427,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       --获取报告卡id
       select fun_getbgkid_sw(v_czyjgdm) into v_vc_bgkid from dual;
       --属地确认标志
-      select count(1), wm_concat(a.dm)
+      select count(1), wm_concat(a.code)
         into v_count, v_vc_gldwdm
-        from p_yljg a
-       where a.bz = 1
-         and a.lb = 'B1'
-         and a.xzqh = v_vc_hkjddm;
+        from organ_node a
+       where a.removed = 0
+         and a.description like '%' || v_vc_hkjddm || '%';
       if v_count = 1 then
         --确定属地
         v_vc_sdqr := '1';
@@ -712,12 +711,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           --审核状态改为医院通过
           v_vc_shbz := '1';
           --属地确认标志
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldwdm
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_hkjddm;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_hkjddm || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqr := '1';
@@ -739,12 +737,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           --审核状态改为医院通过
           v_vc_shbz := '1';
           --属地确认标志
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldwdm
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_hkjddm;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_hkjddm || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqr := '1';
@@ -2342,12 +2339,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
         --审核状态改为医院通过
         v_vc_shbz := '1';
         --属地确认标志
-        select count(1), wm_concat(a.dm)
+        select count(1), wm_concat(a.code)
           into v_count, v_vc_gldwdm
-          from p_yljg a
-         where a.bz = 1
-           and a.lb = 'B1'
-           and a.xzqh = v_vc_hkjddm;
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_hkjddm || '%';
         if v_count = 1 then
           --确定属地
           v_vc_sdqr := '1';
@@ -2752,10 +2748,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
     --判断管理单位与户籍街道是否匹配
     select count(1)
       into v_count
-      from zjmb_sw_bgk a, p_yljg c
-     where a.vc_hkjddm = c.xzqh
-       and c.dm = v_gldwdm
-       and c.lb = 'B1'
+      from zjmb_sw_bgk a, organ_node c
+     where c.description like '%' || a.vc_hkjddm || '%'
+       and c.code = v_gldwdm
+       and c.removed = 0
        and a.vc_bgkid = v_bkid;
     if v_count <> 1 then
       v_err := '管理单位与户籍街道不匹配!';
@@ -3120,12 +3116,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       --获取报告卡id
       select fun_getbgkid_sw_wm(v_czyjgdm) into v_vc_bgkid from dual;
       --属地确认标志
-      select count(1), wm_concat(a.dm)
+      select count(1), wm_concat(a.code)
         into v_count, v_vc_gldwdm
-        from p_yljg a
-       where a.bz = 1
-         and a.lb = 'B1'
-         and a.xzqh = v_vc_hkjddm;
+        from organ_node a
+       where a.removed = 0
+         and a.description like '%' || v_vc_hkjddm || '%';
       if v_count = 1 then
         --确定属地
         v_vc_sdqr := '1';
@@ -3387,12 +3382,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           --审核状态改为医院通过
           v_vc_shbz := '1';
           --属地确认标志
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldwdm
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_hkjddm;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_hkjddm || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqr := '1';
@@ -3414,12 +3408,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           --审核状态改为医院通过
           v_vc_shbz := '1';
           --属地确认标志
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldwdm
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_hkjddm;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_hkjddm || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqr := '1';
@@ -5901,12 +5894,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
         v_vc_sfsw  := '0';
       end if;
       --属地确认
-      select count(1), wm_concat(a.dm)
+      select count(1), wm_concat(a.code)
         into v_count, v_vc_gldwdm
-        from p_yljg a
-       where a.bz = 1
-         and a.lb = 'B1'
-         and a.xzqh = v_vc_jddm;
+        from organ_node a
+       where a.removed = 0
+         and a.description like '%' || v_vc_jddm || '%';
       if v_count = 1 then
         --确定属地
         v_vc_sdqr := '1';
@@ -6117,12 +6109,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
         if v_vc_qdm_bgq <> v_vc_qdm or v_vc_jddm_bgq <> v_vc_jddm then
           --审核状态改为医院通过
           v_vc_shbz := '1';
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldwdm
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_jddm;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_jddm || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqr := '1';
@@ -6144,12 +6135,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
         v_vc_shbz := '3';
         --修改了户籍地址
         if v_vc_qdm_bgq <> v_vc_qdm or v_vc_jddm_bgq <> v_vc_jddm then
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldwdm
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_jddm;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_jddm || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqr := '1';
@@ -7235,10 +7225,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
     --判断管理单位与户籍街道是否匹配
     select count(1)
       into v_count
-      from zjmb_cs_bgk a, p_yljg c
-     where a.vc_jddm = c.xzqh
-       and c.dm = v_gldwdm
-       and c.lb = 'B1'
+      from zjmb_cs_bgk a, organ_node c
+     where c.description like '%' || a.vc_jddm || '%'
+       and c.code = v_gldwdm
+       and c.removed = 0
        and a.vc_bgkid = v_bkid;
     if v_count <> 1 then
       v_err := '管理单位与户籍街道不匹配!';
@@ -9883,12 +9873,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           v_vc_sfsw  := '0';
         end if;
         --属地确认
-        select count(1), wm_concat(a.dm)
+        select count(1), wm_concat(a.code)
           into v_count, v_vc_gldwdm
-          from p_yljg a
-         where a.bz = 1
-           and a.lb = 'B1'
-           and a.xzqh = v_vc_jddm;
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_jddm || '%';
         if v_count = 1 then
           --确定属地
           v_vc_sdqr := '1';

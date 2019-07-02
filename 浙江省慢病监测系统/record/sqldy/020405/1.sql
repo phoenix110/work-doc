@@ -1,3 +1,11 @@
+<if if(StringUtils.isNotBlank(#{xzqh_organ}))>
+   with xzqh_list as
+     (SELECT REGEXP_SUBSTR(#{xzqh_organ}, '[^,]+', 1, LEVEL, 'i') AS xzqh_item
+        FROM DUAL
+      CONNECT BY LEVEL <=
+                 LENGTH(#{xzqh_organ}) - LENGTH(REGEXP_REPLACE(#{xzqh_organ}, ',', '')) + 1
+    )
+</if>
 select vc_bgkid,
        vc_bgkbh,
        vc_bgklx,
@@ -99,7 +107,12 @@ select vc_bgkid,
                    a.vc_sdqrzt = '0'
                    and a.vc_scbz = '2'
                    and a.vc_shbz = '3'
-                   and a.vc_czhkjd like #{jgszqh} || '%' 
+                   <if if(StringUtils.isNotBlank(#{xzqh_organ}))>
+                       and exists (select 1 from xzqh_list xt where a.vc_czhkjd like xt.xzqh_item || '%')
+                   </if>
+                   <if if(StringUtils.isBlank(#{xzqh_organ}))>
+                       and a.vc_czhkjd like #{jgszqh} || '%' 
+                   </if>
                    <if if(StringUtils.isNotBlank(#{vc_bgkid}))>
                      and a.vc_bgkbh like #{vc_bgkid}||'%'
                    </if>
@@ -144,4 +157,4 @@ select vc_bgkid,
                    </if>
                    order by a.vc_bgkid) t
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

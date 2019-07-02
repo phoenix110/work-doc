@@ -1,3 +1,11 @@
+<if if(StringUtils.isNotBlank(#{xzqh_organ}))>
+   with xzqh_list as
+     (SELECT REGEXP_SUBSTR(#{xzqh_organ}, '[^,]+', 1, LEVEL, 'i') AS xzqh_item
+        FROM DUAL
+      CONNECT BY LEVEL <=
+                 LENGTH(#{xzqh_organ}) - LENGTH(REGEXP_REPLACE(#{xzqh_organ}, ',', '')) + 1
+    )
+</if>
 select vc_bgkid,
        vc_ccid,
        vc_ckbz,
@@ -357,7 +365,13 @@ select vc_bgkid,
 								       a.dt_yyshsj,
 								       count(1) over() as total 
 								     from zjmb_cs_bgk a
-								     where a.vc_jddm like #{jgszqh} || '%'
+								     where 1=1
+                       <if if(StringUtils.isNotBlank(#{xzqh_organ}))>
+                           and exists (select 1 from xzqh_list xt where a.vc_jddm like xt.xzqh_item || '%')
+                       </if>
+                       <if if(StringUtils.isBlank(#{xzqh_organ}))>
+                           and a.vc_jddm like #{jgszqh} || '%' 
+                       </if>
                        and a.vc_shbz = '3'
                        and a.vc_scbz = '2'
                        and a.vc_sdqr = '0'

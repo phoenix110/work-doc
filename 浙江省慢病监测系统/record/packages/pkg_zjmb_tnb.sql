@@ -491,12 +491,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
       v_vc_personid := sys_guid();
       v_vc_hzid     := v_vc_personid;
       --属地确认
-      select count(1), wm_concat(a.dm)
+      select count(1), wm_concat(a.code)
         into v_count, v_vc_gldw
-        from p_yljg a
-       where a.bz = 1
-         and a.lb = 'B1'
-         and a.xzqh = v_vc_hkjd;
+        from organ_node a
+       where a.removed = 0
+         and a.description like '%' || v_vc_hkjd || '%';
       if v_count = 1 then
         --确定属地
         v_vc_sdqrzt := '1';
@@ -757,12 +756,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
           --审核状态改为医院通过
           v_vc_shbz := '1';
           --属地确认
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldw
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_hkjd;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_hkjd || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqrzt := '1';
@@ -791,12 +789,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
         --修改了户籍地址
         if v_vc_hkjd_bgq <> v_vc_hkjd or v_vc_hkqx_bgq <> v_vc_hkqx then
           --属地确认
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldw
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = v_vc_hkjd;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || v_vc_hkjd || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqrzt := '1';
@@ -1950,11 +1947,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
     --判断管理单位与户籍街道是否匹配
     select count(1)
       into v_count
-      from zjjk_tnb_bgk a, zjjk_tnb_hzxx b, p_yljg c
+      from zjjk_tnb_bgk a, zjjk_tnb_hzxx b, organ_node c
      where a.vc_hzid = b.vc_personid
-       and b.vc_hkjd = c.xzqh
-       and c.dm = v_gldw
-       and c.lb = 'B1'
+       and c.description like '%' || b.vc_hkjd || '%'
+       and c.code = v_gldw
+       and c.removed = 0
        and a.vc_bgkid = v_bkid;
     if v_count <> 1 then
       v_err := '管理单位与户籍街道不匹配!';
@@ -2733,12 +2730,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
         or hz_vc_hkjd <> sfk_vc_hkqcjd)) then
         if sfk_vc_hkqcjd is not null and sfk_vc_hkqcqx is not null then
           --初访时做属地确认
-          select count(1), wm_concat(a.dm)
+          select count(1), wm_concat(a.code)
             into v_count, v_vc_gldw
-            from p_yljg a
-           where a.bz = 1
-             and a.lb = 'B1'
-             and a.xzqh = sfk_vc_hkqcjd;
+            from organ_node a
+           where a.removed = 0
+             and a.description like '%' || sfk_vc_hkqcjd || '%';
           if v_count = 1 then
             --确定属地
             v_vc_sdqrzt := '1';
