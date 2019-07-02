@@ -487,6 +487,8 @@ bug 190617004	糖尿病随访卡里的撤销原因“死卡”应该改为“失
 0627
 bug 190621002 AAP端数据上传问题，面访数据丢失问题
 
+东阳死亡弹卡问题
+
 0628
 
 数据回传条件更改，糖尿病，糖尿病初访，糖尿病随访，肿瘤，肿瘤初访，肿瘤随访，心脑，心脑初访，心脑随访，死因，去掉报告单位不等于区域的限制
@@ -500,6 +502,40 @@ bug 190621002 AAP端数据上传问题，面访数据丢失问题
 	zjjkjk2019/src/com/wondersgroup/zjjk/service/impl/ZjjkXnxgBgkServiceImpl.java
 	zjjkjk2019/src/com/wondersgroup/zjjk/service/impl/ZjjkZlBgkServiceImpl.java
 
+省网死因卡数据回传给嘉兴收不到的问题
+
+0701
+社区填报系统半年报下发
+属地确认问题，社区医院和街道的对应关系
+
+0702
+地市数据交换接口台州问题处理
+
+190614006  属地确认问题，社区医院和街道的对应关系
+	pkg_auth
+	pkb_zjmb_zl
+	pkb_zjmb_tng
+	pkb_zjmb_xnxg
+	pkb_zjmb_xmtj
+
+	sqldy 020305-01
+	sqldy 020202-1
+	sqldy 020405-1
+	sqldy 020502-1
+	sqldy 020602-1
+	sqldy 020602-2
+
+	zjmb/public/js/commonUtil.js
+	zjmb/web/csdjgl/sdqr/csbgksdqr.js
+	zjmb/web/swdjgl/sdqr/swbgksdqr.js
+	zjmb/web/tnbgl/sdqr/tnbbgksdqr.js
+	zjmb/web/xnxggl/sdqr/xnxgglsdqr.js
+	zjmb/web/zlgl/sdqr/zlbgksdqr.js
+
+0703
+社区填报系统半年报下发
+属地确认发布
+初访回退 190621006 190612005
 
 
 
