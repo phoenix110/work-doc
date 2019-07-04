@@ -427,17 +427,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       --获取报告卡id
       select fun_getbgkid_sw(v_czyjgdm) into v_vc_bgkid from dual;
       --属地确认标志
-      select count(1), wm_concat(a.code)
-        into v_count, v_vc_gldwdm
-        from organ_node a
-       where a.removed = 0
-         and a.description like '%' || v_vc_hkjddm || '%';
-      if v_count = 1 then
-        --确定属地
-        v_vc_sdqr := '1';
-      else
-        v_vc_gldwdm := v_vc_hkqxdm;
-        v_vc_sdqr   := '0';
+      if v_vc_hkjddm is not null then
+        select count(1), wm_concat(a.code)
+          into v_count, v_vc_gldwdm
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_hkjddm || '%';
+        if v_count = 1 then
+          --确定属地
+          v_vc_sdqr := '1';
+        else
+          v_vc_gldwdm := v_vc_hkqxdm;
+          v_vc_sdqr   := '0';
+        end if;
+      else 
+        v_vc_sdqr   := '1';
       end if;
       if v_vc_hkqcs = '1' then
         --2.外省户籍数据（vc_hkqcs=1)，管理单位取报告卡单位前6位（vc_gldwdm=substr(vc_jkdw,1,6)||'00')
@@ -3116,17 +3120,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
       --获取报告卡id
       select fun_getbgkid_sw_wm(v_czyjgdm) into v_vc_bgkid from dual;
       --属地确认标志
-      select count(1), wm_concat(a.code)
-        into v_count, v_vc_gldwdm
-        from organ_node a
-       where a.removed = 0
-         and a.description like '%' || v_vc_hkjddm || '%';
-      if v_count = 1 then
-        --确定属地
-        v_vc_sdqr := '1';
+      if v_vc_hkjddm is not null then
+        select count(1), wm_concat(a.code)
+          into v_count, v_vc_gldwdm
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_hkjddm || '%';
+        if v_count = 1 then
+          --确定属地
+          v_vc_sdqr := '1';
+        else
+          v_vc_gldwdm := v_vc_hkqxdm;
+          v_vc_sdqr   := '0';
+        end if;
       else
-        v_vc_gldwdm := v_vc_hkqxdm;
-        v_vc_sdqr   := '0';
+        v_vc_sdqr := '1';
       end if;
       if v_vc_hkqcs = '1' then
         --2.外省户籍数据（vc_hkqcs=1)，管理单位取报告卡单位前6位（vc_gldwdm=substr(vc_jkdw,1,6)||'00')
@@ -5894,17 +5902,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
         v_vc_sfsw  := '0';
       end if;
       --属地确认
-      select count(1), wm_concat(a.code)
-        into v_count, v_vc_gldwdm
-        from organ_node a
-       where a.removed = 0
-         and a.description like '%' || v_vc_jddm || '%';
-      if v_count = 1 then
-        --确定属地
-        v_vc_sdqr := '1';
+      if v_vc_jddm is not null then
+        select count(1), wm_concat(a.code)
+          into v_count, v_vc_gldwdm
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_jddm || '%';
+        if v_count = 1 then
+          --确定属地
+          v_vc_sdqr := '1';
+        else
+          v_vc_gldwdm := v_vc_qdm;
+          v_vc_sdqr   := '0';
+        end if;
       else
-        v_vc_gldwdm := v_vc_qdm;
-        v_vc_sdqr   := '0';
+        v_vc_sdqr := '1';
       end if;
       --外省
       if v_vc_hkshfdm = '1' then

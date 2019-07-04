@@ -502,17 +502,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
         h_vc_sfsw := '0';
       end if;
       --属地确认
-      select count(1), wm_concat(a.code)
-        into v_count, v_vc_gldw
-        from organ_node a
-       where a.removed = 0
-         and a.description like '%' || h_vc_hkjddm || '%';
-      if v_count = 1 then
-        --确定属地
-        v_vc_sdqrzt := '1';
+      if h_vc_hkjddm is not null then
+        select count(1), wm_concat(a.code)
+          into v_count, v_vc_gldw
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || h_vc_hkjddm || '%';
+        if v_count = 1 then
+          --确定属地
+          v_vc_sdqrzt := '1';
+        else
+          v_vc_gldw   := h_vc_hkqxdm;
+          v_vc_sdqrzt := '0';
+        end if;
       else
-        v_vc_gldw   := h_vc_hkqxdm;
-        v_vc_sdqrzt := '0';
+        v_vc_sdqrzt := '1';
       end if;
       --户口省
       --外省

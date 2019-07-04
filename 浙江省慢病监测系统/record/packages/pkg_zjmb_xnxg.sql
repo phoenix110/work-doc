@@ -524,24 +524,27 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       --报告卡id
       v_vc_bgkid := sys_guid();
       --属地确认
-      select count(1), wm_concat(a.code)
-        into v_count, v_vc_gldwdm
-        from organ_node a
-       where a.removed = 0
-         and a.description like '%' || v_vc_czhkjd || '%';
-      if v_count = 1 then
-        --确定属地
-        v_vc_sdqrzt := '1';
+      if v_vc_czhkjd is not null then
+        select count(1), wm_concat(a.code)
+          into v_count, v_vc_gldwdm
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_czhkjd || '%';
+        if v_count = 1 then
+          --确定属地
+          v_vc_sdqrzt := '1';
+        else
+          v_vc_gldwdm := v_vc_czhkqx;
+          v_vc_sdqrzt := '0';
+        end if;
       else
-        v_vc_gldwdm := v_vc_czhkqx;
-        v_vc_sdqrzt := '0';
+        v_vc_sdqrzt := '1';
       end if;
       if v_vc_czhks = '1' then
         v_vc_gldwdm := '99999999';
         v_vc_czhksi := '';
         v_vc_czhkqx := '';
         v_vc_czhkjd := '';
-        v_vc_czhks  := '';
         v_vc_czhkjw := '';
         v_vc_sdqrzt := '1';
       end if;

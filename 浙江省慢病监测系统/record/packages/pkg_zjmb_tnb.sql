@@ -491,17 +491,21 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
       v_vc_personid := sys_guid();
       v_vc_hzid     := v_vc_personid;
       --属地确认
-      select count(1), wm_concat(a.code)
-        into v_count, v_vc_gldw
-        from organ_node a
-       where a.removed = 0
-         and a.description like '%' || v_vc_hkjd || '%';
-      if v_count = 1 then
-        --确定属地
-        v_vc_sdqrzt := '1';
+      if v_vc_hkjd is not null then 
+        select count(1), wm_concat(a.code)
+          into v_count, v_vc_gldw
+          from organ_node a
+         where a.removed = 0
+           and a.description like '%' || v_vc_hkjd || '%';
+        if v_count = 1 then
+          --确定属地
+          v_vc_sdqrzt := '1';
+        else
+          v_vc_gldw   := v_vc_hkqx;
+          v_vc_sdqrzt := '0';
+        end if;
       else
-        v_vc_gldw   := v_vc_hkqx;
-        v_vc_sdqrzt := '0';
+        v_vc_sdqrzt := '1';
       end if;
       --户口省
       v_vc_hkshen := Json_Str(v_Json_Data, 'vc_hkshen');
