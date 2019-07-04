@@ -2290,7 +2290,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
       --再次判断是初访还是随访 分别做数据项校验
       if (sfk_fl = '1') then
         --初访数据项校验
-        if sfk_vc_cxglyy is null and sfk_vc_brsftnb is null then
+        if (sfk_vc_cxglyy is null or sfk_vc_cxglyy <> '2') and sfk_vc_brsftnb is null then
           sfk_err := '本人是否患有糖尿病必填！';
           raise err_custom;
         end if;
@@ -2839,7 +2839,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
                        and b.vc_zkid <> b.vc_fkid
                        and b.vc_zkid = sfk_vc_bgkid);             
       -- 新增初访卡，并且选了撤销管理原因
-      elsif sfk_fl = '1' and sfk_vc_cxglyy is not null then
+      elsif sfk_fl = '1' and sfk_vc_cxglyy is not null and sfk_vc_cxglyy = '2' then
           --更新糖尿病报卡, 只更新初访状态和时间等字段
           update zjjk_tnb_bgk
              set vc_bgkzt   = bgk_vc_bgkzt,

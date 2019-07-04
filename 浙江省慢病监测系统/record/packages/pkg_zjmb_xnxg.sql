@@ -2970,7 +2970,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       v_err := '初访医生不能为空!';
       raise err_custom;
     end if;
-    if v_vc_cxyy is null and v_vc_hjhs is null then
+    if (v_vc_cxyy is null or v_vc_cxyy <> '2') and v_vc_hjhs is null then
       v_err := '户籍核实不能为空!';
       raise err_custom;
     end if;
@@ -2978,7 +2978,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
       v_err := '户籍未核实原因不能为空!';
       raise err_custom;
     end if;
-    if v_vc_cxyy is null and v_vc_qcd is null then
+    if (v_vc_cxyy is null or v_vc_cxyy <> '2') and v_vc_qcd is null then
       v_err := '户籍核实省不能为空!';
       raise err_custom;
     end if;
@@ -3181,7 +3181,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
     b_vc_czhkjw   := v_vc_qcjw;
     b_vc_czhkxxdz := v_vc_qcxxdz;
     --第二步：更新报告卡信息
-    if v_vc_cxyy is not null then
+    if v_vc_cxyy is not null and v_vc_cxyy = '2' then
       -- 只更新初访状态和时间等字段
       update zjjk_xnxg_bgk
          set 

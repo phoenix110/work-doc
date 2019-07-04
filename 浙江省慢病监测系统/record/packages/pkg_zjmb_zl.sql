@@ -2973,7 +2973,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
   
     --检验字段必填
     --校验数据是否合法
-    if v_vc_cxglyy is null and v_vc_sfhzl is null then
+    if (v_vc_cxglyy is null or v_vc_cxglyy <> '2') and v_vc_sfhzl is null then
       v_err := '本人是否患有肿瘤不能为空!';
       raise err_custom;
     end if;
@@ -3232,7 +3232,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
                    where a.vc_bgkid = b.vc_fkid
                      and b.vc_zkid <> b.vc_fkid
                      and b.vc_zkid = v_vc_bgkid);           
-      elsif v_vc_cxglyy is not null then
+      elsif v_vc_cxglyy is not null and v_vc_cxglyy = '2' then
         --更新肿瘤报卡, 只更新初访状态和时间等字段
         UPDATE zjjk_zl_bgk
            SET vc_bgkzt  = b_vc_bgkzt,
