@@ -1388,10 +1388,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
         from p_yljg a, p_xzdm b
        where a.xzqh = b.dm(+)
          and a.id = (select yh.jgid from xtyh yh where yh.yhm = v_yhm);
-       select max(a.description) into v_xzqh_organ from organ_node a where a.removed = 0 and a.code = (
-           select p.dm from p_yljg p where p.id = 
-              (select yh.jgid from xtyh yh where yh.yhm = v_yhm)
-        );
     exception
       when no_data_found then
         v_err := '用户所在机构不存在';
@@ -1409,7 +1405,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_json_yhxx.put('jgdm', v_jgdm); --机构代码
     v_json_yhxx.put('jgmc', v_jgmc); --机构名称
     v_json_yhxx.put('xzqh', v_xzqh); --行政区划
-    v_json_yhxx.put('xzqh_organ', v_xzqh_organ); --organ_node 表中的行政区划
     v_json_yhxx.put('xzmc', v_xzmc); --机构区划名称
     v_json_yhxx.put('xzjb', v_xzjb); --行政区划级别
     --疾控中心
@@ -1441,6 +1436,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
         v_err := '社区医院与所在区划不匹配';
         raise Err_Custom;
       end if;
+      -- 社区需要从organ_node表中查找对应的街道，可能有多个
+      select max(a.description) into v_xzqh_organ from organ_node a
+      where a.removed = 0 and a.description is not null
+      and a.code = (
+           select p.dm from p_yljg p where p.id = 
+              (select yh.jgid from xtyh yh where yh.yhm = v_yhm)
+        );
+      v_json_yhxx.put('xzqh_organ', v_xzqh_organ); --organ_node 表中的行政区划
     else
       v_err := '机构类别有误';
       raise Err_Custom;
