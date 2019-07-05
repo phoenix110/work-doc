@@ -533,9 +533,49 @@ bug 190621002 AAP端数据上传问题，面访数据丢失问题
 	zjmb/web/zlgl/sdqr/zlbgksdqr.js
 
 0703
-社区填报系统半年报下发
-属地确认发布
+社区填报系统2019年半年报相关的报表下发
+
+社区填报系统所有季度报表下发规则更改。（半年报已改）
+
+属地确认发布 正式已发布，测试前端已发，过程和sql未发
+
+
 初访回退 190621006 190612005
+
+地市数据交换回退代码处理
+
+0704
+bug 190621006 初访提醒新增初访，只有撤销原因选误诊卡才会不可填，其他情况都正常填报 正式已发，测试前台已发
+	pkb_zjmb_zl
+	pkb_zjmb_tng
+	pkb_zjmb_xnxg
+	zjmb/web/tnbgl/csfgl/cfk_edit.js
+	zjmb/web/xnxggl/csfgl/xnxgcf_edit_gx.js
+	zjmb/web/xnxggl/csfgl/xnxgcf_edit_nc.js
+	zjmb/web/zlgl/csfgl/zlglcf_edit.js
+
+bug 190704009糖尿病，肿瘤，心脑，出生，死亡，无名尸，报告卡新增外省数据时的问题修复
+	pkb_zjmb_zl
+	pkb_zjmb_tng
+	pkb_zjmb_xnxg
+	pkb_zjmb_xmtj
+
+丽水数据交换问题
+
+bug 190701008 伤害报告卡问题
+
+
+0705
+浙江省慢病监测测试服务修复
+
+丽水数据交换问题，创得数据交换问题
+
+衢州CDC交换数据处理
+	
+bug 190625010  死卡姓名查询bug
+
+
+
 
 
 

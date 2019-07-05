@@ -34,16 +34,36 @@ select pt.mc from p_tyzdml pt where pt.fldm = 'DICT_SHJC_SSZFSPZ'; --ÊÜÉËÕßºÍÊ²Ã
 select pt.mc from p_tyzdml pt where pt.fldm = 'DICT_SHJC_SSZWZ'; --Èç³Ë×ø»ú¶¯³µ£¬ÊÜÉËÕßÎ»ÖÃ
 select pt.mc from p_tyzdml pt where pt.fldm = 'DICT_SHJC_HZJZKB'; --»¼Õß¾ÍÕï¿Æ±ğ
 
--- Ò½Ôº
-select DM , MC  from P_YLJG a where a.lb in ('B1', 'A1') and dm = '';
-
 -- ²éÑ¯ÓÃ»§ĞÅÏ¢
 select a.*, b.* from xtyh a, p_ryxx b where a.ryid = b.id
+
+-- Ò½ÁÆ»ú¹¹ p_yljg.lb : A1 Ò½Ôº£¬B1 ÉçÇø£¬J1¼²¿Ø(Ê¡£¬ÊĞ£¬ÇøÏØ)
+select * from p_yljg£»
+-- ĞĞÕşÇø»® p_xzdm.jb : 1Ê¡£¬2ÊĞ£¬3ÇøÏØ£¬4½ÖµÀ(ÏçÕò)£¬5ÉçÇø
+select * from p_xzdm£»
+
+/* ¾É±í organ_node.code ¶ÔÓ¦ p_yljg.dm
+ removed:0ÎªÓĞĞ§£¬1ÎªÎŞĞ§¡£
+ description²»Îª¿ÕµÄÊÇÉçÇø£¬Îª¿ÕµÄÊÇÆäËü¡£´Ë×Ö¶Î´ú±íÉçÇø¶ÔÓ¦µÄ½ÖµÀ£¬Ò»¸öÉçÇø¿ÉÄÜ¶ÔÓ¦¶à¸ö½ÖµÀ
+*/
+select * from organ_node;
+
+-- µÇÂ¼ÕËºÅĞÅÏ¢ 
+select a.bz, a.dm, a.jc, a.xzqh, b.mc, b.jb, a.lb, a.id
+  from p_yljg a, p_xzdm b
+ where a.xzqh = b.dm
+--´«µ½Ç°Ì¨µÄuser¶ÔÏóÖĞ£º
+user.jglx: p_yljg.lb
+user.jgjb:
+       p_yljg.lb='J1' && p_xzdm.jb = '1' => '1'  Ê¡¼²¿Ø
+       p_yljg.lb='J1' && p_xzdm.jb = '2' => '2'  ÊĞ¼²¿Ø
+       p_yljg.lb='J1' && p_xzdm.jb = '4' => '3'  ÇøÏØ¼²¿Ø
+       p_yljg.lb='A1' || p_yljg.lb='B1'  => '4'  Ò½Ôº»òÕßÉçÇø
+ 
+ 
 -- Çå³ıÃÅ»§ÕËºÅ°ó¶¨
 -- update xtyh set ptyhid = null where yhm ='xxxx'
 
-select * from p_xzdm -- ĞĞÕşÇø»®/ĞĞÕş´úÂë
-select * from p_yljg-- Ò½ÁÆ»ú¹¹
 
 -- ±¨¸æ¿¨×´Ì¬;0.¿ÉÓÃ¿¨£»2.ËÀ¿¨£»3.ÎóÕï¿¨£»4.ÖØ¸´¿¨£»5.É¾³ı¿¨£»6.Ê§·Ã¿¨£»7.ËÀÍö¿¨
 -- zjjk_zl_bgk.vc_sfcf 1Îª³õ·Ã£¬3ÎªËæ·Ã£¬2ÎªÎ´³õ·Ã£¬0ÎªÒì³£Êı¾İ
@@ -191,3 +211,14 @@ alter table zjjk_sw_bgk_ex_bak_new add constraint pk_zjjk_sw_bgk_ex_bak_new prim
 
 */
 -- ===============
+
+select * from sqldy where mkbh='020305' and ywdm= '01' for update -- Ö×Áö ÊôµØÈ·ÈÏ
+select * from sqldy where mkbh='020202' and ywdm='1' for update   -- ÌÇÄò²¡ ÊôµØÈ·ÈÏ
+select * from sqldy where mkbh='020405' and ywdm='1' for update  -- ĞÄÄÔ ÊôµØÈ·ÈÏ
+select * from sqldy where mkbh='020502' and ywdm='1' for update  -- ³öÉú ÊôµØÈ·ÈÏ ²éÑ¯ºÍµ¼³ö
+select * from sqldy where mkbh='020602' and ywdm='1' for update    -- ËÀÒò ÊôµØÈ·ÈÏ ²éÑ¯
+select * from sqldy where mkbh='020602' and ywdm='2' for update    -- ËÀÒò ÊôµØÈ·ÈÏ µ¼³ö
+
+-- º¼Öİ£¬ÁÙ°²£¬ÇàÉ½ºş½ÖµÀ ÏÂÓĞÁ½¸öÒ½Ôº
+select count(1), wm_concat(code) from organ_node where removed = '0' and description like '%33018503%'
+select dm , mc from p_yljg where xzqh in ('33018503','33018568','33018569','33011450')
