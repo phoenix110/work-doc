@@ -53,18 +53,22 @@ begin
            v_jzsj:=V_JZSJ_LS_4;
            v_djfl:=4;
          end if;
-         --套游标 REMARK 1. 只有年度 2. 只有季度 3. 只有月度 4. 年度季度都有 5. 年度月度都有
-         for r_row in r_report loop
-         --插入控制表数据
-         insert into rp_bdkz
-            (bbid, bdflbs, cjsj, cjyh, djfl,
-            jgdm, jzsj, qxshsj, rqfl, scbz, sclrsj, shbtgyy, shishsj, sjfl,
-             sshsj, tjjd, tjnd, tjyd, txzt, xdyy, xdzt, xgsj, xgyh, xtscsj, zhxdsj, zzshzt)
-           values
-             (SYS_GUID, r_row.code,trunc(sysdate) , 'zjjk', v_djfl,
-              c_row.ORGCODE, v_jzsj, null, null, '0', null, null, null, '2',
-             null, quarter,year, '/', '0', null, null, null, null, trunc(sysdate), null, null);
-         end loop;
+         
+         -- 第一季度只发21
+        IF quarter = '3' THEN
+           --套游标 REMARK 1. 只有年度 2. 只有季度 3. 只有月度 4. 年度季度都有 5. 年度月度都有
+           for r_row in r_report loop
+           --插入控制表数据
+           insert into rp_bdkz
+              (bbid, bdflbs, cjsj, cjyh, djfl,
+              jgdm, jzsj, qxshsj, rqfl, scbz, sclrsj, shbtgyy, shishsj, sjfl,
+               sshsj, tjjd, tjnd, tjyd, txzt, xdyy, xdzt, xgsj, xgyh, xtscsj, zhxdsj, zzshzt)
+             values
+               (SYS_GUID, r_row.code,trunc(sysdate) , 'zjjk', v_djfl,
+                c_row.ORGCODE, v_jzsj, null, null, '0', null, null, null, '2',
+               null, quarter,year, '/', '0', null, null, null, null, trunc(sysdate), null, null);
+           end loop;
+         END IF;
 
     V_CNT := 0;
     SELECT COUNT(*)
@@ -88,12 +92,12 @@ begin
        END IF;
        end loop;
        commit;
-       
+
        --注意:应该在表里插入鄞州区江东的医院,暂时没做,直接加入那5条记录,detail不用修改.
        --       select * from ORGAN_NODE o where o.code like'330212%' and removed='0';
        --       select a.*,a.rowid from rp_bdkz a where a.bdflbs='21' and a.tjnd='2017' and a.tjjd='3' and a.jgdm like'330212%';
        --       select * from rp_bdkz a where a.bdflbs='21' and a.tjnd='2017' and a.tjjd='2' and a.jgdm like'330212%';
-  
+
     end;
 
 end;

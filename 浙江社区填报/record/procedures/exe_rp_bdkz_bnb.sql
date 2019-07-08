@@ -71,6 +71,8 @@ begin
         v_jzsj := V_JZSJ_LS_4;
         v_djfl := 4;
       end if;
+      
+      /* 半年报只下发 21-县级及以上医疗机构35岁及以上首诊病人测血压工作情况汇总表
       --套游标 REMARK 1. 只有年度 2. 只有季度 3. 只有月度 4. 年度季度都有 5. 年度月度都有
       for r_row in r_report loop
         --插入控制表数据
@@ -129,6 +131,7 @@ begin
            null,
            null);
       end loop;
+      */
 
       V_CNT := 0;
       SELECT COUNT(*)
