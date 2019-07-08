@@ -29,12 +29,12 @@ select * from TB_GXY_YYSZCXYYYMX
 /* 41 */     select * from rp_Jsb_Sqgzqk               -- 重性精神病社区管理工作质控情况汇总表
 /* 44 */     select * from rp_Gxy_Sqgzzk               -- 高血压社区管理工作质控情况汇总表
 /* 45 */     select * from rp_Tnb_Sqglgzzk             -- 糖尿病社区管理工作质控情况汇总表
+-- 以上各表的 bbid 字段，对应 rp_bdkz表的bbid字段
 
 -- 所有报表和分类标识对应关系（总共45个）
- select t.code, t.name, t.remark1, t.operator
-        from CODE_INFO t
-       where t.code_info_id = 123
-        -- and t.operator like '%B%'; -- 包含S为第一和第三季报要发的表，包含B为半年报要发的表，包含Y为年报要发的表
+ select t.code, t.name, t.remark1, t.operator from CODE_INFO t
+  where t.code_info_id = 123
+  -- and t.operator like '%B%'; -- 包含S为第一和第三季报要发的表，包含B为半年报要发的表，包含Y为年报要发的表
 
 -- 各种状态字典表
 select code,name from CODE_INFO t where t.code_info_id is null and t.type_id=1021
@@ -45,17 +45,12 @@ select code, name,description disc
                         and t.code = 'C_COMM_SHZT') order by c.disp_order
 
 
+select distinct bdflbs from rp_bdkz where TJND= '2019' and TJJD = '1'  -- 表单控制表(一季度)
+select distinct bdflbs from rp_bdkz where TJND= '2019' and TJJD = '2'  -- 表单控制表(半年报)
+select distinct bdflbs from rp_bdkz where TJND= '2019' and TJJD = '3'  -- 表单控制表(三季度)
+select distinct bdflbs from rp_bdkz where TJND= '2019' and TJJD = '/'  -- 表单控制表(年报)
 
-县级医疗机构首诊测血压
-select count(*) from rp_bdkz   -- 表单控制表
-select count(*) from rp_Gxy_Xjysswyscyqk   -- 县级及以上医疗机构35岁及以上首诊病人测血压工作情况汇总表
 
-select distinct TJND from rp_bdkz where TJND= '2018'
-select distinct TJJD from rp_bdkz where TJND= '2019'
-select distinct TJYD from rp_bdkz where TJND= '2018'
-select distinct ZZSHZT from rp_bdkz where TJND= '2019'
-select XTSCSJ , cjsj from rp_bdkz where TJND= '2019' and TJJD = '2' order by cjsj desc
-ZZSHZT
 
 
 
