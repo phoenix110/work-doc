@@ -1,0 +1,1 @@
+select pkg_auth.f_get_maxxtyhbh(#{yhjgid}) dm from dual

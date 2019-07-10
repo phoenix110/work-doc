@@ -1,0 +1,1 @@
+select jgdm code, jgmc name from p_yljg_jgsx a where a.jgsx = 'sjshjc' order by jgdm

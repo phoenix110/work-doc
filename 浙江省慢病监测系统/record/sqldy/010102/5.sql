@@ -1,0 +1,1 @@
+select a.id, a.mc, a.sm, a.lx, a.jsgroup from  xtjs a,jsgroup b where a.jsgroup = b.id(+) and a.id = #{jsid}

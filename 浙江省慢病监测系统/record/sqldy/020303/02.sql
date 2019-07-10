@@ -26,6 +26,7 @@ select vc_bgkid,
        dts(dt_sczdrq,0) dt_sczdrq,
        dts(dt_qxshsj,0) dt_qxshsj,
        dts(dt_sfsj,0) dt_sfsj,
+       dts(dt_sfrq,0) dt_sfrq,
        decode(vc_shbz,
               '0',
               '医院未审核',
@@ -70,6 +71,7 @@ select vc_bgkid,
                dt_sczdrq,
                dt_qxshsj,
                dt_sfsj,
+               dt_sfrq,
                vc_shbz,
                total,
                rownum as rn
@@ -95,6 +97,7 @@ select vc_bgkid,
                        bgk.dt_sczdrq,
                        bgk.dt_qxshsj,
                        bgk.dt_sfsj,
+                       bgk.dt_sfrq,
                        bgk.vc_shbz,
                        count(1) over() as total
                   from zjjk_zl_bgk bgk
@@ -146,4 +149,4 @@ select vc_bgkid,
                  </if>
                  order by bgk.DT_SFSJ)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

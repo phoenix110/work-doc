@@ -47,8 +47,7 @@ select         a.vc_bgkid as vc_xx_bgkid,
                'zl' type
             from zjjk_zl_bgk a,zjjk_zl_hzxx b
              where a.vc_hzid = b.vc_personid
-                and   (a.vc_cjdw like #{vc_gldw} || '%' or
-                        a.vc_gldw like #{vc_gldw} || '%')
+                and a.vc_gldw like #{vc_gldw} || '%'
                 and a.vc_bgkid = #{vc_zl_bgkid} 
                 and a.vc_shbz in ('3' , '5' , '6' , '7' , '8')    
                 and rownum = 1
@@ -106,4 +105,4 @@ select
        '死亡卡信息' xsxx,
        'sw' type
      from zjmb_sw_bgk 
-     where vc_bgkid = #{vc_bgkid}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+     where vc_bgkid = #{vc_bgkid}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

@@ -7,7 +7,7 @@ select vc_bgkid as vc_bgkid,
        vc_bqygzbr,
        vc_hzxm,
        vc_hzxb || '  ' ||
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_XB', vc_bgklx) as vc_hzxb,
+       pkg_zjmb_tnb.fun_getcommdic('C_COMM_XB', vc_hzxb) as vc_hzxb,
        to_char(dt_hzcsrq, 'yyyy-mm-dd') as dt_hzcsrq,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_BGKZT', vc_bgkzt) as vc_bgkzt,
        vc_zydm || '  ' || pkg_zjmb_tnb.fun_getcommdic('C_COMM_HY', vc_zydm) as vc_zydm,
@@ -226,13 +226,13 @@ select vc_bgkid as vc_bgkid,
                        and b.VC_HKSFDM = #{vc_hkshen}
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_hksdm}))>
-                       and (b.VC_HKSDM = #{vc_hks})
+                       and (b.VC_HKSDM = #{vc_hksdm})
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_hkqxdm}))>
-                       and b.VC_HKQXDM = #{vc_hkqx}
+                       and b.VC_HKQXDM = #{vc_hkqxdm}
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_hkjddm}))>
-                       and b.VC_HKJDDM = #{vc_hkjd}
+                       and b.VC_HKJDDM = #{vc_hkjddm}
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_hkjw}))>
                        and b.VC_HKJWDM = #{vc_hkjw}

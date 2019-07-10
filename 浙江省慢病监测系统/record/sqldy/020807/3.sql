@@ -1,0 +1,1 @@
+select rpad(a.areacode,8,'0') code, a.areaname name  from ZJSJK_WS_CONFIG a where a.wstype = '1'

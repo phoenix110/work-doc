@@ -1,0 +1,1 @@
+select wm_concat(a.ywlx) kzyw from zjjk_zlfh_ccjg a where a.jgdm = #{jgdm}

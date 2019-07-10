@@ -156,4 +156,4 @@ select a.vc_bgkid,
    and a.vc_bgkid = c.vc_fkid(+)
    and a.vc_scbz = '0'
    and a.vc_bgkid = #{vc_bgkid}  
-   and a.vc_bgdw = d.dm(+)        
+   and a.vc_bgdw = d.dm(+)                

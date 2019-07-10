@@ -1,0 +1,1 @@
+SELECT COUNT(*) as total FROM ZJJK_XNXG_CFK WHERE VC_BGKID = #{vc_bgkid}

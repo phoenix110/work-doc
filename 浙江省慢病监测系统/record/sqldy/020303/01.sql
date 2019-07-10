@@ -8,6 +8,7 @@ select vc_bgkid,
        dts(DT_YYSHSJ,0) DT_YYSHSJ,
        dts(DT_QXSHSJ,0) DT_QXSHSJ,
        dts(dt_sfsj,0) dt_sfsj,
+       dts(dt_sfrq,0) dt_sfrq,
        dts(dt_cfsj,0) dt_cfsj,
        VC_JTDH,
        dts(dt_sczdrq,0) dt_sczdrq,
@@ -83,6 +84,7 @@ select vc_bgkid,
                DT_YYSHSJ,
                DT_QXSHSJ,
                dt_sfsj,
+               dt_sfrq,
                dt_cfsj,
                dt_sczdrq,
                VC_JTDH,
@@ -108,6 +110,7 @@ select vc_bgkid,
                        bgk.DT_YYSHSJ,
                        bgk.DT_QXSHSJ,
                        bgk.DT_SFSJ,
+                       bgk.dt_sfrq,
                        bgk.dt_cfsj,
                        bgk.dt_sczdrq,
                        hzxx.VC_JTDH,
@@ -134,10 +137,10 @@ select vc_bgkid,
      and bgk.vc_shbz in ('3', '5', '6', '7', '8')
      and bgk.vc_bgkzt = '0'
      and ((bgk.nb_kspf > 0 and bgk.nb_kspf <= 49 and
-         bgk.dt_sfsj <= add_months(sysdate, -2)) or
+         bgk.dt_sfrq <= add_months(sysdate, -2)) or
          (bgk.nb_kspf > 50 and bgk.nb_kspf <= 79 and
-         bgk.dt_sfsj <= add_months(sysdate, -5)) or
-         (bgk.nb_kspf >= 80 and bgk.dt_sfsj <= add_months(sysdate, -11)))
+         bgk.dt_sfrq <= add_months(sysdate, -5)) or
+         (bgk.nb_kspf >= 80 and bgk.dt_sfrq <= add_months(sysdate, -11)))
          <if if(StringUtils.isNotBlank(#{vc_hzxm}))>
              and hzxx.vc_hzxm like '%'||#{vc_hzxm}||'%'
          </if>
@@ -164,4 +167,4 @@ select vc_bgkid,
          </if>
           order by bgk.DT_CJSJ)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                  
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  

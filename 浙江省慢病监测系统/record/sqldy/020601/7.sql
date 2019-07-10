@@ -498,8 +498,7 @@ select vc_bgkid,
                    and (sw_bgk.VC_BGKLB like '0')
                    and (sw_bgk.VC_SCBZ like '2')
                    and (sw_bgk.VC_SHBZ in ('3', '5', '6', '7', '8'))
-                   AND (sw_bgk.VC_CJDWDM like #{vc_gldw} || '%' OR
-                       sw_bgk.VC_GLDWDM like #{vc_gldw} || '%')
+                   AND sw_bgk.VC_GLDWDM like #{vc_gldw} || '%'
                    and (sw_bgk.VC_HKHS is null)
                    and sw_bgk.vc_hkqcs = '0'
                    and to_number(to_char(sw_bgk.dt_cjsj,'yyyy')) >= (to_number(to_char(SYSDate, 'YYYY')) - 1)
@@ -517,4 +516,4 @@ select vc_bgkid,
                    </if>
                  order by sw_bgk.DT_CJSJ DESC)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

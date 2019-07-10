@@ -9,6 +9,7 @@ select vc_bgkid,
        dts(DT_QXSHSJ,0) DT_QXSHSJ,
        dts(dt_sfsj,0) dt_sfsj,
        dts(dt_cfsj,0) dt_cfsj,
+       (select d.mc from p_yljg d where d.dm=vc_bgdw) vc_bgdw_mc,
        vc_sfcf,
        vc_shbz,
        dt_hzcsrq,
@@ -52,6 +53,7 @@ select vc_bgkid,
                DT_QXSHSJ,
                dt_sfsj,
                dt_cfsj,
+               vc_bgdw,
                vc_sfcf,
                vc_hzxm,
                vc_hzxb,
@@ -80,6 +82,7 @@ select vc_bgkid,
                        bgk.DT_QXSHSJ,
                        bgk.DT_SFSJ,
                        bgk.dt_cfsj,
+                       bgk.vc_bgdw,
                        hzxx.vc_hzxm,
                        hzxx.vc_hzxb,
                        hzxx.vc_sfzh,
@@ -132,10 +135,10 @@ select vc_bgkid,
                        and hzxx.vc_sfsw = #{vc_sfsw}
                    </if>
                    <if if(StringUtils.isNotBlank(#{dt_zdrq_ks}))>
-                       and bgk.DT_SCZDRQ >= std(#{dt_zdrq_ks},1)
+                       and bgk.DT_ZDRQ >= std(#{dt_zdrq_ks},1)
                    </if>
                    <if if(StringUtils.isNotBlank(#{dt_zdrq_js}))>
-                       and bgk.DT_SCZDRQ <= std(#{dt_zdrq_js},1)
+                       and bgk.DT_ZDRQ <= std(#{dt_zdrq_js},1)
                    </if>
                    <if if(StringUtils.isNotBlank(#{dt_bgrq_ks}))>
                        and bgk.dt_bgrq >= std(#{dt_bgrq_ks},1)
@@ -151,6 +154,12 @@ select vc_bgkid,
                    </if>
                    <if if(StringUtils.isNotBlank(#{dt_cjsj_js}))>
                        and bgk.dt_cjsj <= std(#{dt_cjsj_js},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_qxshsj_ks}))>
+                       and bgk.dt_qxshsj >= std(#{dt_qxshsj_ks},1)
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{dt_qxshsj_js}))>
+                       and bgk.dt_qxshsj <= std(#{dt_qxshsj_js},1)
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_sznl_ks}))>
                        and bgk.vc_sznl >= to_number(#{vc_sznl_ks})
@@ -181,4 +190,4 @@ select vc_bgkid,
                    </if>
                  order by bgk.dt_cjsj, bgk.vc_bgkid)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

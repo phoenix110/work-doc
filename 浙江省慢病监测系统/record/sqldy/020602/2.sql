@@ -598,4 +598,4 @@ SELECT decode(vc_bgklb,
  <if if(1==1)>
          WHERE rownum <= #{rn_e})
  WHERE rn >= #{rn_s}  
- </if>                                                      
+ </if>                                                                                 

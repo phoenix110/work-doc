@@ -1,0 +1,1 @@
+select id code, mc name from jsgroup where jgid = #{czyjgid}

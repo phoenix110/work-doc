@@ -1,0 +1,1 @@
+SELECT vc_xxnr FROM zjjk_email_mx WHERE vc_emailid = #{vc_emailid}

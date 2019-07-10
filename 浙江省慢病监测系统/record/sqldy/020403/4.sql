@@ -47,7 +47,8 @@ select a.vc_xm           vc_hzxm,
        a.vc_shwtgyy      vc_shwtgyy,
        a.vc_shwtgyy1     vc_shwtgyy1,
    dts(a.dt_yyshsj,0)    dt_yyshsj,
-   dts(a.dt_sfsj,0)      dt_sfsj
+   dts(a.dt_sfsj,0)      dt_sfsj,
+   a.vc_sznl             vc_bksznl
       
   
   from zjmb_sw_bgk a

@@ -1,0 +1,1 @@
+select pkg_auth.f_get_maxmkbh(#{xtbh}, #{sjid}) mkbh from dual

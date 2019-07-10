@@ -232,13 +232,13 @@ select vc_bgkid as vc_bgkid,
                              and b.VC_HKSFDM = #{vc_hkshen}
                          </if>
                          <if if(StringUtils.isNotBlank(#{vc_hksdm}))>
-                             and (b.VC_HKSDM = #{vc_hks})
+                             and (b.VC_HKSDM = #{vc_hksdm})
                          </if>
                          <if if(StringUtils.isNotBlank(#{vc_hkqxdm}))>
-                             and b.VC_HKQXDM = #{vc_hkqx}
+                             and b.VC_HKQXDM = #{vc_hkqxdm}
                          </if>
                          <if if(StringUtils.isNotBlank(#{vc_hkjddm}))>
-                             and b.VC_HKJDDM = #{vc_hkjd}
+                             and b.VC_HKJDDM = #{vc_hkjddm}
                          </if>
                          <if if(StringUtils.isNotBlank(#{vc_hkjw}))>
                              and b.VC_HKJWDM = #{vc_hkjw}

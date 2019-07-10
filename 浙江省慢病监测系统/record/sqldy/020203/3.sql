@@ -292,5 +292,4 @@ select vc_bgkid,
                      and b.vc_hzxm = arr(c.column_value, 1, '||')
                      and b.vc_hzxb = arr(c.column_value,2, '||')
                      and b.vc_sfzh = arr(c.column_value,3, '||') 
-                     and to_number(to_char(a.dt_cjsj,'yyyy')) >= (to_number(to_char(SYSDate, 'YYYY')) - 1)
-               )                                                                                                                                                                     
+               )                                                                                                                                                                                   

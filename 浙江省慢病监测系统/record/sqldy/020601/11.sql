@@ -517,4 +517,4 @@ SELECT decode(vc_bgklb,
                    </if>
                  order by bgk.DT_CJSJ DESC)
          )
-                                                     
+                                                                                                          

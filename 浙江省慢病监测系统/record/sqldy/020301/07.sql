@@ -18,20 +18,17 @@ select vc_bgkid as vc_bgkid,
        vc_jtdh as vc_jtdh,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SHEDM', vc_hksfdm) as vc_hksfdm,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SJDM', vc_hksdm) as vc_hksdm,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_QXDM', vc_hkqxdm) as vc_hkqxdm,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_JDDM', vc_hkjddm) as vc_hkjddm,
+       (select px.mc from p_xzdm px where px.jb = '3' and px.dm = vc_hkqxdm) as vc_hkqxdm,
+       (select px.mc from p_xzdm px where px.jb = '4' and px.dm = vc_hkjddm) as vc_hkjddm,
        vc_hkjwdm,
        vc_hkxxdz,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SHEDM', vc_sjsfdm) as vc_sjsfdm,
        pkg_zjmb_tnb.fun_getcommdic('C_COMM_SJDM', vc_sjsdm) as vc_sjsdm,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_QXDM', vc_sjqxdm) as vc_sjqxdm,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_JDDM', vc_sjjddm) as vc_sjjddm,
+       (select px.mc from p_xzdm px where px.jb = '3' and px.dm = vc_sjqxdm) as vc_sjqxdm,
+       (select px.mc from p_xzdm px where px.jb = '4' and px.dm = vc_sjjddm) as vc_sjjddm,
        vc_sjjwdm,
        vc_sjxxdz,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_ICDO',
-                                   substr(vc_icdo,
-                                          1,
-                                          instr(vc_icdo, ',', -1) - 1)) as vc_icdO,
+       vc_icdo as vc_icdO,
        vc_icdM as vc_icdm,
        vc_dlw,
        vc_blh,
@@ -43,7 +40,7 @@ select vc_bgkid as vc_bgkid,
        to_char(dt_zdrq, 'yyyy-mm-dd') as dt_zdrq,
        vc_yzd,
        to_char(dt_yzdrq, 'yyyy-mm-dd') as dt_yzdrq,
-       pkg_zjmb_tnb.fun_getcommdic('C_COMM_YYDM', vc_bgdw) as vc_bgdw,
+       vc_bgdw || ' ' || (select d.mc from p_yljg d where d.dm(+) = vc_bgdw) as vc_bgdw,
        vc_bgys,
        to_char(dt_bgrq, 'yyyy-mm-dd') as dt_bgrq,
        to_char(dt_swrq, 'yyyy-mm-dd') as dt_swrq,
@@ -195,12 +192,9 @@ select vc_bgkid as vc_bgkid,
                   from ZJJK_ZL_BGK a, ZJJK_ZL_HZXX b
                  where a.VC_HZID = b.VC_PERSONID
                    and a.vc_scbz = '0'
-                      AND (a.VC_CJDW = #{vc_cjjgdm} OR
+                      AND (a.VC_CJDW like #{vc_gldw} || '%' OR
                       a.VC_GLDW like #{vc_gldw} || '%')
-                   and a.VC_SHBZ in ('1', '3', '4', '5', '6', '7', '8')
-                   <if if(StringUtils.isNotBlank(#{czyjgjb}) && ("1".equals(#{czyjgjb})||"2".equals(#{czyjgjb})))>
-                       and a.VC_SHBZ in ('1', '3', '5', '6', '7', '8')
-                   </if>
+                   
                    <if if(StringUtils.isNotBlank(#{vc_bghks}))>
                        and a.VC_BGDWS = #{vc_bghks}
                    </if>

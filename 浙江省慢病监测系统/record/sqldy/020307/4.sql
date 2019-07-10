@@ -23,7 +23,8 @@ select a.vc_gbsy         vc_icd10,
        a.vc_sqzgzddw     vc_zgzddw,
    dts(a.dt_swrq,0)      dt_swrq,
        a.vc_gbsy         vc_swicd10,
-       a.nb_gbsybm       vc_swicdmc
+       a.nb_gbsybm       vc_swicdmc,
+       a.vc_sznl         vc_bksznl
   
   from zjmb_sw_bgk a
  where a.vc_bgkid = #{vc_bgkid}    
