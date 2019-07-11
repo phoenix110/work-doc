@@ -1,4 +1,4 @@
-create or replace package body ZJJK_XNXG_REPORT is
+create or replace package body      ZJJK_XNXG_REPORT is
 
   --冠心病发病报告发病数-分性别疾病地区统计表
   Procedure Proc_Zjjk_Gxbfxbjbdqtjb(bkstart_date varchar2,bkend_date varchar2,

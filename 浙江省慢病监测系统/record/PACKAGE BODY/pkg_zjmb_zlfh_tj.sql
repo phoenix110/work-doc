@@ -22,7 +22,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     err_custom EXCEPTION;
     v_err  VARCHAR2(2000);
     v_bgdw   zjjk_mb_zlfh.id%TYPE; --ID
-
+  
     --公共变量
     v_sysdate DATE;
     v_czyjgjb VARCHAR2(3);
@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid VARCHAR2(50);
     v_czyyhxm VARCHAR2(50);
     v_count   NUMBER;
-
+  
   BEGIN
     json_data(data_in, '慢性病监测住院事件核查汇总', v_json_data);
     v_sysdate := SYSDATE;
@@ -38,7 +38,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid := json_str(v_json_data, 'czyyhid');
     v_czyjgjb := json_str(v_json_data, 'czyjgjb');
     v_czyyhxm := json_str(v_json_data, 'czyyhxm');
-
+		
     v_bgdw   := json_str(v_json_data, 'v_bgdw');
 
     result_out := return_succ_json(v_json_return);
@@ -49,8 +49,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
       v_err      := SQLERRM;
       result_out := v_err;
   END prc_zy_mb_tj;
-
-
+	
+	
   /*-----------------------------------------------------------------------------
   || 功能描述 ：死因监测初访信息汇总
   ||----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
-
+  
     --公共变量
     v_sysdate DATE;
     v_czyjgjb VARCHAR2(3);
@@ -72,7 +72,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid VARCHAR2(50);
     v_czyyhxm VARCHAR2(50);
     v_count   NUMBER;
-
+  
   BEGIN
     json_data(data_in, '慢性病随访病例审核', v_json_data);
     v_sysdate := SYSDATE;
@@ -80,7 +80,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid := json_str(v_json_data, 'czyyhid');
     v_czyjgjb := json_str(v_json_data, 'czyjgjb');
     v_czyyhxm := json_str(v_json_data, 'czyyhxm');
-
+  
     v_id   := json_str(v_json_data, 'id');
     v_shzt := json_str(v_json_data, 'fhzt');
     v_shyj := json_str(v_json_data, 'shyj');
@@ -109,7 +109,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
       RAISE err_custom;
     END IF;
     UPDATE zjjk_sf_zlfh_mxbjc a SET a.fhzt = v_shzt WHERE a.id = v_id;
-
+  
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
@@ -118,8 +118,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
       v_err      := SQLERRM;
       result_out := v_err;
   END prc_cf_sw_tj;
-
-
+	
+	
   /*-----------------------------------------------------------------------------
   || 功能描述 ：慢性病监测初访信息汇总
   ||----------------------------------------------------------------------------*/
@@ -133,7 +133,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
-
+  
     --公共变量
     v_sysdate DATE;
     v_czyjgjb VARCHAR2(3);
@@ -141,7 +141,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid VARCHAR2(50);
     v_czyyhxm VARCHAR2(50);
     v_count   NUMBER;
-
+  
   BEGIN
     json_data(data_in, '慢性病随访病例审核', v_json_data);
     v_sysdate := SYSDATE;
@@ -149,7 +149,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid := json_str(v_json_data, 'czyyhid');
     v_czyjgjb := json_str(v_json_data, 'czyjgjb');
     v_czyyhxm := json_str(v_json_data, 'czyyhxm');
-
+  
     v_id   := json_str(v_json_data, 'id');
     v_shzt := json_str(v_json_data, 'fhzt');
     v_shyj := json_str(v_json_data, 'shyj');
@@ -178,7 +178,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
       RAISE err_custom;
     END IF;
     UPDATE zjjk_sf_zlfh_mxbjc a SET a.fhzt = v_shzt WHERE a.id = v_id;
-
+  
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
@@ -201,7 +201,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
-
+  
     --公共变量
     v_sysdate DATE;
     v_czyjgjb VARCHAR2(3);
@@ -209,7 +209,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid VARCHAR2(50);
     v_czyyhxm VARCHAR2(50);
     v_count   NUMBER;
-
+  
   BEGIN
     json_data(data_in, '慢性病随访病例审核', v_json_data);
     v_sysdate := SYSDATE;
@@ -217,7 +217,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
     v_czyyhid := json_str(v_json_data, 'czyyhid');
     v_czyjgjb := json_str(v_json_data, 'czyjgjb');
     v_czyyhxm := json_str(v_json_data, 'czyyhxm');
-
+  
     v_id   := json_str(v_json_data, 'id');
     v_shzt := json_str(v_json_data, 'fhzt');
     v_shyj := json_str(v_json_data, 'shyj');
@@ -246,7 +246,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_tj AS
       RAISE err_custom;
     END IF;
     UPDATE zjjk_sf_zlfh_mxbjc a SET a.fhzt = v_shzt WHERE a.id = v_id;
-
+  
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN

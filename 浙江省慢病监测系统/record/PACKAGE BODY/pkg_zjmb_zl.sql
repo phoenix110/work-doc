@@ -176,7 +176,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
     v_vc_icdo3ms   zjjk_zl_bgk.vc_icdo3ms%TYPE; --ICD-O-3文字描述
     v_vc_hkqxdm_bg zjjk_zl_hzxx.vc_hkqxdm%TYPE; --户口区县代码
     v_vc_hkjddm_bg zjjk_zl_hzxx.vc_hkjddm%TYPE;
-        v_vc_hkjw_bgq  zjjk_zl_hzxx.vc_hkjwdm%TYPE; --户口居委
+		v_vc_hkjw_bgq  zjjk_zl_hzxx.vc_hkjwdm%TYPE; --户口居委
     v_vc_hkxx_bgq  zjjk_zl_hzxx.vc_hkxxdz%TYPE; --户口详细地址
   
     v_ywrzid       zjjk_yw_log.id%TYPE; --业务日志id
@@ -833,8 +833,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
                a.vc_shbz,
                b.vc_hkjddm,
                b.vc_hkqxdm,
-                             b.vc_hkjwdm,
-                             b.vc_hkxxdz,
+							 b.vc_hkjwdm,
+							 b.vc_hkxxdz,
                a.vc_gldw,
                a.vc_sdqrzt,
                a.vc_bgkzt
@@ -863,13 +863,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zl AS
           v_err := '非管理单位无此操作权限!';
           raise err_custom;
         end if;
-                if v_vc_sfcf in ('1', '3') THEN
-                    if v_vc_hkjddm_bg <> h_vc_hkjddm or v_vc_hkqxdm_bg <> h_vc_hkqxdm
-                          /* OR v_vc_hkjw_bgq <> h_vc_hkjwdm OR v_vc_hkxx_bgq <> h_vc_hkxxdz */ THEN
-                        v_err := '该报卡已初访，不能修改户籍地址!';
+				if v_vc_sfcf in ('1', '3') THEN
+					if v_vc_hkjddm_bg <> h_vc_hkjddm or v_vc_hkqxdm_bg <> h_vc_hkqxdm
+						  /* OR v_vc_hkjw_bgq <> h_vc_hkjwdm OR v_vc_hkxx_bgq <> h_vc_hkxxdz */ THEN
+						v_err := '该报卡已初访，不能修改户籍地址!';
             raise err_custom;
-                    END IF;
-                END IF;
+					END IF;
+				END IF;
       end if;
       if v_czyjgjb = '4' then
         --医院社区

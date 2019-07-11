@@ -1,4 +1,4 @@
-create or replace package body ZJJK_TNB_REPORT is
+create or replace package body      ZJJK_TNB_REPORT is
 
   --分性别疾病地区统计表
   Procedure Proc_Zjjk_fxbjblxdqtjb(bkstart_date varchar2,bkend_date varchar2,

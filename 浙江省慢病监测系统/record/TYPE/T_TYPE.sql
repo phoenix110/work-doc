@@ -1,0 +1,1 @@
+CREATE OR REPLACE TYPE "T_TYPE"                                                                                                                                                      AS TABLE OF VARCHAR2(4000)

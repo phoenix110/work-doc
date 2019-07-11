@@ -575,9 +575,36 @@ bug 190701008 伤害报告卡问题
 bug 190625010  死卡姓名查询bug
 
 
+0708
+bug 190708009 肿瘤excel导入数据重复问题修复
+	zjjk_zl_bgk.VC_ZDBWMC(诊断部位) 长度由vachar2(500) 改为 vachar2(1024)，旧数据额外处理
 
+衢州测试7月的糖尿病，肿瘤，心脑，死亡，数据下发
 
+社区填报系统一季度，三季度，年报的规则更改
 
+0709
+bug 系统辅助，excel导入中单元格格式异常的数据处理
+	zjmb/public/js/commonUtil.js
+	zjmb/web/xtfz/sjdr/excel_dr.js
+bug 190708007 所有病种初访，随访，死亡补发，属地确认，主副卡管理模块，查重，修改默认条件为管理单位
+	sqldy 020203-1
+	sqldy 020203-2
+	sqldy 020307-1
+	sqldy 020307-2
+	sqldy 020403-1
+	sqldy 020601-7
+
+0710 
+功能 190708006
+	sqldy 020201-1
+	sqldy 020201-4
+	sqldy 020201-6
+
+死亡卡 分类统计号
+select distinct ccd_code from T_ICD10 order by ccd_code asc
+
+丽水测试肿瘤报告卡上传失败的问题
 
 性能问题
 	zjmb\public\js\commonUtil.js 获取serviceUrl更改，未提交，未发
@@ -620,11 +647,4 @@ Request URL: http://172.16.120.93:8081/dxbmfapi/rest/commitData/040101/9
   "msg" : ""
 }
 
-data: {"czyjgid":"1","czyyhid":"71DE7941AA956131E05010AC296E7DB8","czyyhxm":"张老师a","data":{"id":"100102012","mfid":"8C119E6004E3E557E05010AC296E10DE","dbbz":"1","GRJBXX":{"name_xg":"","sex_xg":"","brith_xg":"","idcard_xg":"","ybkh_xg":"","address_xg":"","phone1_xg":"","phone2_xg":""},"MFXX":{"zqty":"1","zqtyzp":"9a44424898034b93b993918293f0ce3d","sczt":"1","sfyy":"","name":"","yibaoka":"","birthday":"","sex":"","idcard":"","address":"","postcode":"","phone":"","mobile":"","dia":"","dia_dat":"","dia_dat9":"","insulin":"","insulin_year":"","insulin_month":"","oralantidia":"","oral_year":"","oral_month":"","su":"","met":"","tzd":"","aka":"","secre":"","dpp4":"","otherdrug":"","otherdrug_name":"","tumor":"","exing":"","litu":"","pantu":"","stotu":"","colotu":"","bretu":"","gongtu":"","luantu":"","edotu":"","qlxtu":"","pangtu":"","kidtu":"","linbaxu":"","bxtu":"","lungtu":"","thyrtu":"","othertu":"","othertu1":"","tutreat1":"","tutreat2":"","tutreat3":"","tutreat4":"","tutreat5":"","tutreat5_1":"","tutreat0":"","tutreat9":"","tupart1":"","tupart2":"","tupart3":"","tudat1":"","tudat2":"","tudat3":"","tuhos1":"","tuhos2":"","tuhos3":"","tubasis1":"","tubasis2":"","tubasis3":"","tutype1":"","tutype2":"","tutype3":"","tustage1":"","tustage2":"","tustage3":"","tutransfer1":"","tutransfer2":"","tutransfer3":"","tutran_part1":"","tutran_part2":"","tutran_part3":"","tuoper1":"","tuoper2":"","tuoper3":"","tuoper_dat1":"","tuoper_dat2":"","tuoper_dat3":"","tuoper_hos1":"","tuoper_hos2":"","tuoper_hos3":"","turadio_dat1":"","turadio_dat2":"","turadio_dat3":"","turadio_hos1":"","turadio_hos2":"","turadio_hos3":"","tuchemo_dat1":"","tuchemo_dat2":"","tuchemo_dat3":"","tuchemo_hos1":"","tuchemo_hos2":"","tuchemo_hos3":"","turecord":"","tudiagnosis":"","kd":"","kd_dat":"","kd_zhu":"","kdzhu_reason":"","kd_hos":"","kdhos_id":"","kdhos_dat":"","kd_blood":"","kd_fu":"","kd_kd":"","kdreason1":"","kdreason2":"","kdreason3":"","kdreason4":"","kdreason5":"","kd_crea":"","kd_crea1":"","kd_gfr":"","kd_gfr1":"","kd_record":"","kd_diagnosis":"","msy":"","msy_dat":"","msy_hos":"","szhz":"","szhz_dat":"","szhz_hos":"","others":"","others_dat":"","others_hos":"","death":"","cause_d1":"","cause_d2":"","ddate":"","mi_v":"","stroke_v":"","hf_v":"","mi_dat_v":"","stro_dat_v":"","hf_dat_v":"","sfyy_qt":"","mfly":"","sfhzbr":"1","mfzt":"2"},"MFXX_XJGS":[],"MFXX_NZZ":[],"MFXX_XSJ":[],"MFXX_SW":{}}}
-7	04	9	24	23	
 
-
-
-80-FA-5B-4D-55-46,80-9E-01-95-62-B2
-99001203931832
-99001203931832

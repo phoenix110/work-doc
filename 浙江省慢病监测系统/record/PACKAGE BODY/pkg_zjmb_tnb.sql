@@ -170,7 +170,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
     v_vc_bak_sfzh zjjk_tnb_hzxx.vc_bak_sfzh%TYPE; --备份身份证号
     v_vc_hkjd_bgq zjjk_tnb_hzxx.vc_hkjd%TYPE; --户口街道
     v_vc_hkqx_bgq zjjk_tnb_hzxx.vc_hkqx%TYPE; --户口区县
-        v_vc_hkjw_bgq zjjk_tnb_hzxx.vc_hkjw%TYPE; --户口居委
+		v_vc_hkjw_bgq zjjk_tnb_hzxx.vc_hkjw%TYPE; --户口居委
     v_vc_hkxx_bgq zjjk_tnb_hzxx.vc_hkxxdz%TYPE; --户口详细地址
     --公共变量
     v_sysdate      date;
@@ -700,8 +700,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
                vc_shbz,
                b.vc_hkjd,
                b.vc_hkqx,
-                             b.vc_hkjw,
-                             b.vc_hkxxdz,
+							 b.vc_hkjw,
+							 b.vc_hkxxdz,
                a.vc_gldw,
                a.vc_sdqrzt,
                vc_bgkzt
@@ -710,8 +710,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
                v_vc_shbz,
                v_vc_hkjd_bgq,
                v_vc_hkqx_bgq,
-                             v_vc_hkjw_bgq,
-                             v_vc_hkxx_bgq,
+							 v_vc_hkjw_bgq,
+							 v_vc_hkxx_bgq,
                v_vc_gldw,
                v_vc_sdqrzt,
                v_vc_bgkzt
@@ -730,13 +730,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_tnb AS
           v_err := '非管理单位无此操作权限!';
           raise err_custom;
         end if;
-                if v_vc_cfzt in ('1', '3') then
-                  if v_vc_hkjd_bgq <> v_vc_hkjd or v_vc_hkqx_bgq <> v_vc_hkqx 
-                          /* OR v_vc_hkjw_bgq <> v_vc_hkjw OR v_vc_hkxx_bgq <> v_vc_hkxxdz */ THEN
-                    v_err := '该报卡已初访，不能修改户籍地址!';
+				if v_vc_cfzt in ('1', '3') then
+				  if v_vc_hkjd_bgq <> v_vc_hkjd or v_vc_hkqx_bgq <> v_vc_hkqx 
+						  /* OR v_vc_hkjw_bgq <> v_vc_hkjw OR v_vc_hkxx_bgq <> v_vc_hkxxdz */ THEN
+				    v_err := '该报卡已初访，不能修改户籍地址!';
             raise err_custom;
           end if;
-                END IF;
+				END IF;
       end if;
       if v_czyjgjb = '4' then
         --医院社区
