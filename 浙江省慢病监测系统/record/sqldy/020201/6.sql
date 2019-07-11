@@ -215,12 +215,7 @@ select vc_bgkcode as vc_bgkcode,
                 
                   from zjjk_tnb_bgk t, zjjk_tnb_hzxx h
                  where t.vc_hzid = h.vc_personid
-                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
-                     and (t.vc_cjdw like #{vc_gldw} || '%' or t.vc_gldw like #{vc_gldw} || '%' or h.vc_hkjd like #{jgszqh} || '%')
-                   </if>
-                   <if if(StringUtils.isBlank(#{jgszqh}))>
-                     and (t.vc_cjdw like #{vc_gldw} || '%' or t.vc_gldw like #{vc_gldw} || '%') 
-                   </if>
+                   and (t.vc_cjdw like #{vc_gldw} || '%' or t.vc_gldw like #{vc_gldw} || '%') 
                    and t.vc_scbz = '0'
                 <if if(StringUtils.isNotBlank(#{vc_zyh}))>
                   and t.vc_zyh = #{vc_zyh}
