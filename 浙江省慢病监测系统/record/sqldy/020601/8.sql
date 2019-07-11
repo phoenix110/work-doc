@@ -3,8 +3,12 @@ select /*+INDEX(BGK INDEX_SW_GLDW)*/ nvl(sum(decode(bgk.vc_shbz, '4', 1, 0)),0) 
        nvl(sum(case when bgk.vc_sdqr = '0' and bgk.vc_shbz = '3' and bgk.vc_hkjddm like #{vc_gldw} || '%' then 1 else 0 end),0) dsdqr
  FROM ZJMB_SW_BGK BGK
  WHERE (BGK.VC_SCBZ LIKE '2')
-                  AND (BGK.VC_CJDWDM like #{vc_gldw}|| '%' OR
-                       BGK.VC_GLDWDM like #{vc_gldw}|| '%')
+                 <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                   AND (BGK.VC_CJDWDM like #{vc_gldw}|| '%' OR BGK.VC_GLDWDM like #{vc_gldw}|| '%' or BGK.VC_HKJDDM like #{jgszqh} || '%')
+                 </if>
+                 <if if(StringUtils.isBlank(#{jgszqh}))>
+                   AND (BGK.VC_CJDWDM like #{vc_gldw}|| '%' OR BGK.VC_GLDWDM like #{vc_gldw}|| '%')
+                 </if>
                  <if if(StringUtils.isNotBlank(#{vc_bgklb}))>
                       AND BGK.vc_bgklb = #{vc_bgklb}
                  </if>

@@ -417,7 +417,12 @@ select vc_bgkid,
                        count(1) over() as total
                   from zjjk_tnb_bgk a, zjjk_tnb_hzxx b
                  where a.vc_hzid = b.vc_personid
-                   and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%') 
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                     and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%' or b.vc_hkjd like #{jgszqh} || '%')
+                   </if>
+                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                     and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%') 
+                   </if>
                    and a.vc_scbz = '0'
                    <if if(StringUtils.isNotBlank(#{vc_zyh}))>
                      and a.vc_zyh = #{vc_zyh}

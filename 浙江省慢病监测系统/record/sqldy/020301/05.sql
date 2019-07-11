@@ -33,7 +33,12 @@ select  /*+INDEX(bgk INDEX_ZL_GLDW)*/ nvl(sum(decode(BGK.vc_shbz, '4', 1, 0)), 0
   from zjjk_zl_bgk BGK, zjjk_zl_hzxx HZXX
                 where BGK.VC_HZID = HZXX.VC_PERSONID
                    and BGK.vc_scbz = '0'
-                   AND (BGK.VC_CJDW like #{vc_gldw}|| '%' OR bgk.VC_GLDW like #{vc_gldw}|| '%')
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                     AND (BGK.VC_CJDW like #{vc_gldw}|| '%' OR bgk.VC_GLDW like #{vc_gldw}|| '%' or hzxx.VC_HKJDDM like #{jgszqh} || '%')
+                   </if>
+                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                     AND (BGK.VC_CJDW like #{vc_gldw}|| '%' OR bgk.VC_GLDW like #{vc_gldw}|| '%')
+                   </if>
                    <if if(StringUtils.isNotBlank(#{vc_bghks}))>
                        and BGK.VC_BGDWS = #{vc_bghks}
                    </if>

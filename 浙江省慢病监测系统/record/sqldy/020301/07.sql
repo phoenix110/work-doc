@@ -192,8 +192,12 @@ select vc_bgkid as vc_bgkid,
                   from ZJJK_ZL_BGK a, ZJJK_ZL_HZXX b
                  where a.VC_HZID = b.VC_PERSONID
                    and a.vc_scbz = '0'
-                      AND (a.VC_CJDW like #{vc_gldw} || '%' OR
-                      a.VC_GLDW like #{vc_gldw} || '%')
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                     AND (a.VC_CJDW like #{vc_gldw} || '%' OR a.VC_GLDW like #{vc_gldw} || '%' or b.VC_HKJDDM like #{jgszqh} || '%')
+                   </if>
+                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                     AND (a.VC_CJDW like #{vc_gldw} || '%' OR a.VC_GLDW like #{vc_gldw} || '%')
+                   </if>
                    
                    <if if(StringUtils.isNotBlank(#{vc_bghks}))>
                        and a.VC_BGDWS = #{vc_bghks}

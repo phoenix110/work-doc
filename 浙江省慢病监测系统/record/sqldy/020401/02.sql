@@ -4,7 +4,12 @@ select  /*+INDEX(BGK INDEX_XNXG_GLDW)*/ nvl(sum(decode(BGK.vc_shbz, '4', 1, 0)),
        nvl(sum(case when BGK.vc_sdqrzt = '0'and BGK.vc_scbz = '2'and BGK.vc_shbz = '3' and BGK.vc_czhkjd like #{jgszqh} || '%'  then 1 else 0 end),0) dsdqr
   from zjjk_xnxg_bgk BGK
  where  BGK.vc_scbz = '2'
-                   AND (bgk.vc_cjdwdm  like #{vc_gldw}|| '%' OR bgk.vc_gldwdm like #{vc_gldw}|| '%')
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                     AND (bgk.vc_cjdwdm  like #{vc_gldw}|| '%' OR bgk.vc_gldwdm like #{vc_gldw}|| '%' or bgk.vc_czhkjd like #{jgszqh} || '%')
+                   </if>
+                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                     AND (bgk.vc_cjdwdm  like #{vc_gldw}|| '%' OR bgk.vc_gldwdm like #{vc_gldw}|| '%')
+                   </if>
                    <if if(StringUtils.isNotBlank(#{vc_bghks}))>
                        and BGK.vc_bkdw = #{vc_bghks}
                    </if>
