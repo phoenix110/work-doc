@@ -365,7 +365,6 @@ select
                      from zjmb_cs_bgk a
                      where
                      <if if(StringUtils.isNotBlank(#{jgszqh}))>
-                         and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%' or b.vc_hkjd like #{jgszqh} || '%')
                          (a.vc_gldwdm like #{vc_gldw}||'%' or a.vc_czdwdm like #{vc_gldw}||'%' or a.vc_jkdw like #{vc_gldw}||'%' or a.vc_jddm like #{jgszqh} || '%')
                      </if>
                      <if if(StringUtils.isBlank(#{jgszqh}))>
