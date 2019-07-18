@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans    
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd    
+	http://www.springframework.org/schema/tx    
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd    
+	http://www.springframework.org/schema/aop    
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsds   
+	http://cxf.apache.org/jaxws    
+	http://cxf.apache.org/schemas/jaxws.xsd 
+	http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<context:annotation-config />
+
+	<context:component-scan base-package="com.wondersgroup.zjjk,com.wondersgroup.reception" />
+
+	<context:property-placeholder location="classpath:jdbc.properties" />
+
+	<!-- =================================================================== -->
+	<!-- Data Source Define -->
+	<!-- =================================================================== -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${hibernate.connection.driver_class}" />
+		<property name="jdbcUrl" value="${hibernate.connection.url}" />
+		<property name="properties">
+			<props>
+				<prop key="user">${hibernate.connection.username}</prop>
+				<prop key="password">${hibernate.connection.password}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="com.wondersgroup.zjjk.model,com.wondersgroup.reception.model"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplete" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+
+
+	<!-- =================================================================== -->
+	<!-- Transaction Define -->
+	<!-- =================================================================== -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 配置注解实现管理事务（cglib：proxy-target-class="true"） -->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" />
+
+
+	<bean id="basicTxProxy" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">readOnly</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<task:executor id="executor" pool-size="50" />
+	<task:scheduler id="scheduler" pool-size="10" />
+	<!-- Spring 定时任务，启动注解式自动扫描 事物 ， 需要引入头文件 task 如上 -->
+	<task:annotation-driven executor="executor"
+		scheduler="scheduler" />
+
+	<!-- <task:annotation-driven executor="asyncExecutor"/> -->
+    <!-- id指定线程池产生线程名称的前缀 -->
+    <!-- <task:executor
+        id="asyncExecutor"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+        
+         -->
+   <task:executor
+        id="asyncExecutorzl"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutortnb"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutorxnxg"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutorshjc"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+   <task:executor
+        id="asyncExecutorsw"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutortnbcf"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutortnbsf"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutorzlcf"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutorzlsf"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutorxnxgcf"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+    <task:executor
+        id="asyncExecutorxnxgsf"
+        pool-size="1-2"
+        queue-capacity="300"
+        keep-alive="6000"/>
+</beans>
