@@ -1,0 +1,10 @@
+declare
+  v_doc CLOB;
+  result_out CLOB;
+begin
+  select clob_val into v_doc from test_clob where id = '20190626001';
+  -- Call the procedure
+  pkg_dxbmf_dlxxgl.prc_mf_commit(v_doc,
+                                 result_out);
+  dbms_output.put_line(result_out);
+end;

@@ -597,17 +597,78 @@ bug 190708007 所有病种初访，随访，死亡补发，属地确认，主副
 
 0710 
 功能 190708006
+	zjmb/web/csdjgl/bgkgl/csbgkgl.js
+	zjmb/web/swdjgl/bgkgl/swbgkgl.js
+	zjmb/web/tnbgl/bbgl/tnbbgkgl.js
+	zjmb/web/xnxggl/bbgl/xnxggl.js
+	zjmb/web/xnxggl/bbgl/xnxggl.html
+	zjmb/web/zlgl/bbgl/zlbgkgl.js
+	zjmb/web/zlgl/bbgl/zlbgkgl.html
+
 	sqldy 020201-1
 	sqldy 020201-4
 	sqldy 020201-6
+
+	sqldy 020301-01
+	sqldy 020301-05
+	sqldy 020301-07
+
+	sqldy 020401-01
+	sqldy 020401-02
+	sqldy 020401-11
+
+	sqydy 020501-1
+	sqydy 020601-1
+	sqydy 020601-8
+	sqydy 020601-9
+
+
+
+0711
+bug 190711003 死亡卡导出问题
+
+bug 190711002 
+	1.统计分类号字段引用字典是否有误，应使用104这套字典。
+		sqldy 020201-3  已发
+	2.死亡报告卡其他疾病诊断部分有三个字段未在新增报告卡界面中显示。
 
 死亡卡 分类统计号
 select distinct ccd_code from T_ICD10 order by ccd_code asc
 
 丽水测试肿瘤报告卡上传失败的问题
 
+王程台州数据重推
+
+
+0715
+数据交换接口服务修复，和省平台对接
+慢病监测测试数据库
+
 性能问题
 	zjmb\public\js\commonUtil.js 获取serviceUrl更改，未提交，未发
+
+0716
+浙一数据上传问题
+三个数据接口问题
+bug 190711002 死亡报告卡新增和编辑，其他疾病诊断部分，添加三个发病至死亡时间间隔字段
+	zjmb\web\swdjgl\bgkgl\swbgk_edit.html
+
+0717
+bug 190520016 主副卡一览问题: 临安青山账号（330185015，linan001） 心脑报告卡中，名为胡水凤的报告卡在临安疾控（330185036，linan001） 账号中在有四张报卡，而在青山帐号下只显示三张，并且主副卡一览中只显示一张卡，且点击去设置输入其他几张报告卡编号检索不到其他几张卡。
+
+bug 190625011
+	肿瘤报告卡部分旧数据的报卡时间和死亡时间问题
+	死因的初访提醒模块的数据加载逻辑问题
+
+0718
+糖尿病报卡查重问题
+地市数据接口嘉兴数据回传问题
+省疾控大数据平台数据交换问题
+
+需求 190621007 死亡卡查重界面下表格的字段增加报卡单位和报卡日期，去掉民族 职业 婚姻状况 文化程度
+	sqldy 020604-1
+	zjmb\web\swdjgl\zlgl\swbgkccgl.js
+
 
 
 待确认，暂时不发不提交

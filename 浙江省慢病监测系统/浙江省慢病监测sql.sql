@@ -57,7 +57,7 @@ user.jglx: p_yljg.lb
 user.jgjb:
        p_yljg.lb='J1' && p_xzdm.jb = '1' => '1'  省疾控
        p_yljg.lb='J1' && p_xzdm.jb = '2' => '2'  市疾控
-       p_yljg.lb='J1' && p_xzdm.jb = '4' => '3'  区县疾控
+       p_yljg.lb='J1' && p_xzdm.jb = '3' => '3'  区县疾控
        p_yljg.lb='A1' || p_yljg.lb='B1'  => '4'  医院或者社区
  
  
