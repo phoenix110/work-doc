@@ -1,0 +1,98 @@
+1.正式和测试环境打包前端代码时，只需要更改 static/config.js文件
+
+如果是第一次打包，则执行下面的2-10步。
+如果不是第一次打包，则只要执行8-10步。
+
+2.通过Node安装Cordova
+	npm install -g cordova
+	只能用npm安装，不能用cnpm，不然安装后的cordova无法创建项目
+
+3.通过Node安装热更新服务
+	npm install -g cordova-hot-code-push-cli
+
+4.创建空的Cordova项目
+	cmd到需要的目录，执行 cordova create 项目名
+	测试： cordova create cordova_dxbmf_test com.wonderscd.mobile.dxbmf.test 代谢病面访插件
+	正式： cordova create cordova_dxbmf com.wonderscd.mobile.dxbmf 代谢病面访插件
+
+5.添加平台
+	cmd到项目目录，执行 cordova platform add android
+
+6.添加插件
+	cmd到项目目录，执行 cordova plugin add 插件名
+	代谢病面访需要的插件：
+	1、cordova plugin add cordova-plugin-camera 相机插件
+	2、cordova plugin add cordova-plugin-media  录音插件
+	3、cordova plugin add cordova-plugin-device  获取设备信息
+	4、cordova plugin add cordova-plugin-backbutton 终端返回键插件
+	5、cordova plugin add cordova-hot-code-push-plugin 热更新插件
+
+7.执行cordova-hcp init
+	cmd到项目目录，执行 cordova-hcp init
+	在所有参数中，只需要输入下面三个
+	 	name     dxbmf
+	 	Update method  now
+	  	Full Url    http://10.44.3.134:8079/dxbmfwww(测试) http://10.44.3.134:8081/dxbmfwww(正式) 
+	执行完后，会在项目目录下生成 cordova-hcp.json文件
+
+8.替换cordova项目的www目录
+	用node在前端代码目录打包 cnpm run build ，将打包生成的dist文件夹中的文件，复制到 cordova项目目录下的www文件夹中(先删除www中原来的内容)
+
+9.执行cordova-hcp build
+	cmd到项目目录，执行cordova-hcp build	，会在www目录下生成 chcp.json文件
+
+10.替换服务器上的文件
+	将cordova目录中的www目录下的文件拷贝到上一个步骤配置的content_url目录，即服务器目录。
+	http://10.44.3.134:8079/dxbmfwww(测试) http://10.44.3.134:8081/dxbmfwww(正式) 
+
+如果到此步，已经能正常访问app，则成功发布了。否则再执行下面的命令，生成apk重新安装
+====================
+
+
+
+
+Android appid生成
+	这步是生成 dxbmf.test.keystore(测试) 和 dxbmf.keystore(正式)，这两个文件保存有，所以不必执行下面命令，如果没有，就执行下面的命令生成。
+	cmd到项目目录，执行
+	测试：keytool -genkey -v -keystore dxbmf.test.keystore -alias dxbmf.test -keyalg RSA -validity 20000
+	正式：keytool -genkey -v -keystore dxbmf.keystore -alias dxbmf -keyalg RSA -validity 20000
+		1.	密码：20190411
+		2.	Name: dxbmf   /   dxbmf_text
+		3.	组织单位：万达股份信息有限公司
+		4.	组织名称：公共卫生
+		5.	所在城市：成都
+		6.	所在省份：四川
+		7.	所在国家：CH
+	把.keystore文件复制到下面两个目录中
+		cordova项目目录\platforms\android\app\build\outputs\apk\release
+		cordova项目目录
+
+修改cordova项目目录下的config.xml文件
+	在<widget>节点内的最后添加以下代码
+	<chcp>
+		<config-file url="http://172.16.112.212/dxbmfwww/chcp.json"/>
+	</chcp>
+		上面的url为：http://10.44.3.134:8079/dxbmfwww/chcp.json(测试) http://10.44.3.134:8081/dxbmfwww/chcp.json(正式)
+	把 <platform name="android"> 节点替换成：
+	<platform name="android">
+        <icon density="ldpi" src="res/icon/android/icon.png" />
+        <icon density="mdpi" src="res/icon/android/icon.png" />
+        <icon density="hdpi" src="res/icon/android/icon.png" />
+        <icon density="xhdpi" src="res/icon/android/icon.png" />
+        <icon density="xxhdpi" src="res/icon/android/icon.png" />
+        <splash density="land-hdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="land-ldpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="land-mdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="land-xhdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-hdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-ldpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-mdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <splash density="port-xhdpi" src="res/screen/android/screen-hdpi-portrait.png" />
+        <allow-intent href="market:*" />
+    </platform>
+
+执行cordova build --release
+	cmd到cordova项目目录，执行cordova build --release 命令
+
+icon.png 放到  dxbmf\res\icon\android
+screen-hdpi-portrait.png 放到  dxbmf\res\screen\android

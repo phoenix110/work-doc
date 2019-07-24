@@ -1,3 +1,13 @@
+select  * from xtyh where yhm='wanda1';   -- 用户信息
+
+-- 业务记录
+select * from tb_log where gnms = '面访数据提交上传' 
+and cjsj <= to_date('2019-06-26 23:00:00', 'yyyy-mm-dd hh24:mi:ss')
+and cjsj >= to_date('2019-06-26 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
+-- and data like '%李丹%'
+order by cjsj desc
+
+
 /*select * from sqldy where mkbh='040101' and ywdm = '23'
 
 select * from sqldy where mkbh='040102' and ywdm='7'
