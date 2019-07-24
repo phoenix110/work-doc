@@ -1,6 +1,6 @@
 /* begin 数据回传-省网(即慢病监测，传数据给地市) begin*/
 
--- 每天凌晨3点会定时回传，传昨天的数据。 Task_https.initCallService
+-- 每天凌晨3点会定时回传，传7天前的00:00:00到昨天23:59:59之间的数据。 Task_https.initCallService
 -- area_upload_log 表的 upresult 1为成功的，2为失败的
 /*
 area_upload_log 表的 DATATYPE 
@@ -117,7 +117,7 @@ update ZJMB_SW_BGK t set t.dt_xgsj = sysdate where t.vc_bgkid in (
 /* end 数据回传-省网(即慢病监测，传数据给地市) end*/
 
 
--- 接收地市上传数据，并且回推对账结果，每6分钟推送一次结果
+-- 接收地市上传数据，并且回推对账结果，每5分钟推送一次结果
 -- zjjk_dz 对账表，VC_SCBZ 1接收成功，未回传对账结果；2表示已回传对账结果到地市， vc_dzjg 1表示接收到的数据校验成功，并且入库，否则为校验失败 
 -- 接收时，如果不带vc_bgkid，则为新增。如果带了vc_bgkid则为修改。
 select * from zjjk_dz where vc_id = '' or vc_bgkid = '';
