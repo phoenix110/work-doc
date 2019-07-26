@@ -123,7 +123,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
     v_vc_shbz        zjmb_sw_bgk.vc_shbz%TYPE; --审核标志
     v_vc_hkqxdm_bgq  zjmb_sw_bgk.vc_hkqxdm%TYPE; --变更前区县代码
     v_vc_hkjddm_bgq  zjmb_sw_bgk.vc_hkjddm%TYPE; --变更前街道代码
-		v_vc_hkjw_bgq    zjmb_sw_bgk.vc_hkjw%TYPE; --户口居委		
+    v_vc_hkjw_bgq    zjmb_sw_bgk.vc_hkjw%TYPE; --户口居委   
   
     v_ywrzid      zjjk_yw_log.id%TYPE; --业务日志id
     v_tab_bgk_old zjmb_sw_bgk%rowtype; --死亡报告卡变更前
@@ -673,7 +673,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
                v_vc_hkqxdm_bgq,
                v_vc_hkjddm_bgq,
                v_vc_gldwdm,
-							 v_vc_hkjw_bgq
+               v_vc_hkjw_bgq
           from zjmb_sw_bgk
          where vc_bgkid = v_vc_bgkid
            and vc_scbz = '2';
@@ -688,14 +688,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           v_err := '非管理单位无此操作权限!';
           raise err_custom;
         end if;
-				if v_vc_hkhs_bgq is not null THEN
-					if v_vc_hkqxdm_bgq <> v_vc_hkqxdm or v_vc_hkjddm_bgq <> v_vc_hkjddm 
-						  /* OR v_vc_hkjw_bgq <> v_vc_hkjw */ THEN
+        if v_vc_hkhs_bgq is not null THEN
+          if v_vc_hkqxdm_bgq <> v_vc_hkqxdm or v_vc_hkjddm_bgq <> v_vc_hkjddm 
+              /* OR v_vc_hkjw_bgq <> v_vc_hkjw */ THEN
             v_err := '已做户口核实操作,当前机构无操作权限!';
             raise err_custom;
-					END IF;
+          END IF;
         end if;
-				
+        
       end if;
       if v_czyjgjb = '4' then
         --社区
@@ -7196,7 +7196,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
     select nvl(max(VC_BGKID) + 1, v_dm || '00001')
       into v_id
       from ZJMB_CS_BGK
-     where vc_bgkid like v_dm || '%';
+     where vc_bgkid like v_dm || '%'
+     -- 下面一行的条件是为只取vc_bgkid全为数字的，以免出现其它字符时报错
+     and trim(translate(vc_bgkid,'0123456789',' ')) is NULL;
     return v_id;
   END fun_getbgkid_cs;
   /*--------------------------------------------------------------------------
