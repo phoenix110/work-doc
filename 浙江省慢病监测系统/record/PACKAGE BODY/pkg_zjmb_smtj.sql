@@ -506,6 +506,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
          dt_csrq,
          vc_ysqm,
          vc_hkhs,
+         dt_sfsj,
          vc_whsyy,
          vc_hkjw,
          fenleitj,
@@ -610,6 +611,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
          v_dt_csrq,
          v_vc_ysqm,
          v_vc_hkhs,
+         case when v_vc_hkhs is not null then
+           v_sysdate
+         else
+           null
+         end,
          v_vc_whsyy,
          v_vc_hkjw,
          v_fenleitj,
@@ -825,6 +831,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
                   null
                  else
                   v_vc_hkhs
+             end,
+             dt_sfsj = case when v_vc_hkhs is not null and v_vc_shbz <> '1' then
+               v_sysdate
+             else
+               null
              end,
              vc_whsyy       = v_vc_whsyy,
              vc_hkjw        = v_vc_hkjw,
