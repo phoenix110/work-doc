@@ -1,77 +1,5 @@
-select  count(1) over(partition by
-       <if if("1".equals(#{vc_radio}))>
-            vc_hzxm
-        </if>
-        <if if("2".equals(#{vc_radio}))>
-            substr(vc_hzxm,1,1)||substr(vc_hzxm,length(vc_hzxm))
-        </if>
-        <if if("3".equals(#{vc_radio}))>
-            substr(vc_hzxm,1,2)
-        </if>
-        <if if("4".equals(#{vc_radio}))>
-            substr(vc_hzxm,length(vc_hzxm)-1)
-        </if>
-        <if if("5".equals(#{vc_radio}))>
-            vc_sfzh
-        </if>
-        <if if("6".equals(#{vc_radio}))>
-            vc_jtdh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
-            , vc_hzxb
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
-            , to_char(dt_hzcsrq,'yyyy')
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
-            , vc_sfzh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
-            , vc_jtdh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",5,") < 0))>
-            , substr(vc_icd10, 0, 3)
-        </if>
-       <if if(1 == 1)>
-       ) as group_count,
-       DENSE_RANK()over(
-       order by 
-       </if>
-        <if if("1".equals(#{vc_radio}))>
-            vc_hzxm
-        </if>
-        <if if("2".equals(#{vc_radio}))>
-            substr(vc_hzxm,1,1)||substr(vc_hzxm,length(vc_hzxm))
-        </if>
-        <if if("3".equals(#{vc_radio}))>
-            substr(vc_hzxm,1,2)
-        </if>
-        <if if("4".equals(#{vc_radio}))>
-            substr(vc_hzxm,length(vc_hzxm)-1)
-        </if>
-        <if if("5".equals(#{vc_radio}))>
-            vc_sfzh
-        </if>
-        <if if("6".equals(#{vc_radio}))>
-            vc_jtdh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
-            , vc_hzxb
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
-            , to_char(dt_hzcsrq,'yyyy')
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
-            , vc_sfzh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
-            , vc_jtdh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",5,") < 0))>
-            , substr(vc_icd10, 0, 3)
-        </if>
-        <if if(1 == 1)>
-       ) as group_no,
+select group_count,
+       group_no,
        vc_bgkid,
        vc_bgklx,
        vc_icd10,
@@ -146,7 +74,8 @@ select  count(1) over(partition by
               '死亡卡',
               vc_bgkzt) vc_bgkzt_text
  from(
-select vc_bgkid,
+select group_count,
+       group_no,vc_bgkid,
        vc_bgklx,
        vc_bgkzt,
        vc_icd10,
@@ -190,7 +119,79 @@ select vc_bgkid,
        total,
        rownum as rn
 from(
-select a.vc_bgkid,
+select 
+       count(1) over(partition by
+       <if if("1".equals(#{vc_radio}))>
+            vc_hzxm
+        </if>
+        <if if("2".equals(#{vc_radio}))>
+            substr(vc_hzxm,1,1)||substr(vc_hzxm,length(vc_hzxm))
+        </if>
+        <if if("3".equals(#{vc_radio}))>
+            substr(vc_hzxm,1,2)
+        </if>
+        <if if("4".equals(#{vc_radio}))>
+            substr(vc_hzxm,length(vc_hzxm)-1)
+        </if>
+        <if if("5".equals(#{vc_radio}))>
+            vc_sfzh
+        </if>
+        <if if("6".equals(#{vc_radio}))>
+            vc_jtdh
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
+            , vc_hzxb
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
+            , to_char(dt_hzcsrq,'yyyy')
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
+            , vc_sfzh
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
+            , vc_jtdh
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",5,") < 0))>
+            , substr(vc_icd10, 0, 3)
+        </if>      
+       ) as group_count,
+       DENSE_RANK()over(
+       order by 
+        <if if("1".equals(#{vc_radio}))>
+            vc_hzxm
+        </if>
+        <if if("2".equals(#{vc_radio}))>
+            substr(vc_hzxm,1,1)||substr(vc_hzxm,length(vc_hzxm))
+        </if>
+        <if if("3".equals(#{vc_radio}))>
+            substr(vc_hzxm,1,2)
+        </if>
+        <if if("4".equals(#{vc_radio}))>
+            substr(vc_hzxm,length(vc_hzxm)-1)
+        </if>
+        <if if("5".equals(#{vc_radio}))>
+            vc_sfzh
+        </if>
+        <if if("6".equals(#{vc_radio}))>
+            vc_jtdh
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
+            , vc_hzxb
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
+            , to_char(dt_hzcsrq,'yyyy')
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
+            , vc_sfzh
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
+            , vc_jtdh
+        </if>
+        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",5,") < 0))>
+            , substr(vc_icd10, 0, 3)
+        </if>
+       ) as group_no,
+       a.vc_bgkid,
        a.vc_bgkzt,
        a.vc_bgklx,
        a.vc_icd10,
@@ -234,12 +235,13 @@ select a.vc_bgkid,
        count(1) over() as total
   from zjjk_zl_bgk a, zjjk_zl_hzxx b
  where a.vc_hzid = b.vc_personid
+   <if if(1 == 1)>
    and a.vc_gldw like #{vc_gldw} || '%'
    and a.vc_bgkzt in ('0', '7', '2', '6')
    and a.vc_shbz in ('1','3','5','6','7','8')
    and a.vc_scbz = '0'
    and b.vc_hksfdm = '0'
-                   </if>
+    </if>
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                       and b.vc_sfzh = #{vc_sfzh}
                    </if>
@@ -412,4 +414,4 @@ select a.vc_bgkid,
                    </if>
                    
                )where rownum <= #{rn_e}
- )where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+ )where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          

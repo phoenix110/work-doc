@@ -1,71 +1,5 @@
-select count(1) over(partition by
-       <if if("1".equals(#{vc_radio}))>
-            vc_xm
-        </if>
-        <if if("2".equals(#{vc_radio}))>
-            substr(vc_xm,1,1)||substr(vc_xm,length(vc_xm))
-        </if>
-        <if if("3".equals(#{vc_radio}))>
-            substr(vc_xm,1,2)
-        </if>
-        <if if("4".equals(#{vc_radio}))>
-            substr(vc_xm,length(vc_xm)-1)
-        </if>
-        <if if("5".equals(#{vc_radio}))>
-            vc_sfzhm
-        </if>
-        <if if("6".equals(#{vc_radio}))>
-            vc_jslxdh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
-            , vc_xb
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
-            , to_char(dt_csrq,'yyyy')
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
-            , vc_sfzhm
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
-            , vc_jslxdh
-        </if>
-       <if if(1 == 1)>
-       ) as group_count,
-       DENSE_RANK()over(
-       order by 
-       </if>
-        <if if("1".equals(#{vc_radio}))>
-            vc_xm
-        </if>
-        <if if("2".equals(#{vc_radio}))>
-            substr(vc_xm,1,1)||substr(vc_xm,length(vc_xm))
-        </if>
-        <if if("3".equals(#{vc_radio}))>
-            substr(vc_xm,1,2)
-        </if>
-        <if if("4".equals(#{vc_radio}))>
-            substr(vc_xm,length(vc_xm)-1)
-        </if>
-        <if if("5".equals(#{vc_radio}))>
-            vc_sfzhm
-        </if>
-        <if if("6".equals(#{vc_radio}))>
-            vc_jslxdh
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
-            , vc_xb
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
-            , to_char(dt_csrq,'yyyy')
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
-            , vc_sfzhm
-        </if>
-        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
-            , vc_jslxdh
-        </if>
-        <if if(1 == 1)>
-       ) as group_no,
+select group_count,
+       group_no,
        vc_bgkid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
              vc_ccid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
              vc_ckbz,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
@@ -311,7 +245,9 @@ select count(1) over(partition by
              upload_areaeport, 
        total,
        rn 
-  from (select vc_bgkid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+  from (select group_count,
+             group_no,
+             vc_bgkid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
              vc_ccid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
              vc_ckbz,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
              vc_xm,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
@@ -478,7 +414,73 @@ select count(1) over(partition by
              upload_areaeport,   
                total,
                rownum as rn
-          from (select  a.vc_bgkid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+          from (select  
+                         count(1) over(partition by
+                       <if if("1".equals(#{vc_radio}))>
+                            vc_xm
+                        </if>
+                        <if if("2".equals(#{vc_radio}))>
+                            substr(vc_xm,1,1)||substr(vc_xm,length(vc_xm))
+                        </if>
+                        <if if("3".equals(#{vc_radio}))>
+                            substr(vc_xm,1,2)
+                        </if>
+                        <if if("4".equals(#{vc_radio}))>
+                            substr(vc_xm,length(vc_xm)-1)
+                        </if>
+                        <if if("5".equals(#{vc_radio}))>
+                            vc_sfzhm
+                        </if>
+                        <if if("6".equals(#{vc_radio}))>
+                            vc_jslxdh
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
+                            , vc_xb
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
+                            , to_char(dt_csrq,'yyyy')
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
+                            , vc_sfzhm
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
+                            , vc_jslxdh
+                        </if>
+                       ) as group_count,
+                       DENSE_RANK()over(
+                       order by 
+                        <if if("1".equals(#{vc_radio}))>
+                            vc_xm
+                        </if>
+                        <if if("2".equals(#{vc_radio}))>
+                            substr(vc_xm,1,1)||substr(vc_xm,length(vc_xm))
+                        </if>
+                        <if if("3".equals(#{vc_radio}))>
+                            substr(vc_xm,1,2)
+                        </if>
+                        <if if("4".equals(#{vc_radio}))>
+                            substr(vc_xm,length(vc_xm)-1)
+                        </if>
+                        <if if("5".equals(#{vc_radio}))>
+                            vc_sfzhm
+                        </if>
+                        <if if("6".equals(#{vc_radio}))>
+                            vc_jslxdh
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",1,") < 0))>
+                            , vc_xb
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",2,") < 0))>
+                            , to_char(dt_csrq,'yyyy')
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))>
+                            , vc_sfzhm
+                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",4,") < 0))>
+                            , vc_jslxdh
+                        </if>
+                       ) as group_no,
+                         a.vc_bgkid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                          a.vc_ccid,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                          a.vc_ckbz,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                          a.vc_xm,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
@@ -646,6 +648,7 @@ select count(1) over(partition by
                        count(1) over() as total
                   from zjmb_sw_bgk a
                  where 1=1
+                   <if if(1 == 1)>
                    and a.vc_gldwdm like #{vc_gldw}||'%'
                    and a.vc_bgklb in ('0', '7', '2', '6')    
                    and a.vc_scbz = '2'    
@@ -809,4 +812,4 @@ select count(1) over(partition by
                    </if>
               )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
