@@ -62,7 +62,8 @@ select vc_bgkid,
               pkg_zjmb_tnb.fun_getxzqhmc(vc_czhkjd) ||
               vc_czhkjw||vc_czhkxxdz,
               '1',
-              '外省') hkdz_text,      
+              '外省') hkdz_text,   
+       (case when vc_gxbzd is null then '脑卒中' else '冠心病' end) jbmc,   
        total,
        rn
   from (select vc_bgkid,
@@ -88,6 +89,7 @@ select vc_bgkid,
                vc_hzxb,
                VC_HZSFZH,
                dt_hzcsrq,
+               vc_gxbzd,
                total,
                rownum as rn
           from (select bgk.vc_bgkid,
@@ -113,6 +115,7 @@ select vc_bgkid,
                        bgk.vc_hzxb,
                        bgk.VC_HZSFZH,
                        bgk.DT_HZCSRQ,
+                       bgk.vc_gxbzd,
                        count(1) over() as total
                   from zjjk_xnxg_bgk bgk
  where bgk.VC_KZT = '0'
@@ -149,4 +152,4 @@ select vc_bgkid,
                   </if>
    order by bgk.vc_bgkid)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
