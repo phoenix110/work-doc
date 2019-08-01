@@ -161,6 +161,9 @@ select vc_bgkid,
                  <if if(StringUtils.isNotBlank(#{vc_hkjd}))>
                       and bgk.vc_czhkjd = #{vc_hkjd}
                  </if>
+                 <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                     and bgk.vc_czhkjd like #{jgszqh} || '%'  
+                 </if>  
                  order by bgk.DT_SFSJ)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             

@@ -150,6 +150,9 @@ select vc_bgkid,
                   <if if(StringUtils.isNotBlank(#{vc_hkjw}))>
                      and bgk.vc_czhkjw = #{vc_hkjw}
                   </if>
+                  <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                       and bgk.vc_czhkjd like #{jgszqh} || '%'  
+                  </if>  
    order by bgk.vc_bgkid)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

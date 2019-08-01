@@ -533,6 +533,9 @@ select group_count,
                    and a.vc_shbz in ('1','3','4','5','6','7','8')
                    and b.vc_hkshen = '0'
                    </if>
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                        and b.vc_hkjd like #{jgszqh} || '%'  
+                   </if>  
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                       and b.vc_sfzh = #{vc_sfzh}
                    </if>
@@ -633,6 +636,9 @@ select group_count,
                         and a.vc_shbz in ('1','3','4','5','6','7','8')
                         and b.vc_hkshen = '0'
                    </if>
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                        and b.vc_hkjd like #{jgszqh} || '%'  
+                   </if> 
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                       and b.vc_sfzh = #{vc_sfzh}
                    </if>
@@ -696,4 +702,4 @@ select group_count,
                    </if>
               )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

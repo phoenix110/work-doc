@@ -49,7 +49,10 @@ select         a.vc_bgkid as vc_xx_bgkid,
              where 1=1
                 and (a.vc_gldwdm like #{vc_gldw} || '%')
                 and a.vc_bgkbh = #{vc_xn_bgkid} 
-                and a.vc_shbz in ('3' , '5' , '6' , '7' , '8')    
+                and a.vc_shbz in ('3' , '5' , '6' , '7' , '8')  
+                <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                    and a.vc_czhkjd like #{jgszqh} || '%'  
+                </if>    
                 and rownum = 1
                             
 union all
@@ -105,4 +108,10 @@ select
        '死亡卡信息' xsxx,
        'sw' type
      from zjmb_sw_bgk 
-     where vc_bgkid = #{vc_bgkid}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+     where 
+            <if if(1==1)>
+                vc_bgkid = #{vc_bgkid}
+            </if>
+           <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                and vc_hkjddm like #{jgszqh} || '%'  
+           </if>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

@@ -242,6 +242,9 @@ select
    and a.vc_scbz = '0'
    and b.vc_hksfdm = '0'
     </if>
+                  <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                       and b.vc_hkjddm like #{jgszqh} || '%'  
+                   </if>
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                       and b.vc_sfzh = #{vc_sfzh}
                    </if>
@@ -348,6 +351,9 @@ select
                         and a.vc_shbz in ('1','3','5','6','7','8')
                         and b.vc_hksfdm = '0'
                    </if>
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                       and b.vc_hkjddm like #{jgszqh} || '%'  
+                   </if>
                    <if if("5".equals(#{vc_radio}) || ((StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))) )>
                       and b.vc_sfzh is not null
                       and b.vc_sfzh <> '不详'
@@ -414,4 +420,4 @@ select
                    </if>
                    
                )where rownum <= #{rn_e}
- )where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+ )where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

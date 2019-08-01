@@ -209,6 +209,9 @@ select count(1) over(partition by
    and a.vc_scbz = '2'
    and a.vc_czhks = '0'
                    </if>
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                       and a.VC_CZHKjd like #{jgszqh} || '%'  
+                   </if>  
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                       and a.vc_hzsfzh = #{vc_sfzh}
                    </if>
@@ -314,6 +317,9 @@ select count(1) over(partition by
                         and a.vc_shbz in ('1','3','5','6','7','8')
                         and a.vc_czhks = '0'
                    </if>
+                   <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                       and a.VC_CZHKjd like #{jgszqh} || '%'  
+                   </if>  
                    <if if("5".equals(#{vc_radio}) || ((StringUtils.isNotBlank(#{vc_checkbox}) && !(#{vc_checkbox}.indexOf(",3,") < 0))) )>
                       and a.vc_hzsfzh is not null
                       and a.vc_hzsfzh <> '不详'
@@ -380,4 +386,4 @@ select count(1) over(partition by
                    </if>
                    
                )where rownum <= #{rn_e}
- )where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+ )where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

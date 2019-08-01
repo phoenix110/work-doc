@@ -292,4 +292,8 @@ select vc_bgkid,
                      and b.vc_hzxm = arr(c.column_value, 1, '||')
                      and b.vc_hzxb = arr(c.column_value,2, '||')
                      and b.vc_sfzh = arr(c.column_value,3, '||') 
-               )                                                                                                                                                                                   
+                     
+                     <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                          and b.vc_hkjd like #{jgszqh} || '%'  
+                     </if>  
+               )                                                                                                                                                                                          

@@ -124,6 +124,9 @@ select vc_bgkid,
                  <if if(StringUtils.isNotBlank(#{vc_hkjd}))>
                       and hz.vc_hkjd = #{vc_hkjd}
                  </if>
+                 <if if(StringUtils.isNotBlank(#{jgszqh}))>  
+                     and hz.vc_hkjd like #{jgszqh} || '%'  
+                 </if>  
                  order by bgk.DT_SFSJ)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                          
+ where rn >= #{rn_s}                                                                                                            
