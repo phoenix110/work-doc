@@ -193,6 +193,53 @@ select vc_bgkid,
                    <if if(StringUtils.isNotBlank(#{vc_zyh}))>
                        and bgk.VC_ZYH = #{vc_zyh}
                    </if>
-                 order by bgk.dt_cjsj, bgk.vc_bgkid)
+                   
+                   <if if("vc_hzxm".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by nlssort(hzxx.vc_hzxm, 'NLS_SORT=SCHINESE_PINYIN_M') asc
+                   </if>
+                   <if if("vc_hzxm".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by nlssort(hzxx.vc_hzxm, 'NLS_SORT=SCHINESE_PINYIN_M') desc
+                   </if>
+                   <if if("vc_bgkid".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by bgk.vc_bgkid asc
+                   </if>
+                   <if if("vc_bgkid".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by bgk.vc_bgkid desc
+                   </if>
+                   <if if("vc_hzxb_text".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by hzxx.vc_hzxb asc
+                   </if>
+                   <if if("vc_hzxb_text".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by hzxx.vc_hzxb desc
+                   </if>
+                   <if if("dt_cjsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by bgk.dt_cjsj asc
+                   </if>
+                   <if if("dt_cjsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by bgk.dt_cjsj desc
+                   </if>
+                   <if if("dt_yyshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by bgk.DT_YYSHSJ asc
+                   </if>
+                   <if if("dt_yyshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by bgk.DT_YYSHSJ desc
+                   </if>
+                   <if if("dt_qxshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by bgk.DT_QXSHSJ asc
+                   </if>
+                   <if if("dt_qxshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by bgk.DT_QXSHSJ desc
+                   </if>
+                   <if if("vc_icd10".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by bgk.vc_icd10 asc
+                   </if>
+                   <if if("vc_icd10".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by bgk.vc_icd10 desc
+                   </if>
+                   <if if(StringUtils.isBlank(#{orderField}))>
+                     order by bgk.dt_cjsj, bgk.vc_bgkid
+                   </if>
+                   
+                   )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

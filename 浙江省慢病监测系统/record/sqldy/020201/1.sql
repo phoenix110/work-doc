@@ -533,10 +533,28 @@ select vc_bgkid,
                    <if if("vc_bgkcode".equals(#{orderField}) && "desc".equals(#{orderType}))>
                      order by a.vc_bgkcode desc
                    </if>
+                   <if if("dt_yyshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by a.dt_yyshsj asc
+                   </if>
+                   <if if("dt_yyshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by a.dt_yyshsj desc
+                   </if>
+                   <if if("dt_qxshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by a.dt_qxshsj asc
+                   </if>
+                   <if if("dt_qxshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by a.dt_qxshsj desc
+                   </if>
+                   <if if("dt_cjsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by a.dt_cjsj asc
+                   </if>
+                   <if if("dt_cjsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by a.dt_cjsj desc
+                   </if>      
                    <if if(StringUtils.isBlank(#{orderField}))>
                      order by a.dt_cjsj, a.vc_bgkid
                    </if>
                    
                    )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
