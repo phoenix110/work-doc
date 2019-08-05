@@ -1,4 +1,4 @@
-create or replace function      comp_group_repeat(count_str varchar2, count_num integer) return integer is
+create or replace function      comp_group_repeat(count_str clob, count_num integer) return integer is
   return_type integer;--0表示不需要参与查重，1需要查重
   split_num integer;
   comp_temp_str varchar2(60);
