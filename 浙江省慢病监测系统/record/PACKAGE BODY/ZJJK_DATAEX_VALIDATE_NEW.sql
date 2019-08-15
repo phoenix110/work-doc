@@ -726,9 +726,12 @@ create or replace package body ZJJK_DATAEX_VALIDATE_NEW is
   end;
 --死亡（死因）========================================================================
   Procedure Proc_Zjjk_Sw_Validate is
+  v_sw_bgkid     zjjk.zjmb_sw_bgk.vc_bgkid%TYPE; --插入 zjmb_sw_bgk表时实际生成的 vc_bgkid；
+  v_sysdate     date;                            -- 当前系统时间
   cursor bgk_cur_sw is select * from zjjk.zjjk_sw_bgk_ex ex
   where ex.is_pass='1'; -- and not exists(select 1 from zjjk.zjmb_sw_bgk g where ex.vc_yyrid=g.vc_bgkid);
   begin
+    v_sysdate := sysdate;
 
   --delete from zjjk.zjjk_sw_bgk_ex_bak;
 
@@ -982,7 +985,7 @@ create or replace package body ZJJK_DATAEX_VALIDATE_NEW is
  where exists(select 1 from zjjk.zjmb_sw_bgk g where ex.vc_yyrid=g.vc_bgkid);
 
   --设置审核时间
-  update zjjk.zjjk_sw_bgk_ex ex set ex.validate_date=sysdate;
+  update zjjk.zjjk_sw_bgk_ex ex set ex.validate_date=v_sysdate;
 
   --设置审核是否通过
   update zjjk.zjjk_sw_bgk_ex ex set ex.is_pass=1
@@ -994,7 +997,10 @@ create or replace package body ZJJK_DATAEX_VALIDATE_NEW is
 
   for e in bgk_cur_sw loop
 
-
+  -- 生成vc_bgkid
+  v_sw_bgkid := zjjk.get_lsh('ex'||to_char(sysdate,'yy'),'zjjk.zjmb_sw_bgk','zjmb_sw_bgk.vc_bgkid');
+  
+  -- 插入 zjmb_sw_bgk 表
   insert into  zjjk.zjmb_sw_bgk
   (VC_BGKID,VC_XM,VC_XB,VC_MZ,VC_ZY,
 VC_HYZK,VC_WHCD,DT_CSRQ,DT_SWRQ,VC_ZJLX,
@@ -1011,7 +1017,7 @@ VC_JKDW,VC_BGKLB,vc_gldwdm,vc_cjdwdm,vc_cjyh,dt_dcrq,dt_lrsj,vc_ysqm,vc_hkjw,
 vc_hkqcs,vc_jzqcs)
 
   values
-   (zjjk.get_lsh('ex'||to_char(sysdate,'yy'),'zjjk.zjmb_sw_bgk','zjmb_sw_bgk.vc_bgkid'),
+ (v_sw_bgkid,
 e.vc_Szxm,
 e.vc_Xb,
 e.vc_Mz,
@@ -1095,14 +1101,129 @@ e.vc_Jzxxdzws,
 e.vc_Shbz,
 e.vc_szsqbsjzztz,
 '2',
-sysdate,
+v_sysdate,
 e.vc_bkdw,
 '0',
 e.vc_bkdw,
 e.vc_bkdw,
 e.vc_bkdw,
 e.dt_bkrq,
-sysdate,
+v_sysdate,
+e.vc_bkys,
+e.vc_Hkxxdzzjs,
+e.VC_HKSHEDMWS,
+e.VC_JZSHEDMWS
+);
+
+  -- 插入 zjmb_sw_wjw_bgk 表
+  insert into  zjjk.zjmb_sw_wjw_bgk
+  (VC_BGKID,VC_XM,VC_XB,VC_MZ,VC_ZY,
+VC_HYZK,VC_WHCD,DT_CSRQ,DT_SWRQ,VC_ZJLX,
+VC_SFZHM,VC_SWDD,VC_SQZGZDDW,VC_ZDYJ,NB_GBSYBM,
+FENLEITJ,VC_JSXM,VC_JSLXDH,VC_JSDZ,VC_SQGZDW,VC_ZYH,NB_JKYYBM,DT_JKSJ,
+VC_JKYS,
+VC_AZJSWJB1,NB_AZJSWJBICD,VC_AFBDSWSJJG,VC_BZJSWJB1,NB_BZJSWJBIDC,VC_BFBDSWSJJG,VC_CZJSWJB1,NB_CZJSWJBICD,VC_CFBDSWSJJG,VC_DZJSWJB1,NB_DAJSWJBICD,VC_DFBDSWSJJG,VC_EZJSWJB1,NB_EAJSWJBICD,VC_EFBDSWSJJG,VC_FZJSWJB1,NB_FAJSWJBICD,VC_FFBDSWSJJG,VC_GZJSWJB1,NB_GAJSWJBICD,VC_GFBDSWSJJG,
+VC_RSQK,
+VC_HJDZLX,VC_HKSDM,VC_HKQXDM,VC_HKJDDM,VC_HKXXDZ,
+VC_WSHKSHENDM,VC_WSHKSDM,VC_WSHKQXDM,VC_WSHKJDDM,VC_WSHKJW,
+VC_GJHDQ,VC_JZSDM,VC_JZQXDM,VC_JZJDDM,VC_JZJW,VC_WSJZSHENDM,
+VC_WSJZSDM,VC_WSJZQXDM,VC_WSJZJDDM,VC_WSJZJW,VC_SHBZ,VC_SZSQBLJZZTZ,VC_SCBZ,DT_CJSJ,
+VC_JKDW,VC_BGKLB,vc_gldwdm,vc_cjdwdm,vc_cjyh,dt_dcrq,dt_lrsj,vc_ysqm,vc_hkjw,
+vc_hkqcs,vc_jzqcs)
+
+  values
+ (v_sw_bgkid,
+e.vc_Szxm,
+e.vc_Xb,
+e.vc_Mz,
+e.vc_Grsf,
+
+e.vc_Hyzk,
+e.vc_Whcd,
+e.dt_Csrq,
+e.dt_Swrq,
+e.vc_Zjlx,
+
+e.vc_Zjhm,
+e.vc_Swdd,
+e.vc_Zgzddw,
+e.vc_Zdyj,
+e.vc_Gbswbm,
+
+e.vc_Tjflh,
+e.vc_lxjsxm,
+e.vc_jsdh,
+e.vc_Jsdz,
+e.VC_SZSQGZDW,
+e.vc_Zyh,
+e.vc_Bkdw,
+e.dt_Bkrq,
+e.vc_Bkys,
+
+e.VC_AZJDZSWDJB,
+e.VC_AICD10BM,
+e.VC_AFBDSWSJJG,
+
+e.VC_BZJDZSWDJB,
+e.VC_BICD10BM,
+e.VC_BFBDSWSJJG,
+
+e.VC_CZJDZSWDJB,
+e.VC_CICD11BM,
+e.VC_CFBDSWSJJG,
+
+e.VC_DZJDZSWDJB,
+e.VC_DICD12BM,
+e.VC_DFBDSWSJJG,
+
+e.VC_QTJBZD1,
+e.VC_QTJBZD1ICD10DM,
+e.VC_QTFB1DSWSJJG,
+
+e.VC_QTJBZD2,
+e.VC_QTJBZD2ICD10DM,
+e.VC_QTFB2DSWSJJG,
+
+e.VC_QTJBZD3,
+e.VC_QTJBZD3ICD10DM,
+e.VC_QTFB3DSWSJJG,
+
+
+e.vc_Rsqk,
+e.vc_Hjdzlx,
+
+e.vc_Hksdmzjs,
+e.vc_Hkqxdmzjs,
+e.vc_Hkjddmzjs,
+e.vc_Hkxxdzzjs,
+e.vc_Hkshedmws,
+e.vc_Hkshidmws,
+e.vc_Hkqxdmws,
+e.vc_Hkjddmws,
+e.vc_Hkxxdzws,
+e.vc_Gjhdq,
+
+e.vc_Jzsdmzjs,
+e.vc_Jzqxdmzjs,
+e.vc_Jzjddmzjs,
+e.vc_Jzxxdzzjs,
+e.vc_Jzshedmws,
+e.vc_Jzshidmws,
+e.vc_Jzqxdmws,
+e.vc_Jzjddmws,
+e.vc_Jzxxdzws,
+
+e.vc_Shbz,
+e.vc_szsqbsjzztz,
+'2',
+v_sysdate,
+e.vc_bkdw,
+'0',
+e.vc_bkdw,
+e.vc_bkdw,
+e.vc_bkdw,
+e.dt_bkrq,
+v_sysdate,
 e.vc_bkys,
 e.vc_Hkxxdzzjs,
 e.VC_HKSHEDMWS,
