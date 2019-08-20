@@ -6,7 +6,7 @@
 <hibernate-configuration>
 	<session-factory>
 		<property name="connection.pool_size">1</property>
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 		<property name="format_sql">false</property> 
 		<property name="query.factory_class">
 			org.hibernate.hql.ast.ASTQueryTranslatorFactory
