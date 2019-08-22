@@ -644,8 +644,7 @@ select distinct ccd_code from T_ICD10 order by ccd_code asc
 数据交换接口服务修复，和省平台对接
 慢病监测测试数据库
 
-性能问题
-	zjmb\public\js\commonUtil.js 获取serviceUrl更改，未提交，未发
+
 
 0716
 浙一数据上传问题
@@ -669,18 +668,367 @@ bug 190625011
 	sqldy 020604-1
 	zjmb\web\swdjgl\zlgl\swbgkccgl.js
 
+0722
+bug 190530010 糖尿病报告卡管理迁入迁出bug
+
+0723
+功能 190621004 面访时提示信息修改：
+慢病信息：不显示icd10，”糖尿病类型：“这几个字不要，首次诊断日期内容里的“00：00：00”不显示，报告日期不显示；
+医保信息：疾病编码不显示；
+队列面访疾病史信息：”是否已诊断为糖尿病：“这几个字不要。然后其中的内容“是否”改为“有无”
+	dxbmfApp/src/components/Cerebral/Cerebral.vue
+	dxbmfApp/src/components/Congestive/Congestive.vue
+	dxbmfApp/src/components/DiabetesPage/DiabetesPage.vue
+	dxbmfApp/src/components/Miocardial/Miocardial.vue
+	dxbmfApp/src/components/Nephropathy/Nephropathy.vue
+	dxbmfApp/src/components/TumourPage/TumourPage.vue
+	dxbmfApp/src/uilts/uilts.js
+
+0724
+代谢病面访移动端app项目梳理打包流程，并且打包发布到测试和正式环境
+
+浙江省数据交换接口更改
+
+bug 190611013 
+面访项目提示信息中的医保信息提取错误，如糖尿病，应提取该患者最近的一条糖尿病医保数据，而不是最近的一条医保数据。若该患者无该疾病的医保数据，则提示信息中的医保信息无信息显示。
+涉及模块：糖尿病，肿瘤，心肌梗死，脑卒中，充血性心力衰竭，慢性肾病
+	dxbmfApp/src/components/Cerebral/Cerebral.vue
+	dxbmfApp/src/components/Congestive/Congestive.vue
+	dxbmfApp/src/components/DiabetesPage/DiabetesPage.vue
+	dxbmfApp/src/components/Miocardial/Miocardial.vue
+	dxbmfApp/src/components/Nephropathy/Nephropathy.vue
+	dxbmfApp/src/components/TumourPage/TumourPage.vue
+	dxbmfApp/src/uilts/uilts.js
+
+0725
+需求 190621003 当面访项目第一题是否患该病选择否，但提示信息提示患有该疾病时，会出现提示框选项，并出现*号记号
+	dxbmfApp/src/base/CerebralConent/CerebralConent.vue
+	dxbmfApp/src/base/ConfirmSick/ConfirmSick.vue
+	dxbmfApp/src/base/CongestiveConent/CongestiveConent.vue
+	dxbmfApp/src/base/MiocardialContent/MiocardialContent.vue
+	dxbmfApp/src/base/TumourConfirmSick/TumourConfirmSick.vue
+	dxbmfApp/src/components/Nephropathy/Nephropathy.vue
+
+bug 190614005 面访管理——面访——基本信息中修改性别和日期后，页面内容无变化
+	dxbmfApp/src/components/BaseInfoPage/BaseInfoPage.vue
+
+浙江慢病数据交换接口测试环境新增金华市配置
+
+需求 190621005 
+	面访情况统计表中，应调查人数应为基本信息表中该地所有人的数量，然后加入一个实际调查人数的字段，为现在的应调查人数。然后加一个字段为未面访，即应调查人数-实际调查人数。
+	dxbmf/web/mfdlgl/ywtj/mfqktjb.js
+	sqldy 040103-1
+	sqldy 040103-2
+
+0726
+浙江慢病死亡卡部分区县账号无法编辑或者审核部分报告卡的问题
+	经确认为报告卡为待属地确认的卡
+死亡卡查询和导出没有随访时间的问题确认
+
+bug 190723023 
+	1.331002006 mb829747删除海门街道的出生卡，显示不是管理单位，无权限。名单为附件海门徐瑜……
+	2.331002009 cdc12302，导入出生卡点击出生出现如图所示提示。名单为附件2019第二季度出生-白云(1)
 
 
-待确认，暂时不发不提交
+0729
+死亡卡管理和初访提醒中对卡片进行编辑时，如果勾选了户口核实则同步赋值随访时间。
+	
+bug 190722002
+1.心脑报告卡里，改了其他冠心病死亡，脑梗塞的选项不会清空
+2.心脑病报告卡缺了一个逻辑控制：心性猝死，或者 其他冠心病死亡 死亡时间和死亡原因不能为空，拒绝保存
+	zjmb/web/xnxggl/bbgl/xnxg_edit.js
+
+肿瘤迁出管理中临平的锦北街道选不了管理单位的问题
+
+0730
+bug 190730008 部分模块的管理单位获取方式更改
+	sqldy 000000-3
+
+0731
+bug 190520010 糖尿病，肿瘤，心脑，死亡 的报告卡查重在所有查重条件下数据异常的问题修复
+	sqldy 020308-1
+	sqldy 020207-1
+	sqldy 020408-1
+	sqldy 020604-1
+心脑病报告卡逻辑更改：其他冠心病死亡 死亡时间和死亡原因不能为空，拒绝保存
+		zjmb/web/xnxggl/bbgl/xnxg_edit.js
+
+bug 190517003 心脑新增随访卡(脑卒中和冠心病)部分字段错误修复
+	sqldy 020401-10
+	zjmb/web/xnxggl/csfgl/xnxgsf_edit_gx.js
+	zjmb/web/xnxggl/csfgl/xnxgsf_edit_nc.js
+
+需求 190429015  excel导入权限将权限分配给对应单位
+
 bub 190515009  1.糖尿病，肿瘤，心脑的死亡补发查询和匹配，查重，初随访，以及死亡的初访，查重模块中不出现外地户籍的报告卡（社区医院号，如白云街道的账号这些模块下只出现白云街
           道的报告卡；区县账号，如椒江区疾控这些模块下只出现户籍为椒江区的报告卡）2.糖尿病，肿瘤，心脑的死亡补发匹配了之后，该报告卡的卡状态要变成死亡卡，即vc_ bgkzt=7
-    糖尿病-死亡补发
-    zjmb\web\tnbgl\swkbf\tnbbgkswbfcx.js 未提交到svn
-    sqldy 020203-1  41上已改
+    	zjmb\public\js\commonUtil.js
+    	zjmb\web\tnbgl\swkbf\tnbbgkswbfcx.js
+    	zjmb\web\zlgl\swbfgl\zlbgkswbfcx.js
+    	zjmb\web\xnxggl\swbf\xnxgswbfcx.js
+    	zjmb\web\tnbgl\swkbf\tnbbgkswbfpp.js
+    	zjmb\web\zlgl\swbfgl\zlbgkswbfpp.js
+    	zjmb\web\xnxggl\swbf\xnxgswbfpp.js
+    	zjmb\web\tnbgl\zlgl\tnbbgkccgl.js
+    	zjmb\web\zlgl\zlgl\zlbgkccgl.js
+    	zjmb\web\xnxggl\zlgl\xnxgbgkccgl.js
+		zjmb\web\swdjgl\zlgl\swbgkccgl.js
+		zjmb\web\tnbgl\csfgl\tnbcftx.js
+		zjmb\web\zlgl\csfgl\zlglcftx.js
+		zjmb\web\xnxggl\csfgl\xnxgcftx.js
+		zjmb\web\swdjgl\bgkgl\wmswbgktx.js
+		zjmb\web\tnbgl\csfgl\tnbsftx.js
+		zjmb\web\zlgl\csfgl\zlglsftx.js
+		zjmb\web\xnxggl\csfgl\xnxgsftx.js
+		zjmb\web\tnbgl\csfgl\tnbsfkgl.js
+		zjmb\web\zlgl\csfgl\zl_sfkgl.js
+		zjmb\web\xnxggl\csfgl\xnxg_sfkgl.js
+		sqldy 020203-1
+		sqldy 020203-3
+		sqldy 020307-1
+		sqldy 020307-3
+		sqldy 020403-1
+		sqldy 020403-3
+		sqldy 020203-2
+		sqldy 020307-2
+		sqldy 020403-2
+		sqldy 020207-1
+		sqldy 020308-1
+		sqldy 020408-1
+		sqldy 020604-1
+		sqldy 020604-2
+		sqldy 020205-1
+		sqldy 020302-01
+		sqldy 020401-04
+		sqldy 020601-7
+		sqldy 020205-6
+		sqldy 020303-01
+		sqldy 020401-10 
+		sqldy 020205-3
+		sqldy 020303-02
+		sqldy 020401-06
+
+
+bug 190517011 有排序功能的字段只排序当前页
+
+=====================已提交并发布===============
+		zjmb\web\tnbgl\bbgl\tnbbgkgl.js
+		zjmb\web\zlgl\bbgl\zlbgkgl.js
+		zjmb\web\zlgl\bbgl\zlbgkgl.html
+		zjmb\web\xnxggl\bbgl\xnxggl.js
+		zjmb\web\xnxggl\bbgl\xnxggl.html
+=====================已提交并发布===============
+
+
+
+		
+
+============ 本机已初步修改，未发============
+	伤害-报告卡管理	
+		sqldy 020701-1
+		zjmb\web\shjcgl\bgkgl\shjcbgkgl.html
+		zjmb\web\shjcgl\bgkgl\shjcbgkgl.js
+	出生-报告卡管理	
+		sqldy 020501-1
+		zjmb\web\csdjgl\bgkgl\csbgkgl.html
+		zjmb\web\csdjgl\bgkgl\csbgkgl.js
+	死亡-报告卡管理	
+		sqldy 020601-1
+		zjmb\web\swdjgl\bgkgl\swbgkgl.js		
+		zjmb\web\swdjgl\bgkgl\swbgkgl.html
+	糖尿病-属地确认
+		sqldy 020202-1
+		zjmb\web\tnbgl\sdqr\tnbbgksdqr.js		
+		zjmb\web\tnbgl\sdqr\tnbbgksdqr.html
+	肿瘤-属地确认
+		sqldy 020305-01
+		zjmb\web\zlgl\sdqr\zlbgksdqr.js		
+		zjmb\web\zlgl\sdqr\zlbgksdqr.html
+	心脑-属地确认
+		sqldy 020405-1
+		zjmb\web\xnxggl\sdqr\xnxgglsdqr.js	
+		zjmb\web\xnxggl\sdqr\xnxgglsdqr.html
+	出生-属地确认
+		sqldy 020502-1
+		zjmb\web\csdjgl\sdqr\csbgksdqr.js
+		zjmb\web\csdjgl\sdqr\csbgksdqr.html
+	死亡-属地确认
+		sqldy 020602-1
+		zjmb\web\swdjgl\sdqr\swbgksdqr.js
+		zjmb\web\swdjgl\sdqr\swbgksdqr.html
+============ 本机已初步修改，未发============
+
+
+0805
+排序需求更改-糖尿病，肿瘤，心脑，报告卡管理
+慢病监测，数据交换接口，社区填报，测试服务器迁移
+
+0806 
+中标信息统计
+
+0807
+金华市测试环境数据对接问题
+湖州地区8.2-今天的异地报告数据需要再次回传
+
+今天发现糖尿病报告卡编号vc_bgkcode又出现重复的记录了，请查找原因并及时解决
+
+
+0808
+金华市数据上传测试环境联调
+伤害监测编辑中的部分icd10修改
+接收地市上传的糖尿病报告卡时生成vc_bgkcode的规则更改，并处理旧的问题数据。
+糖尿病，肿瘤，心脑的死亡补发查询和匹配，查重，初随访，以及死亡的初访，查重模块中的户籍条件只限制到区县
+卫健委需求开始
+
+0809
+中标信息统计
+浙江省数据交换接口死亡报告卡新增未审核的数据接收逻辑
+
+
+0812
+义乌对账结果回传问题对接处理
+卫健委
+
+0813
+接收地市上传的糖尿病报告卡逻辑修复
+糖尿病随访卡死亡icd名称更改
+
+0814
+出生报告卡导入的两个问题处理
+
+卫健委需求地市数据接口对接测试环境联调
+
+0815
+zjjkjk2019接口接收死亡卡数据改造，发布到正式环境。
+
+伤害监测报告卡接收部分字段异常的问题修复，及所有的历史旧数据处理。
+	zjjkjk2019\src\com\wondersgroup\zjjk\model\ZjmbShjcBgkEntity.java
+
+质量复核抽查不出数据的异常修复
+
+排序
+20190802中
+
+
+接口卫健委
+1.新建一张表 ZJMB_SW_WJW_BGK，和旧表 ZJMB_SW_BGK 字段一样，但所有字段都可以为空，不用校验。
+新表另外再加两个字段 VC_WJW_SCBZ(卫健委上传标志)，DT_WJW_SCSJ(卫健委上传时间)
+	本机，测试，正式，已建。
+
+2.zjjkjk2019接口，死亡接收数据时，审核标志为0或1或者为空的，进新表（不用校验，只新增，不更新），其余的走旧逻辑。
+	zjjkjk2019\src\com\wondersgroup\zjjk\service\impl\ZjjkSwbgkTempServiceImpl.java
+	zjjkjk2019\src\com\wondersgroup\zjjk\Utils\ErrorMessage.java
+	zjjkjk2019\src\com\wondersgroup\zjjk\model\ZjjkSwbgkTempEntity.java
+	zjjkjk2019\src\com\wondersgroup\zjjk\dao\ZjjkSwbgkWjwDao.java
+	zjjkjk2019\src\com\wondersgroup\zjjk\dao\impl\ZjjkSwbgkWjwDaoImpl.java
+	zjjkjk2019\src\com\wondersgroup\zjjk\model\ZjjkSwbgkWjwEntity.java
+	zjjkjk2019\src\com\wondersgroup\zjjk\enums\ShbzEnum.java
+
+	已提交svn，已发测试，已发正式
+
+3.zjmb，页面新增死亡报告卡时，同步保存到新表中。只新增，不更新。
+	pkg_zjmb_smtj.prc_sw_bgk_update
+	ZJJK_DATAEX_VALIDATE_NEW
+	已提交git，已发测试，已发正式
+
+4.zjmbUpload接口，新增一套传送新表 ZJMB_SW_WJW_BGK 数据的接口。频率10分钟。旧的所有接口的频率也改为10分钟。
+	新表的 参数  TableName ： ZJMB_SW_BGK_ORI
+	用户密码：wanda2
+			wd@zjcdc
+
+	测试环境：
+	http://10.44.3.191:18001/cdczj-bigdata-service/api/dataSynService?wsdl
+	接口已经部署好了，用户名和密码，孙工应该给你了吧。
+
+5.zjmbupload 搭建测试环境，并在测试环境进行联调
+
+6.发布正式代码，修改配置文件中的频率，修改日志路径，移动旧日志到新路径,注意不要错发了测试的地址和用户密码,
+改 jdbc.properties 中的 ws用户名
+改 ClientPasswordCallbackSwori.java 中的 密码
+
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/Utils/DateUtil.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/Utils/ZJJKStringUtils.java
+
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/task/SjkTaskH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/upload/AllBgkUpload.java
+
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkShbgkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkSwbgkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkTnbbgkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkTnbsfkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkXnxgbgkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkXnxgcfkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkXnxgsfkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkZlbgkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkZlcfkTempServiceImplH.java
+Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkZlsfkTempServiceImplH.java
+
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/TnbBgkEntity.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/shbgk/ShBgkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgk/SwbgkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/tnbsfk/TnbSfkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/xnxgbgk/XnxgBgkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/xnxgcfk/XnxgCfkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/xnxgsfk/XnxgSfkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/zlbgk/ZlBgkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/zlcfk/ZlCfkEntityH.java
+/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/zlsfk/ZlSfkEntityH.java
+
+hibernate.cfg.xml
+log4j.properties
+jdbc.properties
+
+
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/dao/SwBgkOriTempDaoH.java
+
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/dao/impl/SwBgkOriTempDaoImpH.java
+
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriBody.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriDataList.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriHeader.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriHeaderT.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriHeaderW.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriPostXML.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwbgkOriEntityH.java
+
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/SwOriReportServiceIH.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/ZjjkSwbgkOriTempServiceIH.java
+
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/SwOriReportServiceImpIH.java
+Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkSwbgkOriTempServiceImpIH.java
 
 
 
 
+测试环境数据回退L:
+--update MIDDLEOF_ZJMB_SW_BGK set operate = null where operate = 'insert';
+--backup to excute : update MIDDLEOF_ZJMB_SW_BGK set operate = 'insert' where operate is null;
+
+--update MIDDLEOF_ZJjk_zl_BGK set operate = null where operate = 'insert';
+--backup to excute : update MIDDLEOF_ZJjk_zl_BGK set operate = 'insert' where operate is null;
+
+--update MIDDLEOF_ZJJK_XNXG_CFK set operate = null where operate = 'insert';
+--backup to excute : update MIDDLEOF_ZJJK_XNXG_CFK set operate = 'insert' where operate is null;
+
+--update MIDDLEOF_ZJJK_XNXG_SFK set operate = null where operate = 'insert';
+--backup to excute : update MIDDLEOF_ZJJK_XNXG_SFK set operate = 'insert' where operate is null;
+
+--update MIDDLEOF_ZJJK_ZL_CCSFK set operate = null where operate = 'insert';
+--backup to excute : update MIDDLEOF_ZJJK_ZL_CCSFK set operate = 'insert' where operate is null;
+
+
+
+
+
+
+代谢病安全漏洞
+
+
+
+
+
+性能问题
+	zjmb\public\js\commonUtil.js 获取serviceUrl更改，未提交，未发
 
 
 
@@ -696,16 +1044,24 @@ bub 190515009  1.糖尿病，肿瘤，心脑的死亡补发查询和匹配，查
 				}
 
 
+死亡报告卡
+心脑报告卡
+心脑初访卡
+心脑随访卡
+肿瘤报告卡
+肿瘤初访卡
+肿瘤随访卡
+糖尿病报告卡
+糖尿病随访卡
+伤害报告卡
+死亡原始
 
+#webservice账号密码
+ws.address=http://10.44.3.191:9001/cdczj-bigdata-service/api/dataSynService?wsdl
+ws.username=wanda
+ws.pwd=wd@zjcdc
 
-Request URL: http://172.16.120.93:8081/dxbmfapi/rest/uploadOriginalFile/04
-{"code":"1","msg":{"file":"9a44424898034b93b993918293f0ce3d"}}
-
-
-Request URL: http://172.16.120.93:8081/dxbmfapi/rest/commitData/040101/9
-{
-  "code" : "1",
-  "msg" : ""
-}
-
-
+#死亡原始webservice账号密码
+swori.ws.address=http://10.44.3.191:9001/cdczj-bigdata-service/api/dataSynService?wsdl
+swori.ws.username=wanda
+swori.ws.pwd=wd@zjcdc

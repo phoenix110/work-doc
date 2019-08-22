@@ -6,6 +6,7 @@ select * from prody where rownum < 2;
 SELECT * FROM TB_LOG where rownum < 2;
 -- 业务日志
 SELECT * FROM ZJJK_YW_LOG where rownum < 2;
+SELECT * FROM zjjk_yw_log_bgjl where bgkid = '33118100220190075' 
 
 -- 字典表
 -- pkg_zjmb_tnb.fun_getcommdic('C_COMM_SHEDM', vc_csdd) ,
@@ -69,34 +70,28 @@ user.jgjb:
 -- zjjk_zl_bgk.vc_sfcf 1为初访，3为随访，2为未初访，0为异常数据
 -- v_czyjgjb 机构级别： 1，省，2市，3区，4医院社区
 
--- 添加肿瘤随访提醒 VC_GLDW = '331002'为区县级别的
--- update zjjk_zl_bgk set NB_KSPF = 40, DT_SFSJ = add_months(sysdate, -2) where VC_BGKID in ('ex1800000003696','ex1800000003697','ex1800000003698')；
--- update zjjk_zl_bgk set VC_GLDW = '331002', vc_sdqrzt = '1', vc_sfcf = '3', dt_swrq = null, vc_swyy = null, vc_shbz = '3', vc_bgkzt = '0',NB_KSPF = 40, DT_SFSJ = add_months(sysdate, -2),dt_sfrq = add_months(sysdate, -2) where VC_BGKID in ('ex1800000003696','ex1800000003697','ex1800000003698');
- 
+
 -- 添加糖尿病初访提醒
 -- update zjjk_tnb_bgk set vc_scbz = '0', vc_bgkzt = '0', vc_sdqrzt = '1', vc_cfzt = '0', vc_gldw = '331002009' where vc_bgkid = '6E69C432D3B050E6E05010AC296E5189'
 
 -- 添加糖尿病随访提醒 VC_GLDW = '331002'为区县级别的
 -- update zjjk_tnb_bgk set vc_gldw = '331002', vc_sdqrzt = '1', vc_shbz = '3', vc_scbz = '0', vc_tnblx = '1', vc_bgkzt = '0', vc_cfzt = '3', dt_sfsj = add_months(sysdate,-11) where vc_bgkid in ('2c90ee26699f5d6001699f64d2470003','6E69C432D3B050E6E05010AC296E5189');
 
+-- 添加肿瘤初访提醒
+-- update zjjk_zl_bgk set VC_SFCF = '2', VC_BGKZT = '0', VC_SDQRZT = '1', VC_SHBZ = '3', VC_SCBZ = '0',VC_GLDW = '331002009' where vc_bgkid = '19100200900009'
+
+-- 添加肿瘤随访提醒 VC_GLDW = '331002'为区县级别的
+-- update zjjk_zl_bgk set NB_KSPF = 40, DT_SFSJ = add_months(sysdate, -2) where VC_BGKID in ('ex1800000003696','ex1800000003697','ex1800000003698')；
+-- update zjjk_zl_bgk set VC_GLDW = '331002', vc_sdqrzt = '1', vc_sfcf = '3', dt_swrq = null, vc_swyy = null, vc_shbz = '3', vc_bgkzt = '0',NB_KSPF = 40, DT_SFSJ = add_months(sysdate, -2),dt_sfrq = add_months(sysdate, -2) where VC_BGKID in ('ex1800000003696','ex1800000003697','ex1800000003698');
+ 
 -- 添加心脑初访提醒
    /*update zjjk_xnxg_bgk set VC_SFCF = '2', VC_KZT = '0', VC_SDQRZT = '1', VC_SHBZ = '3', vc_czhks = '0', vc_gldwdm = '331002009' where vc_bgkid in ('6CFE6F6F68489936E05010AC296E74BA','88EEC967258C0036E05010AC296E086F');
    delete from zjjk_xnxg_cfk where vc_bgkid in ('6CFE6F6F68489936E05010AC296E74BA','88EEC967258C0036E05010AC296E086F');*/
    
--- 添加肿瘤初访提醒
--- update zjjk_zl_bgk set VC_SFCF = '2', VC_BGKZT = '0', VC_SDQRZT = '1', VC_SHBZ = '3', VC_SCBZ = '0',VC_GLDW = '331002009' where vc_bgkid = '19100200900009'
+-- 添加心脑随访提醒
+/* update zjjk_xnxg_bgk set VC_SFCF = '1', VC_KZT = '0', VC_SDQRZT = '1', VC_SHBZ = '3', vc_czhks = '0', vc_gldwdm = '331002009', dt_sfsj = add_months(sysdate,-11)  where vc_bgkid in ('6CFE6F6F68529936E05010AC296E74BA','6CFE6F6F68529936E05010AC296E74BA');
+delete from zjjk_xnxg_cfk where vc_bgkid in ('6CFE6F6F68529936E05010AC296E74BA','6CFE6F6F68529936E05010AC296E74BA'); */
 
-select * from sqldy where mkbh = '020205';-- 糖尿病初随访
-select * from sqldy where mkbh = '020302';-- 肿瘤初访
-select * from sqldy where mkbh = '020303'; -- 肿瘤随访
-select * from sqldy where mkbh = '020601'; -- 生命统计死亡管理
-select * from sqldy where mkbh = '020401'; -- 心脑血管
-select * from sqldy where mkbh = '020301';-- 肿瘤报告卡
-select * from sqldy where mkbh = '020201';    -- 糖尿病报告卡
-select * from sqldy where mkbh = '020203';-- 糖尿病死亡补发
-select * from sqldy where mkbh = '020307';-- 肿瘤死亡补发
-select * from sqldy where mkbh = '020403';-- 心脑血管死亡补发
-select * from sqldy where mkbh = '020308';  -- 肿瘤报卡查重
 
 -- 存储过程编译卡死
 SELECT * FROM V$DB_OBJECT_CACHE WHERE name='PKG_ZJMB_SMTJ' AND LOCKS!='0';
@@ -121,103 +116,16 @@ select t.* from all_source t where 1=1
 --  and  type = 'PACKAGE' 
 and text like '%ZJJK_DATAEX_VALIDATE%'
 
--- 导入校验入库 --
+-- excel导入校验入库 --
+--导入后，数据存到对应的_ex表，由job中的定时任务把_ex表中的数据，存到对应的实际表和_bak表中，再把_ex表中数据删除。
+--只有正式环境有job在跑，测试和本机中没有。
 procedures
-		Tnb_ExValidate
-		zl_ExValidate
+		Tnb_ExValidate  -- job 22
+		zl_ExValidate   -- job21
 packages
-		ZJJK_DATAEX_VALIDATE_NEW
+		ZJJK_DATAEX_VALIDATE_NEW -- job 23
     
--- 业务操作日志
-select * from zjjk_yw_log_bgjl where 1=1 and  bgkid = '8B80C1F22F9977DDE050007F010036F7' and bgzddm = 'vc_bgdwqx'
-         
 
- 
-    
-select * from sqldy where mkbh = '020801' and ywdm = '1' 
-select * from sqldy where mkbh = '020801' and ywdm = '2' 
-
-
-select vc_personid, count(vc_personid) n from zjjk_tnb_hzxx_ex_bak group by vc_personid order by n desc
-select vc_yyrid, count(vc_yyrid) n from zjjk_tnb_bgk_ex_bak group by vc_yyrid order by n desc
-select vc_yyrid, count(vc_yyrid) n from zjjk_xnxg_bgk_ex_bak group by vc_yyrid order by n desc
-select vc_personid, count(vc_personid) n from zjjk_zl_hzxx_ex_bak group by vc_personid order by n desc 
-select vc_yyrid, count(vc_yyrid) n from zjjk_zl_bgk_ex_bak group by vc_yyrid order by n desc
-select vc_yyrid, count(vc_yyrid) n from zjjk_shjc_bgk_ex_bak group by vc_yyrid order by n desc
-select vc_yyrid, count(vc_yyrid) n from zjjk_sw_bgk_ex_bak_new group by vc_yyrid order by n desc
-
-select * from zjjk_tnb_hzxx_ex_bak group by vc_personid order by n desc
-select *  from zjjk_tnb_bgk_ex_bak group by vc_yyrid order by n desc
-select *  from zjjk_xnxg_bgk_ex_bak group by vc_yyrid order by n desc
-select *  from zjjk_zl_hzxx_ex_bak group by vc_personid order by n desc 
-select *  from zjjk_zl_bgk_ex_bak group by vc_yyrid order by n desc
-select *  from zjjk_shjc_bgk_ex_bak group by vc_yyrid order by n desc
-select *  from zjjk_sw_bgk_ex_bak_new group by vc_yyrid order by n desc
-
-select '糖尿病报告卡' sbxt,
-       count(1) hjsbs,
-       nvl(sum(decode(is_pass, 1, 1)),0) zqsbs,
-       nvl(sum(decode(is_pass, 2, 1)),0) cwsbs,
-       '2' type
-  from zjjk_tnb_bgk_ex_bak b1
-  where b1.vc_bgdw = '330102026'
- -- group by vc_bgdw
- 
- update zjjk_tnb_bgk_ex_bak set vc_bgdw = '330102026' where vc_bgdw = '330303003'
--- 导入情况统计增加删除按钮 --
-
-select distinct is_pass from zjjk_tnb_bgk_ex_bak
-update zjjk_tnb_bgk_ex_bak set is_pass = '2' where vc_bgdw = '330102026'
-
-Tnb_ExValidate
-zl_ExValidate
-ZJJK_DATAEX_VALIDATE_NEW
-
-/*
-alter table zjjk_tnb_hzxx_ex_bak add uuid varchar2(60);
-update zjjk_tnb_hzxx_ex_bak set uuid = sys_guid();
-commit;
-alter table zjjk_tnb_hzxx_ex_bak add constraint pk_zjjk_tnb_hzxx_ex_bak primary key(uuid);
-
-alter table zjjk_tnb_bgk_ex_bak add uuid varchar2(60);
-update zjjk_tnb_bgk_ex_bak set uuid = sys_guid();
-commit;
-alter table zjjk_tnb_bgk_ex_bak add constraint pk_zjjk_tnb_bgk_ex_bak primary key(uuid);
-
-alter table zjjk_zl_hzxx_ex_bak add uuid varchar2(60);
-update zjjk_zl_hzxx_ex_bak set uuid = sys_guid();
-commit;
-alter table zjjk_zl_hzxx_ex_bak add constraint pk_zjjk_zl_hzxx_ex_bak primary key(uuid);
-
-alter table zjjk_zl_bgk_ex_bak add uuid varchar2(60);
-update zjjk_zl_bgk_ex_bak set uuid = sys_guid();
-commit;
-alter table zjjk_zl_bgk_ex_bak add constraint pk_zjjk_zl_bgk_ex_bak primary key(uuid);
-
-alter table zjjk_xnxg_bgk_ex_bak add uuid varchar2(60);
-update zjjk_xnxg_bgk_ex_bak set uuid = sys_guid();
-commit;
-alter table zjjk_xnxg_bgk_ex_bak add constraint pk_zjjk_xnxg_bgk_ex_bak primary key(uuid);
-
-alter table zjjk_shjc_bgk_ex_bak add uuid varchar2(60);
-update zjjk_shjc_bgk_ex_bak set uuid = sys_guid();
-commit;
-alter table zjjk_shjc_bgk_ex_bak add constraint pk_zjjk_shjc_bgk_ex_bak primary key(uuid);
-
-alter table zjjk_sw_bgk_ex_bak_new add uuid varchar2(60);
-update zjjk_sw_bgk_ex_bak_new set uuid = sys_guid();
-commit;
-alter table zjjk_sw_bgk_ex_bak_new add constraint pk_zjjk_sw_bgk_ex_bak_new primary key(uuid);
-
-*/
--- ===============
-
-select * from sqldy where mkbh='020305' and ywdm= '01' for update -- 肿瘤 属地确认
-select * from sqldy where mkbh='020202' and ywdm='1' for update   -- 糖尿病 属地确认
-select * from sqldy where mkbh='020405' and ywdm='1' for update  -- 心脑 属地确认
-select * from sqldy where mkbh='020502' and ywdm='1' for update  -- 出生 属地确认 查询和导出
-select * from sqldy where mkbh='020602' and ywdm='1' for update    -- 死因 属地确认 查询
-select * from sqldy where mkbh='020602' and ywdm='2' for update    -- 死因 属地确认 导出
 
 -- 杭州，临安，青山湖街道 下有两个医院
 select count(1), wm_concat(code) from organ_node where removed = '0' and description like '%33018503%'

@@ -7,6 +7,13 @@ and cjsj >= to_date('2019-06-26 00:00:00', 'yyyy-mm-dd hh24:mi:ss')
 -- and data like '%李丹%'
 order by cjsj desc
 
+-- 添加面访下载数据
+update dlmf_fpry set mfryid = '71DE7941AA956131E05010AC296E7DB8' where grid = '100100003'
+update grjbxx set yljgid = '1' where id = '100100003'
+
+-- 下载单个面访数据
+select * from prody where mkbh='040101' and ywdm = '5'
+
 
 /*select * from sqldy where mkbh='040101' and ywdm = '23'
 
