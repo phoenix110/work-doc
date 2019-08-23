@@ -464,6 +464,40 @@ select
                          <if if(StringUtils.isNotBlank(#{vc_jsdw}))>
                            and (a.vc_jsdw = #{vc_jsdw})
                          </if>
-                     order by a.dt_czsj,a.vc_bgkid )  
+                         
+                         <if if("vc_xsrid".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                             order by nlssort(a.vc_xsrid, 'NLS_SORT=SCHINESE_PINYIN_M') asc
+                         </if>
+                         <if if("vc_xsrid".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                             order by nlssort(a.vc_xsrid, 'NLS_SORT=SCHINESE_PINYIN_M') desc
+                         </if>
+                         <if if("vc_bgkid".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                             order by a.vc_bgkid asc
+                         </if>
+                         <if if("vc_bgkid".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                             order by a.vc_bgkid desc
+                         </if>
+                         <if if("dt_czsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                             order by a.dt_czsj asc
+                         </if>
+                         <if if("dt_czsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                             order by a.dt_czsj desc
+                         </if>
+                         <if if("dt_yyshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                             order by a.dt_yyshsj asc
+                         </if>
+                         <if if("dt_yyshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                             order by a.dt_yyshsj desc
+                         </if>
+                         <if if("dt_qxshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                             order by a.dt_qxshsj asc
+                         </if>
+                         <if if("dt_qxshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                             order by a.dt_qxshsj desc
+                         </if>                
+                         <if if(StringUtils.isBlank(#{orderField}))>
+                             order by a.dt_czsj,a.vc_bgkid
+                         </if>   
+                      )  
     where rownum <= #{rn_e})
-where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

@@ -451,6 +451,40 @@ select vc_bgkid,
                         <if if(StringUtils.isNotBlank(#{vc_jkdw}))>
                            and a.vc_jkdw like #{vc_jkdw}||'%'
                         </if>
-                        order by a.dt_cjsj)
+                        
+                        <if if("vc_xm".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                            order by nlssort(a.vc_xm, 'NLS_SORT=SCHINESE_PINYIN_M') asc
+                        </if>
+                        <if if("vc_xm".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                            order by nlssort(a.vc_xm, 'NLS_SORT=SCHINESE_PINYIN_M') desc
+                        </if>
+                        <if if("vc_bgkid".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                            order by a.vc_bgkid asc
+                        </if>
+                        <if if("vc_bgkid".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                            order by a.vc_bgkid desc
+                        </if>
+                        <if if("dt_yyshsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                            order by a.dt_yyshsj asc
+                        </if>
+                        <if if("dt_yyshsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                            order by a.dt_yyshsj desc
+                        </if>
+                        <if if("dt_shsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                            order by a.dt_shsj asc
+                        </if>
+                        <if if("dt_shsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                            order by a.dt_shsj desc
+                        </if>
+                        <if if("dt_cjsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                            order by a.dt_cjsj asc
+                        </if>
+                        <if if("dt_cjsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                            order by a.dt_cjsj desc
+                        </if>                    
+                        <if if(StringUtils.isBlank(#{orderField}))>
+                            order by a.dt_cjsj
+                        </if>
+                        )
      where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

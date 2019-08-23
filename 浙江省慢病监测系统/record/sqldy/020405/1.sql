@@ -155,6 +155,17 @@ select vc_bgkid,
                    <if if(StringUtils.isNotBlank(#{vc_hkjddm}))>
                      and a.VC_CZHKJD = #{vc_hkjddm}
                    </if>
-                   order by a.vc_bgkid) t
+                   
+                   <if if("vc_bgkbh".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by a.vc_bgkbh asc
+                   </if>
+                   <if if("vc_bgkbh".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by a.vc_bgkbh desc
+                   </if>
+                   <if if(StringUtils.isBlank(#{orderField}))>
+                     order by a.vc_bgkid
+                   </if>
+
+                   ) t
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                

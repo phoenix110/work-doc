@@ -517,6 +517,29 @@ select vc_bgkid,
                    <if if(StringUtils.isNotBlank(#{jgszqh}))>  
                        and sw_bgk.vc_hkjddm like #{jgszqh} || '%'  
                    </if>  
-                 order by sw_bgk.DT_CJSJ DESC)
+                   
+                   <if if("vc_xm".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by nlssort(sw_bgk.vc_xm, 'NLS_SORT=SCHINESE_PINYIN_M') asc
+                   </if>
+                   <if if("vc_xm".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by nlssort(sw_bgk.vc_xm, 'NLS_SORT=SCHINESE_PINYIN_M') desc
+                   </if>
+                   <if if("vc_xb_text".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by sw_bgk.vc_xb asc
+                   </if>
+                   <if if("vc_xb_text".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by sw_bgk.vc_xb desc
+                   </if>
+                   <if if("dt_shsj".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by sw_bgk.dt_shsj asc
+                   </if>
+                   <if if("dt_shsj".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by sw_bgk.dt_shsj desc
+                   </if>
+                   <if if(StringUtils.isBlank(#{orderField}))>
+                     order by sw_bgk.DT_CJSJ DESC
+                   </if>
+                   
+                 )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  

@@ -168,6 +168,17 @@ select vc_bgkid,
          <if if(StringUtils.isNotBlank(#{jgszqh}))>  
              and hzxx.VC_HKJDDM like #{jgszqh} || '%'  
          </if>  
-          order by bgk.DT_CJSJ)
+         
+         <if if("dt_sfrq".equals(#{orderField}) && "asc".equals(#{orderType}))>
+              order by bgk.dt_sfrq asc
+         </if>
+         <if if("dt_sfrq".equals(#{orderField}) && "desc".equals(#{orderType}))>
+              order by bgk.dt_sfrq desc
+         </if>
+         <if if(StringUtils.isBlank(#{orderField}))>
+              order by bgk.DT_CJSJ
+          </if>
+         
+          )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  

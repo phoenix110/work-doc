@@ -517,7 +517,16 @@ select vc_bgkid,
                    <if if(StringUtils.isNotBlank(#{vc_bgdw}))>
                      and a.vc_bgdw = #{vc_bgdw}
                    </if>
-                   order by a.vc_bgkid
+                   
+                   <if if("vc_bgkcode".equals(#{orderField}) && "asc".equals(#{orderType}))>
+                     order by a.vc_bgkcode asc
+                   </if>
+                   <if if("vc_bgkcode".equals(#{orderField}) && "desc".equals(#{orderType}))>
+                     order by a.vc_bgkcode desc
+                   </if>
+                   <if if(StringUtils.isBlank(#{orderField}))>
+                     order by a.vc_bgkid
+                   </if>       
                    )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
