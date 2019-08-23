@@ -1256,13 +1256,14 @@ e.VC_JZSHEDMWS
   end;
 
 
-
+/*
+  Excel导入校验，心脑，伤害监测
+*/
 Procedure Proc_Zjjk_Exe_Validate is
 
   begin
       zjjk.zjjk_dataex_validate_new.Proc_Zjjk_Xnxg_Validate;
       zjjk.zjjk_dataex_validate_new.Proc_Zjjk_Shjc_Validate;
-      zjjk.zjjk_dataex_validate_new.Proc_Zjjk_Sw_Validate;
   end;
 
 end ZJJK_DATAEX_VALIDATE_NEW;
