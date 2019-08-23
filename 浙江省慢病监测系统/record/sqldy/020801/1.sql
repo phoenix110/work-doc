@@ -122,8 +122,8 @@ select '死因报告卡' sbxt,
       and b1.validate_date >= std(#{dt_drsj_ks}, 1)
    </if>
    <if if(StringUtils.isNotBlank(#{dt_drsj_js}))>
-      and b1.validate_date <= std(#{dt_drsj_ks}, 1)
+      and b1.validate_date <= std(#{dt_drsj_js}, 1)
    </if>
    <if if(StringUtils.isNotBlank(#{vc_xm}))>
      and  b1.vc_szxm like #{vc_xm} || '%'
-   </if>                                                                                                                                                                
+   </if>                                                                                                                                                                                                        
