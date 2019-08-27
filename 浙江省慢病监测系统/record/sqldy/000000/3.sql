@@ -1,8 +1,13 @@
-<if if(1==1)>
+
 select CODE, NAME from organ_node
     where removed = 0
-    and (description like '%' || #{xzqh} || '%' or code like '%' || #{xzqh} || '%')
-</if>
+    <if if("sq".equals(#{type}))>
+        and description like '%' || #{xzqh} || '%'
+    </if>
+    <if if(!"sq".equals(#{type}))>
+        and (description like '%' || #{xzqh} || '%' or code like '%' || #{xzqh} || '%')
+    </if>
+
 <if if(1!=1)>
 select DM AS CODE, MC AS NAME
   from P_YLJG a
