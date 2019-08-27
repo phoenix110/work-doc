@@ -83,13 +83,11 @@ SELECT sf.vc_sfkid,
          WHERE rowsnumber <=
          <if if(StringUtils.isNotBlank(#{vc_csflx}) && "1".equals(#{vc_csflx}))>
              (SELECT tj.ccts FROM zjjk_zlfhsj_cf tj WHERE tj.zt = '1')
-             AND countnumber >= (SELECT tj2.ccts FROM zjjk_zlfhsj_cf tj2 WHERE tj2.zt = '1')
          </if>
          <if if(StringUtils.isNotBlank(#{vc_csflx}) && "2".equals(#{vc_csflx}))>
              (SELECT tj.ccts FROM zjjk_zlfhsj_sf tj WHERE tj.zt = '1')
-             AND countnumber >= (SELECT tj2.ccts FROM zjjk_zlfhsj_sf tj2 WHERE tj2.zt = '1')
          </if>
          ) sf,
        zjjk_zl_hzxx hzxx
  WHERE sf.vc_hzid = hzxx.vc_personid
-   AND rn >= 0                                                                                                                                    
+   AND rn >= 0                                                                                                                                                     

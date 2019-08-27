@@ -133,5 +133,4 @@ SELECT vc_bgkid,
                                      AND fh.bccjgid = bgk.vc_bgdw
                                      AND fh.zt = '1'
                                      AND fh.fhbz = '1')
-                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1')
-                       AND countnumber >= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                  
+                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                  
