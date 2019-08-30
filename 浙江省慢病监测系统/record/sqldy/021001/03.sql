@@ -425,7 +425,7 @@ select vc_bgkid,
                        b.vc_jzxxdz,
                        '糖尿病' vc_mblx,
                        'tnb' vc_lx,
-                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY dbms_random.value) rowsnumber,
+                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY nvl2(a.vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
                        COUNT(1) over(PARTITION BY vc_bgdw) countnumber
                   from zjjk_tnb_bgk a, zjjk_tnb_hzxx b
                  where a.vc_hzid = b.vc_personid
@@ -453,4 +453,4 @@ select vc_bgkid,
                                      AND fh.bccjgid = a.vc_bgdw
                                      AND fh.zt = '1'
                                      AND fh.fhbz = '1')
-                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                                              
+                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                                                                                

@@ -22,6 +22,8 @@ SELECT a.id,
        fn_zjjk_zlfh_mb_getfhjg('3',b.vc_bgkid,a.cctjid) fhjgpd,
        a.fhzt fhzt,
        DECODE(a.fhzt,'0','未开始','1','进行中','2','待复核','3','复核通过','4','复核不通过','5','审核通过','6','审核不通过') fhzt_text,
+       b.vc_zyh,
+       lag(a.fhzt, 1, null) over (order by a.ccxh asc) last_fhzt,
        COUNT(1) OVER() total
   FROM zjjk_mb_zlfh a, zjjk_tnb_bgk b, zjjk_tnb_hzxx c
  WHERE a.bgkid = b.vc_bgkid
@@ -31,4 +33,4 @@ SELECT a.id,
    AND b.vc_bgdw LIKE #{vc_bgdw}||'%'
    AND a.mblx = #{vc_mblx}
    AND cctjid = #{ccsjd}
- ORDER BY b.vc_bgdw                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+   order by a.ccxh asc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

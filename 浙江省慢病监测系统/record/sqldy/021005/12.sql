@@ -4,7 +4,7 @@ SELECT fh.id,
        fh.cctjid,
        #{vc_csflx} vc_csflx,
        decode(#{vc_csflx},'1','初访','2','随访') csflx,
-       bg.vc_bgkid bgkbh,
+       bg.vc_bgkbh bgkbh,
        #{vc_bllx} vc_bllx,
        decode(#{vc_bllx},'1','脑卒中','2','冠心病') bllx,
        bg.vc_kzt vc_bgkzt,
@@ -26,6 +26,8 @@ SELECT fh.id,
        fh.fhzt vc_fhzt,
        fh.shyj,
        DECODE(fh.fhzt,'0','未开始','1','进行中','2','待复核','3','复核通过','4','复核不通过','5','审核通过','6','审核不通过') fhzt,
+       bg.vc_zyh,
+       lag(fh.fhzt, 1, null) over (order by fh.ccxh asc) last_fhzt,
        COUNT(1) OVER() total
   FROM zjjk_csf_zlfh fh, zjjk_xnxg_bgk bg, zjjk_xnxg_sfk sf
  WHERE fh.sfkid = sf.vc_sfkid
@@ -33,4 +35,5 @@ SELECT fh.id,
    AND fh.bllx = #{vc_bllx}
    AND fh.zt = '1'
    AND fh.bccjgid LIKE #{vc_bgdw}||'%'
-   AND (('1' = #{vc_csflx} AND cctjid=#{cfccsjd}) OR ('2' = #{vc_csflx} AND cctjid=#{sfccsjd}))                                                                                                                                                                                                                               
+   AND (('1' = #{vc_csflx} AND cctjid=#{cfccsjd}) OR ('2' = #{vc_csflx} AND cctjid=#{sfccsjd})) 
+   order by fh.ccxh asc                                                                                                                                                                                                                                                                                                                                                                                                              

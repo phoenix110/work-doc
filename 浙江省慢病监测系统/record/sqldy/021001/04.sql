@@ -44,6 +44,7 @@ SELECT vc_bgkid,
        vc_shwtgyy1,
        vc_mblx,
        vc_lx,
+       vc_zyh,
        COUNT(1) over() total,
        rn
   FROM (SELECT vc_bgkid,
@@ -75,6 +76,7 @@ SELECT vc_bgkid,
                vc_shwtgyy1,
                vc_mblx,
                vc_lx,
+               vc_zyh,
                rownum AS rn
           FROM (SELECT bgk.vc_bgkid,
                        bgk.vc_bgklx,
@@ -105,7 +107,8 @@ SELECT vc_bgkid,
                        bgk.vc_shwtgyy1,
                        '肿瘤' vc_mblx,
                        'zl' vc_lx,
-                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY dbms_random.value) rowsnumber,
+                       bgk.vc_zyh,
+                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY nvl2(bgk.vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
                        COUNT(1) over(PARTITION BY vc_bgdw) countnumber
                   FROM zjjk_zl_bgk bgk, zjjk_zl_hzxx hzxx
                  WHERE bgk.vc_hzid = hzxx.vc_personid
@@ -133,4 +136,4 @@ SELECT vc_bgkid,
                                      AND fh.bccjgid = bgk.vc_bgdw
                                      AND fh.zt = '1'
                                      AND fh.fhbz = '1')
-                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                  
+                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                                                  

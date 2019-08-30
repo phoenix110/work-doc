@@ -25,10 +25,13 @@ SELECT fh.id,
        fh.fhzt vc_fhzt,
        fh.shyj,
        DECODE(fh.fhzt,'0','未开始','1','进行中','2','待复核','3','复核通过','4','复核不通过','5','审核通过','6','审核不通过') fhzt,
+       bg.vc_zyh,
+       lag(fh.fhzt, 1, null) over (order by fh.ccxh asc) last_fhzt,
        COUNT(1) OVER() total
   FROM zjjk_csf_zlfh fh, zjmb_sw_bgk bg
  WHERE fh.sfkid = bg.vc_bgkid
    AND bg.vc_bgkid = bg.vc_bgkid
    AND fh.bllx = '5'
    AND fh.zt = '1'
-   AND fh.bccjgid LIKE #{vc_bgdw}||'%'                                                                                                                                                                                    
+   AND fh.bccjgid LIKE #{vc_bgdw}||'%'     
+   order by fh.ccxh asc                                                                                                                                                                                                                                                                                                 

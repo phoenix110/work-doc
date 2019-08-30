@@ -21,6 +21,7 @@ SELECT sf.vc_sfkid,
               '1',
               '外省') hjdz,
        vc_bgdw,
+       vc_zyh,
        (SELECT mc FROM p_yljg WHERE dm = sf.vc_bgdw) bkdw,
        rn
   FROM (SELECT vc_sfkid,
@@ -29,6 +30,7 @@ SELECT sf.vc_sfkid,
                vc_bgkcode,
                vc_bgkzt,
                vc_bgdw,
+               vc_zyh,
                rownum rn
           FROM (SELECT vc_sfkid,
                        vc_bgkid,
@@ -36,7 +38,8 @@ SELECT sf.vc_sfkid,
                        vc_bgkcode,
                        vc_bgkzt,
                        vc_bgdw,
-                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY dbms_random.value) rowsnumber,
+                       vc_zyh,
+                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
                        COUNT(1) over(PARTITION BY vc_bgdw) countnumber
                   FROM (SELECT row_number() over(PARTITION BY sfk.vc_bgkid ORDER BY sfk.dt_cjsj) csfrn,
                                sfk.vc_sfkid,
@@ -46,6 +49,7 @@ SELECT sf.vc_sfkid,
                                bgk.vc_bgkcode,
                                bgk.vc_bgkzt,
                                bgk.vc_icd10,
+                               bgk.vc_zyh,
                                bgk.vc_bgdw
                           FROM zjjk_tnb_sfk sfk, zjjk_tnb_bgk bgk
                          WHERE sfk.vc_bgkid = bgk.vc_bgkid
@@ -90,4 +94,4 @@ SELECT sf.vc_sfkid,
          ) sf,
        zjjk_tnb_hzxx hzxx
  WHERE sf.vc_hzid = hzxx.vc_personid
-   AND rn >= 0                                                                                                                                                        
+   AND rn >= 0                                                                                                                                                                                                                                

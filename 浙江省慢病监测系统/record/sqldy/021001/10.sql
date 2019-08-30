@@ -23,6 +23,8 @@ SELECT a.id,
        a.fhzt fhzt,
        fn_zjjk_zlfh_mb_getfhjg('4',b.vc_bgkid,a.cctjid) fhjgpd,
        DECODE(a.fhzt,'0','未开始','1','进行中','2','待复核','3','复核通过','4','复核不通过','5','审核通过','6','审核不通过') fhzt_text,
+       b.vc_zyh,
+       lag(a.fhzt, 1, null) over (order by a.ccxh asc) last_fhzt,
        COUNT(1) OVER() total
   FROM zjjk_mb_zlfh a, zjjk_zl_bgk b, zjjk_zl_hzxx c
  WHERE a.bgkid = b.vc_bgkid
@@ -31,4 +33,5 @@ SELECT a.id,
    AND a.zt = '1'
    AND b.vc_bgdw LIKE #{vc_bgdw}||'%'
    AND a.mblx = #{vc_mblx}
-   AND cctjid = #{ccsjd}                                                                                                                                                                                                                                                                                                                                                                                                       
+   AND cctjid = #{ccsjd}
+   order by a.ccxh asc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          

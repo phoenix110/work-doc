@@ -19,6 +19,7 @@ SELECT vc_bgkid vc_sfkid,
               pkg_zjmb_tnb.fun_getxzqhmc(vc_hkjddm) || vc_hkjw || vc_hkxxdz,
               '1',
               '外省') hjdz,
+       vc_zyh,
        vc_gldwdm vc_bgdw,
        (SELECT mc FROM p_yljg WHERE dm = vc_gldwdm) bkdw,
        rn,
@@ -36,6 +37,7 @@ SELECT vc_bgkid vc_sfkid,
                vc_hkjddm,
                vc_hkjw,
                vc_hkxxdz,
+               vc_zyh,
                rownum rn
           FROM (SELECT bgk.vc_bgkid,
                        bgk.vc_bgkid vc_bgkbh,
@@ -51,7 +53,8 @@ SELECT vc_bgkid vc_sfkid,
                        bgk.vc_hkjddm,
                        bgk.vc_hkjw,
                        bgk.vc_hkxxdz,
-                       row_number() OVER(PARTITION BY vc_gldwdm ORDER BY dbms_random.value) rowsnumber,
+                       vc_zyh,
+                       row_number() OVER(PARTITION BY vc_gldwdm ORDER BY nvl2(bgk.vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
                        COUNT(1) over(PARTITION BY vc_gldwdm) countnumber
                   FROM zjmb_sw_bgk bgk
                  WHERE bgk.vc_sdqr = '1'
@@ -86,4 +89,4 @@ SELECT vc_bgkid vc_sfkid,
              (SELECT tj.ccts FROM zjjk_zlfhsj_sf tj WHERE tj.zt = '1')
          </if>
          )
- WHERE rn >= 0                                                                                 
+ WHERE rn >= 0                                                                                                               

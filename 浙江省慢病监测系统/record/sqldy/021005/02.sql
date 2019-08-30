@@ -21,6 +21,7 @@ SELECT vc_sfkid,
               '1',
               '外省') hjdz,
        vc_bkdwyy vc_bgdw,
+       vc_zyh,
        (SELECT mc FROM p_yljg WHERE dm = vc_bkdwyy) bkdw,
        rn
   FROM (SELECT vc_sfkid,
@@ -38,6 +39,7 @@ SELECT vc_sfkid,
                vc_czhkjd,
                vc_czhkjw,
                vc_czhkxxdz,
+               vc_zyh,
                rownum rn
           FROM (SELECT vc_sfkid,
                        vc_bgkid,
@@ -54,7 +56,8 @@ SELECT vc_sfkid,
                        vc_czhkjd,
                        vc_czhkjw,
                        vc_czhkxxdz,
-                       row_number() OVER(PARTITION BY vc_bkdwyy ORDER BY dbms_random.value) rowsnumber,
+                       vc_zyh,
+                       row_number() OVER(PARTITION BY vc_bkdwyy ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
                        COUNT(1) over(PARTITION BY vc_bkdwyy) countnumber
                   FROM (SELECT row_number() over(PARTITION BY sfk.vc_bgkid ORDER BY sfk.dt_cjsj) csfrn,
                                sfk.vc_sfkid,
@@ -73,7 +76,8 @@ SELECT vc_sfkid,
                                bgk.vc_czhkjd,
                                bgk.vc_czhkjw,
                                bgk.vc_hzicd vc_icd10,
-                               bgk.vc_czhkxxdz
+                               bgk.vc_czhkxxdz,
+                               bgk.vc_zyh
                           FROM zjjk_xnxg_sfk sfk, zjjk_xnxg_bgk bgk
                          WHERE sfk.vc_bgkid = bgk.vc_bgkid
                            AND bgk.vc_bkdwyy LIKE #{vc_bgdw}||'%'
@@ -110,4 +114,4 @@ SELECT vc_sfkid,
              (SELECT tj.ccts FROM zjjk_zlfhsj_sf tj WHERE tj.zt = '1')
          </if>
          )
- WHERE rn >= 0                                                                                                                                                                                                                                 
+ WHERE rn >= 0                                                                                                                                                                                                                                                                                                
