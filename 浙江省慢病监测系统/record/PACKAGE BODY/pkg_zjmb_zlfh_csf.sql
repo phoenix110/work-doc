@@ -152,7 +152,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
       SELECT ccts INTO v_ccts FROM zjjk_zlfhsj_sf a WHERE a.zt = 1;
     END IF;
     --校验sfkid合法性
-    SELECT MIN(COUNT(b.vc_bkdwyy))
+/*    SELECT MIN(COUNT(b.vc_bkdwyy))
       INTO v_count
       FROM zjjk_xnxg_sfk a, zjjk_xnxg_bgk b
      WHERE a.vc_bgkid = b.vc_bgkid
@@ -163,7 +163,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     IF v_count <> v_ccts THEN
       v_err := '本次抽查有医疗机构未找到' || v_ccts || '条脑卒中病例!';
       RAISE err_custom;
-    END IF;
+    END IF;*/
     --写入质量复核初随访表
     INSERT INTO zjjk_csf_zlfh
       (id,
@@ -178,7 +178,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       SELECT DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -191,7 +192,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid
+                      v_bccjgid,
+                      rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -342,7 +344,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
       SELECT ccts INTO v_ccts FROM zjjk_zlfhsj_sf a WHERE a.zt = 1;
     END IF;
     --校验sfkid合法性
-    SELECT MIN(COUNT(b.vc_bkdwyy))
+/*    SELECT MIN(COUNT(b.vc_bkdwyy))
       INTO v_count
       FROM zjjk_xnxg_sfk a, zjjk_xnxg_bgk b
      WHERE a.vc_bgkid = b.vc_bgkid
@@ -353,7 +355,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     IF v_count <> v_ccts THEN
       v_err := '本次抽查有医疗机构未找到' || v_ccts || '条冠心病病例!';
       RAISE err_custom;
-    END IF;
+    END IF;*/
     --写入质量复核初随访表
     INSERT INTO zjjk_csf_zlfh
       (id,
@@ -368,7 +370,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       SELECT DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -381,7 +384,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid
+                      v_bccjgid,
+                      rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -532,7 +536,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
       SELECT ccts INTO v_ccts FROM zjjk_zlfhsj_sf a WHERE a.zt = 1;
     END IF;
     --校验sfkid合法性
-    SELECT MIN(COUNT(b.vc_bgdw))
+/*    SELECT MIN(COUNT(b.vc_bgdw))
       INTO v_count
       FROM zjjk_tnb_sfk a, zjjk_tnb_bgk b
      WHERE a.vc_bgkid = b.vc_bgkid
@@ -543,7 +547,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     IF v_count <> v_ccts THEN
       v_err := '本次抽查有医疗机构未找到' || v_ccts || '条糖尿病病例!';
       RAISE err_custom;
-    END IF;
+    END IF;*/
     --写入质量复核初随访表
     INSERT INTO zjjk_csf_zlfh
       (id,
@@ -558,7 +562,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       SELECT DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -571,7 +576,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid
+                      v_bccjgid,
+                      rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -722,7 +728,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
       SELECT ccts INTO v_ccts FROM zjjk_zlfhsj_sf a WHERE a.zt = 1;
     END IF;
     --校验sfkid合法性
-    SELECT MIN(COUNT(b.vc_bgdw))
+/*    SELECT MIN(COUNT(b.vc_bgdw))
       INTO v_count
       FROM zjjk_zl_sfk a, zjjk_zl_bgk b
      WHERE a.vc_bgkid = b.vc_bgkid
@@ -733,7 +739,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     IF v_count <> v_ccts THEN
       v_err := '本次抽查有医疗机构未找到' || v_ccts || '条肿瘤病例!';
       RAISE err_custom;
-    END IF;
+    END IF;*/
     --写入质量复核初随访表
     INSERT INTO zjjk_csf_zlfh
       (id,
@@ -748,7 +754,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       SELECT DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -761,7 +768,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid
+                      v_bccjgid,
+                      rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -911,7 +919,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     END IF;
  
     --校验bgkid合法性
-    SELECT MIN(COUNT(a.vc_gldwdm))
+/*    SELECT MIN(COUNT(a.vc_gldwdm))
       INTO v_count
       FROM zjmb_sw_bgk a
      WHERE a.vc_bgkid IN
@@ -921,7 +929,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     IF v_count <> v_ccts THEN
       v_err := '本次抽查有医疗机构未找到' || v_ccts || '条死亡病例!';
       RAISE err_custom;
-    END IF;
+    END IF;*/
     --写入质量复核初随访表
     INSERT INTO zjjk_csf_zlfh
       (id,
@@ -936,7 +944,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       SELECT DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -949,7 +958,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid
+                      v_bccjgid,
+                      rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -1363,115 +1373,115 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
   /*-----------------------------------------------------------------------------
   || 功能描述 ：慢性病初访病例审核
   ||----------------------------------------------------------------------------*/
-	PROCEDURE prc_cf_blfh_mb_zt_sh(data_in    IN CLOB, --入参
-																 result_out OUT VARCHAR2) --返回
-	 IS
-		v_json_data   json;
-		v_json_return json := json();
-		err_custom EXCEPTION;
-		v_err    VARCHAR2(2000);
-		v_id     zjjk_csf_zlfh.id%TYPE; --ID
-		v_shzt   zjjk_csf_zlfh.fhzt%TYPE; --ID
-		v_shyj   zjjk_csf_zlfh.shyj%TYPE; --复核意见
-		v_kpbmsh zjjk_cf_zlfh_mxbjc.kpbmsh%TYPE; --卡片编码审核
-		v_kpztsh zjjk_cf_zlfh_mxbjc.kpztsh%TYPE; --卡片状态审核
-		v_hzxmsh zjjk_cf_zlfh_mxbjc.hzxmsh%TYPE; --患者姓名审核
-		v_xbsh   zjjk_cf_zlfh_mxbjc.xbsh%TYPE; --性别审核
-		v_sfzhsh zjjk_cf_zlfh_mxbjc.sfzhsh%TYPE; --身份证号审核
-		v_csrqsh zjjk_cf_zlfh_mxbjc.csrqsh%TYPE; --出生日期审核
-		v_lxdhsh zjjk_cf_zlfh_mxbjc.lxdhsh%TYPE; --联系电话审核
-		v_zdyysh zjjk_cf_zlfh_mxbjc.zdyysh%TYPE; --诊断医院审核
-		v_zdmcsh zjjk_cf_zlfh_mxbjc.zdmcsh%TYPE; --诊断名称审核
-		v_fbrqsh zjjk_cf_zlfh_mxbjc.fbrqsh%TYPE; --发病日期审核
-		v_hjdzsh zjjk_cf_zlfh_mxbjc.hjdzsh%TYPE; --户籍地址审核
-		v_sfswsh zjjk_cf_zlfh_mxbjc.sfswsh%TYPE; --是否死亡审核
-		v_swrqsh zjjk_cf_zlfh_mxbjc.swrqsh%TYPE; --死亡日期审核
-		v_gbsysh zjjk_cf_zlfh_mxbjc.gbsysh%TYPE; --根本死因审核
+  PROCEDURE prc_cf_blfh_mb_zt_sh(data_in    IN CLOB, --入参
+                                 result_out OUT VARCHAR2) --返回
+   IS
+    v_json_data   json;
+    v_json_return json := json();
+    err_custom EXCEPTION;
+    v_err    VARCHAR2(2000);
+    v_id     zjjk_csf_zlfh.id%TYPE; --ID
+    v_shzt   zjjk_csf_zlfh.fhzt%TYPE; --ID
+    v_shyj   zjjk_csf_zlfh.shyj%TYPE; --复核意见
+    v_kpbmsh zjjk_cf_zlfh_mxbjc.kpbmsh%TYPE; --卡片编码审核
+    v_kpztsh zjjk_cf_zlfh_mxbjc.kpztsh%TYPE; --卡片状态审核
+    v_hzxmsh zjjk_cf_zlfh_mxbjc.hzxmsh%TYPE; --患者姓名审核
+    v_xbsh   zjjk_cf_zlfh_mxbjc.xbsh%TYPE; --性别审核
+    v_sfzhsh zjjk_cf_zlfh_mxbjc.sfzhsh%TYPE; --身份证号审核
+    v_csrqsh zjjk_cf_zlfh_mxbjc.csrqsh%TYPE; --出生日期审核
+    v_lxdhsh zjjk_cf_zlfh_mxbjc.lxdhsh%TYPE; --联系电话审核
+    v_zdyysh zjjk_cf_zlfh_mxbjc.zdyysh%TYPE; --诊断医院审核
+    v_zdmcsh zjjk_cf_zlfh_mxbjc.zdmcsh%TYPE; --诊断名称审核
+    v_fbrqsh zjjk_cf_zlfh_mxbjc.fbrqsh%TYPE; --发病日期审核
+    v_hjdzsh zjjk_cf_zlfh_mxbjc.hjdzsh%TYPE; --户籍地址审核
+    v_sfswsh zjjk_cf_zlfh_mxbjc.sfswsh%TYPE; --是否死亡审核
+    v_swrqsh zjjk_cf_zlfh_mxbjc.swrqsh%TYPE; --死亡日期审核
+    v_gbsysh zjjk_cf_zlfh_mxbjc.gbsysh%TYPE; --根本死因审核
 
-		--公共变量
-		v_sysdate DATE;
-		v_czyjgjb VARCHAR2(3);
-		v_czyjgdm VARCHAR2(50);
-		v_czyyhid VARCHAR2(50);
-		v_czyyhxm VARCHAR2(50);
-		v_count   NUMBER;
+    --公共变量
+    v_sysdate DATE;
+    v_czyjgjb VARCHAR2(3);
+    v_czyjgdm VARCHAR2(50);
+    v_czyyhid VARCHAR2(50);
+    v_czyyhxm VARCHAR2(50);
+    v_count   NUMBER;
 
-	BEGIN
-		json_data(data_in, '慢性病初访病例审核', v_json_data);
-		v_sysdate := SYSDATE;
-		v_czyjgdm := json_str(v_json_data, 'czyjgdm');
-		v_czyyhid := json_str(v_json_data, 'czyyhid');
-		v_czyjgjb := json_str(v_json_data, 'czyjgjb');
-		v_czyyhxm := json_str(v_json_data, 'czyyhxm');
+  BEGIN
+    json_data(data_in, '慢性病初访病例审核', v_json_data);
+    v_sysdate := SYSDATE;
+    v_czyjgdm := json_str(v_json_data, 'czyjgdm');
+    v_czyyhid := json_str(v_json_data, 'czyyhid');
+    v_czyjgjb := json_str(v_json_data, 'czyjgjb');
+    v_czyyhxm := json_str(v_json_data, 'czyyhxm');
 
-		v_id     := json_str(v_json_data, 'id');
-		v_shzt   := json_str(v_json_data, 'fhzt');
-		v_shyj   := json_str(v_json_data, 'shyj');
-		v_kpbmsh := json_str(v_json_data, 'kpbmsh');
-		v_kpztsh := json_str(v_json_data, 'kpztsh');
-		v_hzxmsh := json_str(v_json_data, 'hzxmsh');
-		v_xbsh   := json_str(v_json_data, 'xbsh');
-		v_sfzhsh := json_str(v_json_data, 'sfzhsh');
-		v_csrqsh := json_str(v_json_data, 'csrqsh');
-		v_lxdhsh := json_str(v_json_data, 'lxdhsh');
-		v_zdyysh := json_str(v_json_data, 'zdyysh');
-		v_zdmcsh := json_str(v_json_data, 'zdmcsh');
-		v_fbrqsh := json_str(v_json_data, 'fbrqsh');
-		v_hjdzsh := json_str(v_json_data, 'hjdzsh');
-		v_sfswsh := json_str(v_json_data, 'sfswsh');
-		v_swrqsh := json_str(v_json_data, 'swrqsh');
-		v_gbsysh := json_str(v_json_data, 'gbsysh');
+    v_id     := json_str(v_json_data, 'id');
+    v_shzt   := json_str(v_json_data, 'fhzt');
+    v_shyj   := json_str(v_json_data, 'shyj');
+    v_kpbmsh := json_str(v_json_data, 'kpbmsh');
+    v_kpztsh := json_str(v_json_data, 'kpztsh');
+    v_hzxmsh := json_str(v_json_data, 'hzxmsh');
+    v_xbsh   := json_str(v_json_data, 'xbsh');
+    v_sfzhsh := json_str(v_json_data, 'sfzhsh');
+    v_csrqsh := json_str(v_json_data, 'csrqsh');
+    v_lxdhsh := json_str(v_json_data, 'lxdhsh');
+    v_zdyysh := json_str(v_json_data, 'zdyysh');
+    v_zdmcsh := json_str(v_json_data, 'zdmcsh');
+    v_fbrqsh := json_str(v_json_data, 'fbrqsh');
+    v_hjdzsh := json_str(v_json_data, 'hjdzsh');
+    v_sfswsh := json_str(v_json_data, 'sfswsh');
+    v_swrqsh := json_str(v_json_data, 'swrqsh');
+    v_gbsysh := json_str(v_json_data, 'gbsysh');
 
-		IF v_id IS NULL THEN
-			v_err := 'id不能为空!';
-			RAISE err_custom;
-		END IF;
-		IF nvl(v_shzt, '-1') NOT IN ('5', '6') THEN
-			v_err := '审核状态传入有误!';
-			RAISE err_custom;
-		END IF;
-		--更新状态
-		UPDATE zjjk_csf_zlfh a
-			 SET a.fhzt    = v_shzt,
-					 a.shczrid = v_czyyhid,
-					 a.shczrxm = v_czyyhxm,
-					 a.shjgid  = v_czyjgdm,
-					 a.shsj    = v_sysdate,
-					 a.shyj    = v_shyj
-		 WHERE a.fhzt = '3'
-			 AND a.id = v_id
-			 AND a.csflx = '1'
-			 AND a.zt = '1';
-		IF SQL%ROWCOUNT <> 1 THEN
-			v_err := '更新病例审核状态出错!';
-			RAISE err_custom;
-		END IF;
-		UPDATE zjjk_cf_zlfh_mxbjc a
-			 SET a.kpbmsh = v_kpbmsh,
-					 a.kpztsh = v_kpztsh,
-					 a.hzxmsh = v_hzxmsh,
-					 a.xbsh   = v_xbsh,
-					 a.sfzhsh = v_sfzhsh,
-					 a.csrqsh = v_csrqsh,
-					 a.lxdhsh = v_lxdhsh,
-					 a.zdyysh = v_zdyysh,
-					 a.zdmcsh = v_zdmcsh,
-					 a.fbrqsh = v_fbrqsh,
-					 a.hjdzsh = v_hjdzsh,
-					 a.sfswsh = v_sfswsh,
-					 a.swrqsh = v_swrqsh,
-					 a.gbsysh = v_gbsysh,
-					 a.fhzt   = v_shzt
-		 WHERE a.id = v_id;
+    IF v_id IS NULL THEN
+      v_err := 'id不能为空!';
+      RAISE err_custom;
+    END IF;
+    IF nvl(v_shzt, '-1') NOT IN ('5', '6') THEN
+      v_err := '审核状态传入有误!';
+      RAISE err_custom;
+    END IF;
+    --更新状态
+    UPDATE zjjk_csf_zlfh a
+       SET a.fhzt    = v_shzt,
+           a.shczrid = v_czyyhid,
+           a.shczrxm = v_czyyhxm,
+           a.shjgid  = v_czyjgdm,
+           a.shsj    = v_sysdate,
+           a.shyj    = v_shyj
+     WHERE a.fhzt = '3'
+       AND a.id = v_id
+       AND a.csflx = '1'
+       AND a.zt = '1';
+    IF SQL%ROWCOUNT <> 1 THEN
+      v_err := '更新病例审核状态出错!';
+      RAISE err_custom;
+    END IF;
+    UPDATE zjjk_cf_zlfh_mxbjc a
+       SET a.kpbmsh = v_kpbmsh,
+           a.kpztsh = v_kpztsh,
+           a.hzxmsh = v_hzxmsh,
+           a.xbsh   = v_xbsh,
+           a.sfzhsh = v_sfzhsh,
+           a.csrqsh = v_csrqsh,
+           a.lxdhsh = v_lxdhsh,
+           a.zdyysh = v_zdyysh,
+           a.zdmcsh = v_zdmcsh,
+           a.fbrqsh = v_fbrqsh,
+           a.hjdzsh = v_hjdzsh,
+           a.sfswsh = v_sfswsh,
+           a.swrqsh = v_swrqsh,
+           a.gbsysh = v_gbsysh,
+           a.fhzt   = v_shzt
+     WHERE a.id = v_id;
 
-		result_out := return_succ_json(v_json_return);
-	EXCEPTION
-		WHEN err_custom THEN
-			result_out := v_err;
-		WHEN OTHERS THEN
-			v_err      := SQLERRM;
-			result_out := v_err;
-	END prc_cf_blfh_mb_zt_sh;
+    result_out := return_succ_json(v_json_return);
+  EXCEPTION
+    WHEN err_custom THEN
+      result_out := v_err;
+    WHEN OTHERS THEN
+      v_err      := SQLERRM;
+      result_out := v_err;
+  END prc_cf_blfh_mb_zt_sh;
   /*-----------------------------------------------------------------------------
   || 功能描述 ：死亡初访填报
   ||----------------------------------------------------------------------------*/
@@ -1822,100 +1832,100 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
   /*-----------------------------------------------------------------------------
   || 功能描述 ：死亡初访病例审核
   ||----------------------------------------------------------------------------*/
-	PROCEDURE prc_cf_blfh_sw_zt_sh(data_in    IN CLOB, --入参
-																 result_out OUT VARCHAR2) --返回
-	 IS
-		v_json_data   json;
-		v_json_return json := json();
-		err_custom EXCEPTION;
-		v_err    VARCHAR2(2000);
-		v_id     zjjk_csf_zlfh.id%TYPE; --ID
-		v_shzt   zjjk_csf_zlfh.fhzt%TYPE; --ID
-		v_shyj   zjjk_csf_zlfh.shyj%TYPE; --复核意见
-		v_kpbmsh zjjk_cf_zlfh_swga.kpbmsh%TYPE; --卡片编码审核
-		v_szxmsh zjjk_cf_zlfh_swga.szxmsh%TYPE; --死者姓名审核
-		v_xbsh   zjjk_cf_zlfh_swga.xbsh%TYPE; --性别审核
-		v_sfzhsh zjjk_cf_zlfh_swga.sfzhsh%TYPE; --身份证号审核
-		v_lxjssh zjjk_cf_zlfh_swga.lxjssh%TYPE; --联系家属审核
-		v_lxdhsh zjjk_cf_zlfh_swga.lxdhsh%TYPE; --联系电话审核
-		v_hjdzsh zjjk_cf_zlfh_swga.hjdzsh%TYPE; --户籍地址审核
-		v_swrqsh zjjk_cf_zlfh_swga.swrqsh%TYPE; --死亡日期审核
-		v_gbsysh zjjk_cf_zlfh_swga.gbsysh%TYPE; --根本死因审核
+  PROCEDURE prc_cf_blfh_sw_zt_sh(data_in    IN CLOB, --入参
+                                 result_out OUT VARCHAR2) --返回
+   IS
+    v_json_data   json;
+    v_json_return json := json();
+    err_custom EXCEPTION;
+    v_err    VARCHAR2(2000);
+    v_id     zjjk_csf_zlfh.id%TYPE; --ID
+    v_shzt   zjjk_csf_zlfh.fhzt%TYPE; --ID
+    v_shyj   zjjk_csf_zlfh.shyj%TYPE; --复核意见
+    v_kpbmsh zjjk_cf_zlfh_swga.kpbmsh%TYPE; --卡片编码审核
+    v_szxmsh zjjk_cf_zlfh_swga.szxmsh%TYPE; --死者姓名审核
+    v_xbsh   zjjk_cf_zlfh_swga.xbsh%TYPE; --性别审核
+    v_sfzhsh zjjk_cf_zlfh_swga.sfzhsh%TYPE; --身份证号审核
+    v_lxjssh zjjk_cf_zlfh_swga.lxjssh%TYPE; --联系家属审核
+    v_lxdhsh zjjk_cf_zlfh_swga.lxdhsh%TYPE; --联系电话审核
+    v_hjdzsh zjjk_cf_zlfh_swga.hjdzsh%TYPE; --户籍地址审核
+    v_swrqsh zjjk_cf_zlfh_swga.swrqsh%TYPE; --死亡日期审核
+    v_gbsysh zjjk_cf_zlfh_swga.gbsysh%TYPE; --根本死因审核
 
-		--公共变量
-		v_sysdate DATE;
-		v_czyjgjb VARCHAR2(3);
-		v_czyjgdm VARCHAR2(50);
-		v_czyyhid VARCHAR2(50);
-		v_czyyhxm VARCHAR2(50);
-		v_count   NUMBER;
+    --公共变量
+    v_sysdate DATE;
+    v_czyjgjb VARCHAR2(3);
+    v_czyjgdm VARCHAR2(50);
+    v_czyyhid VARCHAR2(50);
+    v_czyyhxm VARCHAR2(50);
+    v_count   NUMBER;
 
-	BEGIN
-		json_data(data_in, '慢性病初访病例审核', v_json_data);
-		v_sysdate := SYSDATE;
-		v_czyjgdm := json_str(v_json_data, 'czyjgdm');
-		v_czyyhid := json_str(v_json_data, 'czyyhid');
-		v_czyjgjb := json_str(v_json_data, 'czyjgjb');
-		v_czyyhxm := json_str(v_json_data, 'czyyhxm');
+  BEGIN
+    json_data(data_in, '慢性病初访病例审核', v_json_data);
+    v_sysdate := SYSDATE;
+    v_czyjgdm := json_str(v_json_data, 'czyjgdm');
+    v_czyyhid := json_str(v_json_data, 'czyyhid');
+    v_czyjgjb := json_str(v_json_data, 'czyjgjb');
+    v_czyyhxm := json_str(v_json_data, 'czyyhxm');
 
-		v_id     := json_str(v_json_data, 'id');
-		v_shzt   := json_str(v_json_data, 'fhzt');
-		v_shyj   := json_str(v_json_data, 'shyj');
-		v_kpbmsh := json_str(v_json_data, 'kpbmsh');
-		v_szxmsh := json_str(v_json_data, 'szxmsh');
-		v_xbsh   := json_str(v_json_data, 'xbsh');
-		v_sfzhsh := json_str(v_json_data, 'sfzhsh');
-		v_lxjssh := json_str(v_json_data, 'lxjssh');
-		v_lxdhsh := json_str(v_json_data, 'lxdhsh');
-		v_hjdzsh := json_str(v_json_data, 'hjdzsh');
-		v_swrqsh := json_str(v_json_data, 'swrqsh');
-		v_gbsysh := json_str(v_json_data, 'gbsysh');
-		IF v_id IS NULL THEN
-			v_err := 'id不能为空!';
-			RAISE err_custom;
-		END IF;
-		IF nvl(v_shzt, '-1') NOT IN ('5', '6') THEN
-			v_err := '审核状态传入有误!';
-			RAISE err_custom;
-		END IF;
-		--更新状态
-		UPDATE zjjk_csf_zlfh a
-			 SET a.fhzt    = v_shzt,
-					 a.shczrid = v_czyyhid,
-					 a.shczrxm = v_czyyhxm,
-					 a.shjgid  = v_czyjgdm,
-					 a.shsj    = v_sysdate,
-					 a.shyj    = v_shyj
-		 WHERE a.fhzt = '3'
-			 AND a.id = v_id
-			 AND a.csflx = '1'
-			 AND a.bllx = '5'
-			 AND a.zt = '1';
-		IF SQL%ROWCOUNT <> 1 THEN
-			v_err := '更新病例审核状态出错!';
-			RAISE err_custom;
-		END IF;
-		UPDATE zjjk_cf_zlfh_swga a
-			 SET a.kpbmsh = v_kpbmsh,
-					 a.szxmsh = v_szxmsh,
-					 a.xbsh   = v_xbsh,
-					 a.sfzhsh = v_sfzhsh,
-					 a.lxjssh = v_lxjssh,
-					 a.lxdhsh = v_lxdhsh,
-					 a.hjdzsh = v_hjdzsh,
-					 a.swrqsh = v_swrqsh,
-					 a.gbsysh = v_gbsysh,
-					 a.fhzt   = v_shzt
-		 WHERE a.id = v_id;
+    v_id     := json_str(v_json_data, 'id');
+    v_shzt   := json_str(v_json_data, 'fhzt');
+    v_shyj   := json_str(v_json_data, 'shyj');
+    v_kpbmsh := json_str(v_json_data, 'kpbmsh');
+    v_szxmsh := json_str(v_json_data, 'szxmsh');
+    v_xbsh   := json_str(v_json_data, 'xbsh');
+    v_sfzhsh := json_str(v_json_data, 'sfzhsh');
+    v_lxjssh := json_str(v_json_data, 'lxjssh');
+    v_lxdhsh := json_str(v_json_data, 'lxdhsh');
+    v_hjdzsh := json_str(v_json_data, 'hjdzsh');
+    v_swrqsh := json_str(v_json_data, 'swrqsh');
+    v_gbsysh := json_str(v_json_data, 'gbsysh');
+    IF v_id IS NULL THEN
+      v_err := 'id不能为空!';
+      RAISE err_custom;
+    END IF;
+    IF nvl(v_shzt, '-1') NOT IN ('5', '6') THEN
+      v_err := '审核状态传入有误!';
+      RAISE err_custom;
+    END IF;
+    --更新状态
+    UPDATE zjjk_csf_zlfh a
+       SET a.fhzt    = v_shzt,
+           a.shczrid = v_czyyhid,
+           a.shczrxm = v_czyyhxm,
+           a.shjgid  = v_czyjgdm,
+           a.shsj    = v_sysdate,
+           a.shyj    = v_shyj
+     WHERE a.fhzt = '3'
+       AND a.id = v_id
+       AND a.csflx = '1'
+       AND a.bllx = '5'
+       AND a.zt = '1';
+    IF SQL%ROWCOUNT <> 1 THEN
+      v_err := '更新病例审核状态出错!';
+      RAISE err_custom;
+    END IF;
+    UPDATE zjjk_cf_zlfh_swga a
+       SET a.kpbmsh = v_kpbmsh,
+           a.szxmsh = v_szxmsh,
+           a.xbsh   = v_xbsh,
+           a.sfzhsh = v_sfzhsh,
+           a.lxjssh = v_lxjssh,
+           a.lxdhsh = v_lxdhsh,
+           a.hjdzsh = v_hjdzsh,
+           a.swrqsh = v_swrqsh,
+           a.gbsysh = v_gbsysh,
+           a.fhzt   = v_shzt
+     WHERE a.id = v_id;
 
-		result_out := return_succ_json(v_json_return);
-	EXCEPTION
-		WHEN err_custom THEN
-			result_out := v_err;
-		WHEN OTHERS THEN
-			v_err      := SQLERRM;
-			result_out := v_err;
-	END prc_cf_blfh_sw_zt_sh;
+    result_out := return_succ_json(v_json_return);
+  EXCEPTION
+    WHEN err_custom THEN
+      result_out := v_err;
+    WHEN OTHERS THEN
+      v_err      := SQLERRM;
+      result_out := v_err;
+  END prc_cf_blfh_sw_zt_sh;
   /*-----------------------------------------------------------------------------
   || 功能描述 ：慢病随访填报
   ||----------------------------------------------------------------------------*/
@@ -2232,91 +2242,91 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
   /*-----------------------------------------------------------------------------
   || 功能描述 ：慢性病随访病例审核
   ||----------------------------------------------------------------------------*/
-	PROCEDURE prc_sf_blfh_mb_zt_sh(data_in    IN CLOB, --入参
-																 result_out OUT VARCHAR2) --返回
-	 IS
-		v_json_data   json;
-		v_json_return json := json();
-		err_custom EXCEPTION;
-		v_err    VARCHAR2(2000);
-		v_id     zjjk_mb_zlfh.id%TYPE; --ID
-		v_shzt   zjjk_mb_zlfh.fhzt%TYPE; --ID
-		v_shyj   zjjk_mb_zlfh.shyj%TYPE; --复核意见
-		v_kpbmsh zjjk_sf_zlfh_mxbjc.kpbmsh%TYPE; --卡片编码审核
-		v_hzxmsh zjjk_sf_zlfh_mxbjc.hzxmsh%TYPE; --患者姓名审核
-		v_lxdhsh zjjk_sf_zlfh_mxbjc.lxdhsh%TYPE; --联系电话审核
-		v_hjdzsh zjjk_sf_zlfh_mxbjc.hjdzsh%TYPE; --户籍地址审核
-		v_scztsh zjjk_sf_zlfh_mxbjc.scztsh%TYPE; --生存状态审核
-		v_swrqsh zjjk_sf_zlfh_mxbjc.swrqsh%TYPE; --死亡日期审核
-		v_gbsysh zjjk_sf_zlfh_mxbjc.gbsysh%TYPE; --根本死因审核
+  PROCEDURE prc_sf_blfh_mb_zt_sh(data_in    IN CLOB, --入参
+                                 result_out OUT VARCHAR2) --返回
+   IS
+    v_json_data   json;
+    v_json_return json := json();
+    err_custom EXCEPTION;
+    v_err    VARCHAR2(2000);
+    v_id     zjjk_mb_zlfh.id%TYPE; --ID
+    v_shzt   zjjk_mb_zlfh.fhzt%TYPE; --ID
+    v_shyj   zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    v_kpbmsh zjjk_sf_zlfh_mxbjc.kpbmsh%TYPE; --卡片编码审核
+    v_hzxmsh zjjk_sf_zlfh_mxbjc.hzxmsh%TYPE; --患者姓名审核
+    v_lxdhsh zjjk_sf_zlfh_mxbjc.lxdhsh%TYPE; --联系电话审核
+    v_hjdzsh zjjk_sf_zlfh_mxbjc.hjdzsh%TYPE; --户籍地址审核
+    v_scztsh zjjk_sf_zlfh_mxbjc.scztsh%TYPE; --生存状态审核
+    v_swrqsh zjjk_sf_zlfh_mxbjc.swrqsh%TYPE; --死亡日期审核
+    v_gbsysh zjjk_sf_zlfh_mxbjc.gbsysh%TYPE; --根本死因审核
 
-		--公共变量
-		v_sysdate DATE;
-		v_czyjgjb VARCHAR2(3);
-		v_czyjgdm VARCHAR2(50);
-		v_czyyhid VARCHAR2(50);
-		v_czyyhxm VARCHAR2(50);
-		v_count   NUMBER;
+    --公共变量
+    v_sysdate DATE;
+    v_czyjgjb VARCHAR2(3);
+    v_czyjgdm VARCHAR2(50);
+    v_czyyhid VARCHAR2(50);
+    v_czyyhxm VARCHAR2(50);
+    v_count   NUMBER;
 
-	BEGIN
-		json_data(data_in, '慢性病随访病例审核', v_json_data);
-		v_sysdate := SYSDATE;
-		v_czyjgdm := json_str(v_json_data, 'czyjgdm');
-		v_czyyhid := json_str(v_json_data, 'czyyhid');
-		v_czyjgjb := json_str(v_json_data, 'czyjgjb');
-		v_czyyhxm := json_str(v_json_data, 'czyyhxm');
+  BEGIN
+    json_data(data_in, '慢性病随访病例审核', v_json_data);
+    v_sysdate := SYSDATE;
+    v_czyjgdm := json_str(v_json_data, 'czyjgdm');
+    v_czyyhid := json_str(v_json_data, 'czyyhid');
+    v_czyjgjb := json_str(v_json_data, 'czyjgjb');
+    v_czyyhxm := json_str(v_json_data, 'czyyhxm');
 
-		v_id     := json_str(v_json_data, 'id');
-		v_shzt   := json_str(v_json_data, 'fhzt');
-		v_shyj   := json_str(v_json_data, 'shyj');
-		v_kpbmsh := json_str(v_json_data, 'kpbmsh');
-		v_hzxmsh := json_str(v_json_data, 'hzxmsh');
-		v_lxdhsh := json_str(v_json_data, 'lxdhsh');
-		v_hjdzsh := json_str(v_json_data, 'hjdzsh');
-		v_scztsh := json_str(v_json_data, 'scztsh');
-		v_swrqsh := json_str(v_json_data, 'swrqsh');
-		v_gbsysh := json_str(v_json_data, 'gbsysh');
-		IF v_id IS NULL THEN
-			v_err := 'id不能为空!';
-			RAISE err_custom;
-		END IF;
-		IF nvl(v_shzt, '-1') NOT IN ('5', '6') THEN
-			v_err := '审核状态传入有误!';
-			RAISE err_custom;
-		END IF;
-		--更新状态
-		UPDATE zjjk_csf_zlfh a
-			 SET a.fhzt    = v_shzt,
-					 a.shczrid = v_czyyhid,
-					 a.shczrxm = v_czyyhxm,
-					 a.shjgid  = v_czyjgdm,
-					 a.shsj    = v_sysdate,
-					 a.shyj    = v_shyj
-		 WHERE a.fhzt = '3'
-			 AND a.id = v_id
-			 AND a.csflx = '2'
-			 AND a.zt = '1';
-		IF SQL%ROWCOUNT <> 1 THEN
-			v_err := '更新病例审核状态出错!';
-			RAISE err_custom;
-		END IF;
-		UPDATE zjjk_sf_zlfh_mxbjc a
-			 SET a.kpbmsh = v_kpbmsh,
-					 a.hzxmsh = v_hzxmsh,
-					 a.lxdhsh = v_lxdhsh,
-					 a.hjdzsh = v_hjdzsh,
-					 a.scztsh = v_scztsh,
-					 a.swrqsh = v_swrqsh,
-					 a.gbsysh = v_gbsysh,
-					 a.fhzt   = v_shzt
-		 WHERE a.id = v_id;
+    v_id     := json_str(v_json_data, 'id');
+    v_shzt   := json_str(v_json_data, 'fhzt');
+    v_shyj   := json_str(v_json_data, 'shyj');
+    v_kpbmsh := json_str(v_json_data, 'kpbmsh');
+    v_hzxmsh := json_str(v_json_data, 'hzxmsh');
+    v_lxdhsh := json_str(v_json_data, 'lxdhsh');
+    v_hjdzsh := json_str(v_json_data, 'hjdzsh');
+    v_scztsh := json_str(v_json_data, 'scztsh');
+    v_swrqsh := json_str(v_json_data, 'swrqsh');
+    v_gbsysh := json_str(v_json_data, 'gbsysh');
+    IF v_id IS NULL THEN
+      v_err := 'id不能为空!';
+      RAISE err_custom;
+    END IF;
+    IF nvl(v_shzt, '-1') NOT IN ('5', '6') THEN
+      v_err := '审核状态传入有误!';
+      RAISE err_custom;
+    END IF;
+    --更新状态
+    UPDATE zjjk_csf_zlfh a
+       SET a.fhzt    = v_shzt,
+           a.shczrid = v_czyyhid,
+           a.shczrxm = v_czyyhxm,
+           a.shjgid  = v_czyjgdm,
+           a.shsj    = v_sysdate,
+           a.shyj    = v_shyj
+     WHERE a.fhzt = '3'
+       AND a.id = v_id
+       AND a.csflx = '2'
+       AND a.zt = '1';
+    IF SQL%ROWCOUNT <> 1 THEN
+      v_err := '更新病例审核状态出错!';
+      RAISE err_custom;
+    END IF;
+    UPDATE zjjk_sf_zlfh_mxbjc a
+       SET a.kpbmsh = v_kpbmsh,
+           a.hzxmsh = v_hzxmsh,
+           a.lxdhsh = v_lxdhsh,
+           a.hjdzsh = v_hjdzsh,
+           a.scztsh = v_scztsh,
+           a.swrqsh = v_swrqsh,
+           a.gbsysh = v_gbsysh,
+           a.fhzt   = v_shzt
+     WHERE a.id = v_id;
 
-		result_out := return_succ_json(v_json_return);
-	EXCEPTION
-		WHEN err_custom THEN
-			result_out := v_err;
-		WHEN OTHERS THEN
-			v_err      := SQLERRM;
-			result_out := v_err;
-	END prc_sf_blfh_mb_zt_sh;
+    result_out := return_succ_json(v_json_return);
+  EXCEPTION
+    WHEN err_custom THEN
+      result_out := v_err;
+    WHEN OTHERS THEN
+      v_err      := SQLERRM;
+      result_out := v_err;
+  END prc_sf_blfh_mb_zt_sh;
 END pkg_zjmb_zlfh_csf;

@@ -21,7 +21,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_json_return json := json();
     err_custom EXCEPTION;
     v_err VARCHAR2(2000);
-		 
+     
     --公共变量
     v_sysdate date;
     v_czyjgjb varchar2(3);
@@ -29,8 +29,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_czyyhid varchar2(50);
     v_czyyhxm varchar2(50);
     v_count   number;
- 		v_ccts    number;
-		 
+    v_ccts    number;
+     
     v_id      zjjk_mb_zlfh.id%TYPE; --ID
     v_bgkid   zjjk_mb_zlfh.bgkid%TYPE; --报告卡ID
     v_cctjid  zjjk_mb_zlfh.cctjid%TYPE; --抽查条件ID
@@ -96,11 +96,11 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
       v_err := '抽查条件ID不能为空!';
       raise err_custom;
     end if;
-		--如果抽查区县
+    --如果抽查区县
     if v_bccjgid is null THEN
-			SELECT wm_concat(bgk.vc_bgdw)
-			  INTO v_bccjgid
-				FROM zjjk_tnb_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
+      SELECT wm_concat(bgk.vc_bgdw)
+        INTO v_bccjgid
+        FROM zjjk_tnb_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
       --v_err := '被抽查机构不能为空!';
       --raise err_custom;
     end if;
@@ -138,17 +138,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
       FROM zjjk_zlfhsj a
      WHERE a.zt = 1;
     --校验bgkid合法性
-    select min(count(vc_bgdw))
+/*    select min(count(vc_bgdw))
       into v_count
       from zjjk_tnb_bgk a
      where a.vc_bgkid in
            (SELECT DISTINCT column_value column_value
               FROM TABLE(split(v_bgkid_s, ',')))
-		 GROUP BY a.vc_bgdw;
+     GROUP BY a.vc_bgdw;
     if v_count <> v_ccts then
       v_err := '本次抽查有医疗机构未找到'||v_ccts||'条糖尿病病例!';
       raise err_custom;
-    end if;
+    end if;*/
     --写入糖尿病
     insert into zjjk_mb_zlfh
       (id,
@@ -163,7 +163,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       select DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -176,7 +177,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
                       '1',
                       '0',
                       '0',
-                      (SELECT bgk.vc_bgdw FROM zjjk_tnb_bgk bgk WHERE bgk.vc_bgkid = column_value)
+                      (SELECT bgk.vc_bgdw FROM zjjk_tnb_bgk bgk WHERE bgk.vc_bgkid = column_value),
+                      rownum
         FROM TABLE(split(v_bgkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -204,8 +206,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_czyyhid varchar2(50);
     v_czyyhxm varchar2(50);
     v_count   number;
-		v_ccts    number;
-		  
+    v_ccts    number;
+      
     v_id      zjjk_mb_zlfh.id%TYPE; --ID
     v_bgkid   zjjk_mb_zlfh.bgkid%TYPE; --报告卡ID
     v_cctjid  zjjk_mb_zlfh.cctjid%TYPE; --抽查条件ID
@@ -273,9 +275,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     end if;
     --如果抽查区县
     if v_bccjgid is null THEN
-			SELECT wm_concat(bgk.vc_bkdwyy)
-			  INTO v_bccjgid
-				FROM zjjk_xnxg_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
+      SELECT wm_concat(bgk.vc_bkdwyy)
+        INTO v_bccjgid
+        FROM zjjk_xnxg_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
       --v_err := '被抽查机构不能为空!';
       --raise err_custom;
     end if;
@@ -311,9 +313,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     SELECT ccts
       INTO v_ccts
       FROM zjjk_zlfhsj a
-     WHERE a.zt = 1;				
-			--校验bgkid合法性
-    SELECT MIN(COUNT(a.vc_bkdwyy))
+     WHERE a.zt = 1;        
+      --校验bgkid合法性
+/*    SELECT MIN(COUNT(a.vc_bkdwyy))
       INTO v_count
       FROM zjjk_xnxg_bgk a
      WHERE a.vc_nczzd IN ('1', '2', '3', '4', '5', '6')
@@ -324,7 +326,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     if v_count <> v_ccts then
       v_err := '本次抽查有医疗机构未找到'||v_ccts||'条脑卒中病例!';
       raise err_custom;
-    end if;
+    end if;*/
     --写入脑卒中
     insert into zjjk_mb_zlfh
       (id,
@@ -339,7 +341,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       select DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -352,7 +355,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
                       '1',
                       '0',
                       '0',
-                      (SELECT bgk.vc_bkdwyy FROM zjjk_xnxg_bgk bgk WHERE bgk.vc_bgkid = column_value)
+                      (SELECT bgk.vc_bkdwyy FROM zjjk_xnxg_bgk bgk WHERE bgk.vc_bgkid = column_value),
+                      rownum
         FROM TABLE(split(v_bgkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -380,7 +384,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_czyyhid varchar2(50);
     v_czyyhxm varchar2(50);
     v_count   number;
-		v_ccts    number;
+    v_ccts    number;
   
     v_id      zjjk_mb_zlfh.id%TYPE; --ID
     v_bgkid   zjjk_mb_zlfh.bgkid%TYPE; --报告卡ID
@@ -449,9 +453,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     end if;
     --如果抽查区县
     if v_bccjgid is null THEN
-			SELECT wm_concat(bgk.vc_bkdwyy)
-			  INTO v_bccjgid
-				FROM zjjk_xnxg_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
+      SELECT wm_concat(bgk.vc_bkdwyy)
+        INTO v_bccjgid
+        FROM zjjk_xnxg_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
       --v_err := '被抽查机构不能为空!';
       --raise err_custom;
     end if;
@@ -489,8 +493,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
       FROM zjjk_zlfhsj a
      WHERE a.zt = 1;
     --校验bgkid合法性
-		--校验bgkid合法性
-    SELECT MIN(COUNT(a.vc_bkdwyy))
+    --校验bgkid合法性
+/*    SELECT MIN(COUNT(a.vc_bkdwyy))
       INTO v_count
       FROM zjjk_xnxg_bgk a
      WHERE a.vc_gxbzd in ('1', '2', '3')
@@ -501,7 +505,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     if v_count <> v_ccts then
       v_err := '本次抽查有医疗机构未找到'||v_ccts||'条冠心病病例!';
       raise err_custom;
-    end if;
+    end if;*/
     --写入冠心病
     insert into zjjk_mb_zlfh
       (id,
@@ -516,7 +520,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       select DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
@@ -529,7 +534,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
                       '1',
                       '0',
                       '0',
-                      (SELECT bgk.vc_bkdwyy FROM zjjk_xnxg_bgk bgk WHERE bgk.vc_bgkid = column_value)
+                      (SELECT bgk.vc_bkdwyy FROM zjjk_xnxg_bgk bgk WHERE bgk.vc_bgkid = column_value),
+                      rownum
         FROM TABLE(split(v_bgkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -557,7 +563,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_czyyhid varchar2(50);
     v_czyyhxm varchar2(50);
     v_count   number;
-		v_ccts    number;
+    v_ccts    number;
   
     v_id      zjjk_mb_zlfh.id%TYPE; --ID
     v_bgkid   zjjk_mb_zlfh.bgkid%TYPE; --报告卡ID
@@ -626,9 +632,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     end if;
     --如果抽查区县
     if v_bccjgid is null THEN
-			SELECT wm_concat(bgk.vc_bgdw)
-			  INTO v_bccjgid
-				FROM zjjk_zl_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
+      SELECT wm_concat(bgk.vc_bgdw)
+        INTO v_bccjgid
+        FROM zjjk_zl_bgk bgk WHERE v_bgkid_s LIKE '%'||bgk.vc_bgkid||'%';
       --v_err := '被抽查机构不能为空!';
       --raise err_custom;
     end if;
@@ -660,23 +666,23 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        and zt = '1'
        and fhbz = '0'
        and a.mblx = '4';
-		--获取抽查条数的条件
-		SELECT ccts
-		  INTO v_ccts
-			FROM zjjk_zlfhsj a
-		 WHERE a.zt = 1;
+    --获取抽查条数的条件
+    SELECT ccts
+      INTO v_ccts
+      FROM zjjk_zlfhsj a
+     WHERE a.zt = 1;
     --校验bgkid合法性
-		select min(count(a.vc_bgdw))
+/*    select min(count(a.vc_bgdw))
       into v_count
       from zjjk_zl_bgk a
      where a.vc_bgkid in
            (SELECT DISTINCT column_value column_value
               FROM TABLE(split(v_bgkid_s, ',')))
-		 GROUP BY a.vc_bgdw;	
+     GROUP BY a.vc_bgdw;  
     if v_count <> v_ccts then
       v_err := '本次抽查有医疗机构未找到'||v_ccts||'条肿瘤病例!';
       raise err_custom;
-    end if;
+    end if;*/
     --写入肿瘤
     for rec_zlbg in (select column_value bgkid
                        FROM TABLE(split(v_bgkid_s, ','))) loop
@@ -695,31 +701,32 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        zt,
        fhbz,
        fhzt,
-       bccjgid)
+       bccjgid,
+       ccxh)
       select DISTINCT sys_guid(),
                       column_value,
                       v_cctjid,
                       '4',
                       (SELECT CASE
-																WHEN zl.vc_icd10 LIKE 'C34%' THEN
-																 '401' --肺癌
-																WHEN zl.vc_icd10 LIKE 'C22%' THEN
-																 '402' --肝癌
-																WHEN zl.vc_icd10 LIKE 'C16%' THEN
-																 '403'  --胃癌
-																WHEN zl.vc_icd10 LIKE 'C15%' THEN
-																 '404' --食管癌
-																WHEN zl.vc_icd10 LIKE 'C18%' OR
-																		 zl.vc_icd10 LIKE 'C20%' THEN
-																 '405' --结、直肠癌
-																WHEN zl.vc_icd10 LIKE 'C50%' AND hz.vc_hzxb = '2' THEN
-																 '406' --女性乳腺癌
-																ELSE
-																 '407' --其他恶性肿瘤
-															END
-												 FROM zjjk_zl_bgk zl, zjjk_zl_hzxx hz
-												WHERE zl.vc_hzid = hz.vc_personid
-													AND zl.vc_bgkid = column_value) ccbz,
+                                WHEN zl.vc_icd10 LIKE 'C34%' THEN
+                                 '401' --肺癌
+                                WHEN zl.vc_icd10 LIKE 'C22%' THEN
+                                 '402' --肝癌
+                                WHEN zl.vc_icd10 LIKE 'C16%' THEN
+                                 '403'  --胃癌
+                                WHEN zl.vc_icd10 LIKE 'C15%' THEN
+                                 '404' --食管癌
+                                WHEN zl.vc_icd10 LIKE 'C18%' OR
+                                     zl.vc_icd10 LIKE 'C20%' THEN
+                                 '405' --结、直肠癌
+                                WHEN zl.vc_icd10 LIKE 'C50%' AND hz.vc_hzxb = '2' THEN
+                                 '406' --女性乳腺癌
+                                ELSE
+                                 '407' --其他恶性肿瘤
+                              END
+                         FROM zjjk_zl_bgk zl, zjjk_zl_hzxx hz
+                        WHERE zl.vc_hzid = hz.vc_personid
+                          AND zl.vc_bgkid = column_value) ccbz,
                       v_czyyhid,
                       v_czyyhxm,
                       v_czyjgdm,
@@ -727,7 +734,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
                       '1',
                       '0',
                       '0',
-                      (SELECT bgk.vc_bgdw FROM zjjk_zl_bgk bgk WHERE bgk.vc_bgkid = column_value)
+                      (SELECT bgk.vc_bgdw FROM zjjk_zl_bgk bgk WHERE bgk.vc_bgkid = column_value),
+                      rownum
         FROM TABLE(split(v_bgkid_s, ','));
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -805,16 +813,16 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_fhjgpd         zjjk_mb_zlfh_tnb.fhjgpd%TYPE; --复核结果判断（0 符合 1不符合）
     v_zlwzx          zjjk_mb_zlfh_tnb.zlwzx%TYPE; --资料完整性（0 符合 1不符合）
     v_fhzt           zjjk_mb_zlfh_tnb.fhzt%TYPE; --复核状态（0 符合 1不符合）
-		v_basyzp         zjjk_mb_zlfh_tnb.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp         zjjk_mb_zlfh_tnb.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp         zjjk_mb_zlfh_tnb.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_yscfzp         zjjk_mb_zlfh_tnb.yscfzp%TYPE;    --（复印或拍照）医生处方（降糖药物、胰岛素等）照片
-		v_ydxbzsktzp     zjjk_mb_zlfh_tnb.ydxbzsktzp%TYPE;    --（复印或拍照）胰岛β细胞自身抗体（1型）照片
-		v_xtbgzp         zjjk_mb_zlfh_tnb.xtbgzp%TYPE;    --（复印或拍照）空腹/随机血糖报告照片
-		v_zptnxsybgzp    zjjk_mb_zlfh_tnb.zptnxsybgzp%TYPE;    --（复印或拍照）糖耐量试验报告照片
-		v_thxhdbjcbgzp   zjjk_mb_zlfh_tnb.thxhdbjcbgzp%TYPE;    --（复印或拍照）糖化血红蛋白检测报告照片
-		v_ncgzp          zjjk_mb_zlfh_tnb.ncgzp%TYPE;    --（复印或拍照）尿常规（酮体）照片 
-		
+    v_basyzp         zjjk_mb_zlfh_tnb.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp         zjjk_mb_zlfh_tnb.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp         zjjk_mb_zlfh_tnb.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_yscfzp         zjjk_mb_zlfh_tnb.yscfzp%TYPE;    --（复印或拍照）医生处方（降糖药物、胰岛素等）照片
+    v_ydxbzsktzp     zjjk_mb_zlfh_tnb.ydxbzsktzp%TYPE;    --（复印或拍照）胰岛β细胞自身抗体（1型）照片
+    v_xtbgzp         zjjk_mb_zlfh_tnb.xtbgzp%TYPE;    --（复印或拍照）空腹/随机血糖报告照片
+    v_zptnxsybgzp    zjjk_mb_zlfh_tnb.zptnxsybgzp%TYPE;    --（复印或拍照）糖耐量试验报告照片
+    v_thxhdbjcbgzp   zjjk_mb_zlfh_tnb.thxhdbjcbgzp%TYPE;    --（复印或拍照）糖化血红蛋白检测报告照片
+    v_ncgzp          zjjk_mb_zlfh_tnb.ncgzp%TYPE;    --（复印或拍照）尿常规（酮体）照片 
+    
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
   
@@ -873,17 +881,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_zdyj           := Json_Str(v_Json_Data, 'zdyj');
     v_zdyjxg         := Json_Str(v_Json_Data, 'zdyjxg');
     v_fhjgpd         := Json_Str(v_Json_Data, 'fhjgpd');
-		v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
-		v_yscfzp         := Json_Str(v_Json_Data, 'yscfzp');
-		v_ydxbzsktzp     := Json_Str(v_Json_Data, 'ydxbzsktzp');
-		v_xtbgzp         := Json_Str(v_Json_Data, 'xtbgzp');
-		v_zptnxsybgzp    := Json_Str(v_Json_Data, 'zptnxsybgzp');
-		v_thxhdbjcbgzp   := Json_Str(v_Json_Data, 'thxhdbjcbgzp');
-		v_ncgzp          := Json_Str(v_Json_Data, 'ncgzp'); 
-		
+    v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
+    v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
+    v_yscfzp         := Json_Str(v_Json_Data, 'yscfzp');
+    v_ydxbzsktzp     := Json_Str(v_Json_Data, 'ydxbzsktzp');
+    v_xtbgzp         := Json_Str(v_Json_Data, 'xtbgzp');
+    v_zptnxsybgzp    := Json_Str(v_Json_Data, 'zptnxsybgzp');
+    v_thxhdbjcbgzp   := Json_Str(v_Json_Data, 'thxhdbjcbgzp');
+    v_ncgzp          := Json_Str(v_Json_Data, 'ncgzp'); 
+    
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -942,8 +950,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -1043,12 +1051,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
-		
-		--更新资料完整性
+    
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -1082,205 +1090,205 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_tnb a where a.id = v_id;
     if v_count > 0 then
       --修改
-		UPDATE zjjk_mb_zlfh_tnb
-			 SET bkdw           = v_bkdw,
-					 zyh            = v_zyh,
-					 jbxxybgksfyz   = v_jbxxybgksfyz,
-					 kpzt           = v_kpzt,
-					 blh            = v_blh,
-					 bgkbm          = v_bgkbm,
-					 xm             = v_xm,
-					 xmxg           = v_xmxg,
-					 xb             = v_xb,
-					 xbxg           = v_xbxg,
-					 csrq           = v_csrq,
-					 csrqxg         = v_csrqxg,
-					 sfzh           = v_sfzh,
-					 sfzhxg         = v_sfzhxg,
-					 zdrq           = v_zdrq,
-					 zdrqxg         = v_zdrqxg,
-					 icd10          = v_icd10,
-					 icd10xg        = v_icd10xg,
-					 bgyysfwzdyy    = v_bgyysfwzdyy,
-					 zdyymc         = v_zdyymc,
-					 czbajldjttj    = v_czbajldjttj,
-					 qtczbajldtj    = v_qtczbajldtj,
-					 sfczbdcxgbazl  = v_sfczbdcxgbazl,
-					 bajlsfdzh      = v_bajlsfdzh,
-					 dzbasjnr       = v_dzbasjnr,
-					 wczbdcxgbazlyy = v_wczbdcxgbazlyy,
-					 qtknyy         = v_qtknyy,
-					 sfcjbasy       = v_sfcjbasy,
-					 sfcjcyxj       = v_sfcjcyxj,
-					 sfcjryjl       = v_sfcjryjl,
-					 sfcjyscf       = v_sfcjyscf,
-					 sfcjydxbzskt   = v_sfcjydxbzskt,
-					 sfcjxtbg       = v_sfcjxtbg,
-					 sfcjtnxsybg    = v_sfcjtnxsybg,
-					 sfcjthxhdbjcbg = v_sfcjthxhdbjcbg,
-					 sfcjncg        = v_sfcjncg,
-					 zyzd           = v_zyzd,
-					 cyhqtzd        = v_cyhqtzd,
-					 chzt           = v_chzt,
-					 wlcdqtjcbg     = v_wlcdqtjcbg,
-					 blcjzqz        = v_blcjzqz,
-					 bacjzdw        = v_bacjzdw,
-					 fhbgrq         = v_fhbgrq,
-					 zdyj           = v_zdyj,
-					 zdyjxg         = v_zdyjxg,
-					 fhjgpd         = v_fhjgpd,
-					 zlwzx          = v_zlwzx,
-					 xgrid          = v_czyyhid,
-					 xgrxm          = v_czyyhxm,
-					 xgsj           = v_sysdate,
-					 fhzt           = '1',
-					 basyzp         = v_basyzp,
-					 cyxjzp         = v_cyxjzp,
-					 ryjlzp         = v_ryjlzp,
-					 yscfzp         = v_yscfzp,
-					 ydxbzsktzp     = v_ydxbzsktzp,
-					 xtbgzp         = v_xtbgzp,
-					 zptnxsybgzp    = v_zptnxsybgzp,
-					 thxhdbjcbgzp   = v_thxhdbjcbgzp,
-					 ncgzp          = v_ncgzp
-		 WHERE id = v_id;
+    UPDATE zjjk_mb_zlfh_tnb
+       SET bkdw           = v_bkdw,
+           zyh            = v_zyh,
+           jbxxybgksfyz   = v_jbxxybgksfyz,
+           kpzt           = v_kpzt,
+           blh            = v_blh,
+           bgkbm          = v_bgkbm,
+           xm             = v_xm,
+           xmxg           = v_xmxg,
+           xb             = v_xb,
+           xbxg           = v_xbxg,
+           csrq           = v_csrq,
+           csrqxg         = v_csrqxg,
+           sfzh           = v_sfzh,
+           sfzhxg         = v_sfzhxg,
+           zdrq           = v_zdrq,
+           zdrqxg         = v_zdrqxg,
+           icd10          = v_icd10,
+           icd10xg        = v_icd10xg,
+           bgyysfwzdyy    = v_bgyysfwzdyy,
+           zdyymc         = v_zdyymc,
+           czbajldjttj    = v_czbajldjttj,
+           qtczbajldtj    = v_qtczbajldtj,
+           sfczbdcxgbazl  = v_sfczbdcxgbazl,
+           bajlsfdzh      = v_bajlsfdzh,
+           dzbasjnr       = v_dzbasjnr,
+           wczbdcxgbazlyy = v_wczbdcxgbazlyy,
+           qtknyy         = v_qtknyy,
+           sfcjbasy       = v_sfcjbasy,
+           sfcjcyxj       = v_sfcjcyxj,
+           sfcjryjl       = v_sfcjryjl,
+           sfcjyscf       = v_sfcjyscf,
+           sfcjydxbzskt   = v_sfcjydxbzskt,
+           sfcjxtbg       = v_sfcjxtbg,
+           sfcjtnxsybg    = v_sfcjtnxsybg,
+           sfcjthxhdbjcbg = v_sfcjthxhdbjcbg,
+           sfcjncg        = v_sfcjncg,
+           zyzd           = v_zyzd,
+           cyhqtzd        = v_cyhqtzd,
+           chzt           = v_chzt,
+           wlcdqtjcbg     = v_wlcdqtjcbg,
+           blcjzqz        = v_blcjzqz,
+           bacjzdw        = v_bacjzdw,
+           fhbgrq         = v_fhbgrq,
+           zdyj           = v_zdyj,
+           zdyjxg         = v_zdyjxg,
+           fhjgpd         = v_fhjgpd,
+           zlwzx          = v_zlwzx,
+           xgrid          = v_czyyhid,
+           xgrxm          = v_czyyhxm,
+           xgsj           = v_sysdate,
+           fhzt           = '1',
+           basyzp         = v_basyzp,
+           cyxjzp         = v_cyxjzp,
+           ryjlzp         = v_ryjlzp,
+           yscfzp         = v_yscfzp,
+           ydxbzsktzp     = v_ydxbzsktzp,
+           xtbgzp         = v_xtbgzp,
+           zptnxsybgzp    = v_zptnxsybgzp,
+           thxhdbjcbgzp   = v_thxhdbjcbgzp,
+           ncgzp          = v_ncgzp
+     WHERE id = v_id;
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_tnb
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjyscf,
-				 sfcjydxbzskt,
-				 sfcjxtbg,
-				 sfcjtnxsybg,
-				 sfcjthxhdbjcbg,
-				 sfcjncg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 yscfzp,
-				 ydxbzsktzp,
-				 xtbgzp,
-				 zptnxsybgzp,
-				 thxhdbjcbgzp,
-				 ncgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjyscf,
-				 v_sfcjydxbzskt,
-				 v_sfcjxtbg,
-				 v_sfcjtnxsybg,
-				 v_sfcjthxhdbjcbg,
-				 v_sfcjncg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_yscfzp,
-				 v_ydxbzsktzp,
-				 v_xtbgzp,
-				 v_zptnxsybgzp,
-				 v_thxhdbjcbgzp,
-				 v_ncgzp);
+      INSERT INTO zjjk_mb_zlfh_tnb
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjyscf,
+         sfcjydxbzskt,
+         sfcjxtbg,
+         sfcjtnxsybg,
+         sfcjthxhdbjcbg,
+         sfcjncg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         yscfzp,
+         ydxbzsktzp,
+         xtbgzp,
+         zptnxsybgzp,
+         thxhdbjcbgzp,
+         ncgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjyscf,
+         v_sfcjydxbzskt,
+         v_sfcjxtbg,
+         v_sfcjtnxsybg,
+         v_sfcjthxhdbjcbg,
+         v_sfcjncg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_yscfzp,
+         v_ydxbzsktzp,
+         v_xtbgzp,
+         v_zptnxsybgzp,
+         v_thxhdbjcbgzp,
+         v_ncgzp);
     end if;
     --更新复核状态
     update zjjk_mb_zlfh a
@@ -1552,13 +1560,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_fhjgpd         zjjk_mb_zlfh_ncz.fhjgpd%TYPE; --复核结果判断（0 符合 1不符合）
     v_zlwzx          zjjk_mb_zlfh_ncz.zlwzx%TYPE; --资料完整性（0 符合 1不符合）
     v_fhzt           zjjk_mb_zlfh_ncz.fhzt%TYPE; --复核状态（0 符合 1不符合）
-		v_ryjlzp         zjjk_mb_zlfh_ncz.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_tbjcbbzp       zjjk_mb_zlfh_ncz.tbjcbbzp%TYPE;    --（复印或拍照）头部CT/MRI检查报告照片
-		v_yzccjcbgzp     zjjk_mb_zlfh_ncz.yzccjcbgzp%TYPE;    --（复印或拍照）腰椎穿刺检查报告（SHA）照片
-		v_xgzybgzp       zjjk_mb_zlfh_ncz.xgzybgzp%TYPE;    --（复印或拍照）血管造影报告（SHA）照片
-		v_sjbgzp         zjjk_mb_zlfh_ncz.sjbgzp%TYPE;    --（复印或拍照）尸检报告照片
-		v_cyxjzp         zjjk_mb_zlfh_ncz.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_basyzp         zjjk_mb_zlfh_ncz.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_ryjlzp         zjjk_mb_zlfh_ncz.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_tbjcbbzp       zjjk_mb_zlfh_ncz.tbjcbbzp%TYPE;    --（复印或拍照）头部CT/MRI检查报告照片
+    v_yzccjcbgzp     zjjk_mb_zlfh_ncz.yzccjcbgzp%TYPE;    --（复印或拍照）腰椎穿刺检查报告（SHA）照片
+    v_xgzybgzp       zjjk_mb_zlfh_ncz.xgzybgzp%TYPE;    --（复印或拍照）血管造影报告（SHA）照片
+    v_sjbgzp         zjjk_mb_zlfh_ncz.sjbgzp%TYPE;    --（复印或拍照）尸检报告照片
+    v_cyxjzp         zjjk_mb_zlfh_ncz.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_basyzp         zjjk_mb_zlfh_ncz.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -1617,14 +1625,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_zdyjxg         := Json_Str(v_Json_Data, 'zdyjxg');
     v_fhjgpd         := Json_Str(v_Json_Data, 'fhjgpd');
     v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
-	  v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
-	  v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
-	  v_tbjcbbzp       := Json_Str(v_Json_Data, 'tbjcbbzp');
-	  v_yzccjcbgzp     := Json_Str(v_Json_Data, 'yzccjcbgzp');
-	  v_xgzybgzp       := Json_Str(v_Json_Data, 'xgzybgzp');
-	  v_sjbgzp	       := Json_Str(v_Json_Data, 'sjbgzp');
-		
+    v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
+    v_tbjcbbzp       := Json_Str(v_Json_Data, 'tbjcbbzp');
+    v_yzccjcbgzp     := Json_Str(v_Json_Data, 'yzccjcbgzp');
+    v_xgzybgzp       := Json_Str(v_Json_Data, 'xgzybgzp');
+    v_sjbgzp         := Json_Str(v_Json_Data, 'sjbgzp');
+    
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -1683,8 +1691,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -1776,18 +1784,18 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
   
     --更新资料完整性
     --基本信息判断验证
-		if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
-			   ) AND v_jbxxybgksfyz='1')
-			 OR
-			 ((v_xmxg IS NOT NULL OR v_xbxg IS NOT NULL OR v_csrqxg IS NOT NULL OR v_sfzhxg IS NOT NULL 
-			   ) AND v_jbxxybgksfyz='0') then
+    if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
+         ) AND v_jbxxybgksfyz='1')
+       OR
+       ((v_xmxg IS NOT NULL OR v_xbxg IS NOT NULL OR v_csrqxg IS NOT NULL OR v_sfzhxg IS NOT NULL 
+         ) AND v_jbxxybgksfyz='0') then
        v_err := '个人信息判断验证不通过!';
       raise err_custom;
     end if;
@@ -1796,22 +1804,22 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjtbjcbb, '1') <> '0' or
        nvl(v_sfcjyzccjcbg, '1') <> '0' or nvl(v_sfcjxgzybg, '1') <> '0') AND v_zlwzx='0')
-			 OR
-			 ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
+       OR
+       ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjtbjcbb, '1') = '0' AND
        nvl(v_sfcjyzccjcbg, '1') = '0' AND nvl(v_sfcjxgzybg, '1') = '0') AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
-		
-		--综合结果判断验证
-		if (v_jbxxybgksfyz = '0' AND v_zlwzx ='0' AND v_fhjgpd='1')
-			 OR
-			 ((v_jbxxybgksfyz = '1' OR v_zlwzx ='1') AND v_fhjgpd='0') then
+    
+    --综合结果判断验证
+    if (v_jbxxybgksfyz = '0' AND v_zlwzx ='0' AND v_fhjgpd='1')
+       OR
+       ((v_jbxxybgksfyz = '1' OR v_zlwzx ='1') AND v_fhjgpd='0') then
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_ncz a where a.id = v_id;
     if v_count > 0 then
@@ -2268,13 +2276,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_fhjgpd          zjjk_mb_zlfh_gxb.fhjgpd%TYPE; --复核结果判断（0 符合 1不符合）
     v_zlwzx           zjjk_mb_zlfh_gxb.zlwzx%TYPE; --资料完整性（0 符合 1不符合）
     v_fhzt            zjjk_mb_zlfh_gxb.fhzt%TYPE; --复核状态（0 符合 1不符合）
-		v_basyzp          zjjk_mb_zlfh_gxb.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp          zjjk_mb_zlfh_gxb.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp          zjjk_mb_zlfh_gxb.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_xdtjcbgzp       zjjk_mb_zlfh_gxb.xdtjcbgzp%TYPE;    --（复印或拍照）心电图检查报告照片
-		v_xqmjczp         zjjk_mb_zlfh_gxb.xqmjczp%TYPE;    --（复印或拍照）血清酶检查（肌酸激酶，肌钙蛋白等）照片
-		v_xzxgzdmzybgzp   zjjk_mb_zlfh_gxb.xzxgzdmzybgzp%TYPE;    --（复印或拍照）选择性冠状动脉造影报告照片
-		
+    v_basyzp          zjjk_mb_zlfh_gxb.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp          zjjk_mb_zlfh_gxb.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp          zjjk_mb_zlfh_gxb.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_xdtjcbgzp       zjjk_mb_zlfh_gxb.xdtjcbgzp%TYPE;    --（复印或拍照）心电图检查报告照片
+    v_xqmjczp         zjjk_mb_zlfh_gxb.xqmjczp%TYPE;    --（复印或拍照）血清酶检查（肌酸激酶，肌钙蛋白等）照片
+    v_xzxgzdmzybgzp   zjjk_mb_zlfh_gxb.xzxgzdmzybgzp%TYPE;    --（复印或拍照）选择性冠状动脉造影报告照片
+    
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
   
@@ -2330,13 +2338,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     v_zdyj            := Json_Str(v_Json_Data, 'zdyj');
     v_zdyjxg          := Json_Str(v_Json_Data, 'zdyjxg');
     v_fhjgpd          := Json_Str(v_Json_Data, 'fhjgpd');
-		v_zlwzx           := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp          := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp          := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp          := Json_Str(v_Json_Data, 'ryjlzp');
-		v_xdtjcbgzp       := Json_Str(v_Json_Data, 'xdtjcbgzp');
-		v_xqmjczp         := Json_Str(v_Json_Data, 'xqmjczp');
-		v_xzxgzdmzybgzp   := Json_Str(v_Json_Data, 'xzxgzdmzybgzp');
+    v_zlwzx           := Json_Str(v_Json_Data, 'zlwzx');
+    v_basyzp          := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp          := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp          := Json_Str(v_Json_Data, 'ryjlzp');
+    v_xdtjcbgzp       := Json_Str(v_Json_Data, 'xdtjcbgzp');
+    v_xqmjczp         := Json_Str(v_Json_Data, 'xqmjczp');
+    v_xzxgzdmzybgzp   := Json_Str(v_Json_Data, 'xzxgzdmzybgzp');
   
     --校验权限
     if v_czyjgjb <> '3' then
@@ -2396,8 +2404,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -2485,12 +2493,12 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
-		
-		--更新资料完整性
+    
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -2520,7 +2528,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_gxb a where a.id = v_id;
     if v_count > 0 then
@@ -2583,124 +2591,124 @@ UPDATE zjjk_mb_zlfh_gxb
  WHERE id = v_id;
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_gxb
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjxdtjcbg,
-				 sfcjxqmjc,
-				 sfcjxzxgzdmzybg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj, 
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 xdtjcbgzp,
-				 xqmjczp,
-				 xzxgzdmzybgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjxdtjcbg,
-				 v_sfcjxqmjc,
-				 v_sfcjxzxgzdmzybg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_xdtjcbgzp,
-				 v_xqmjczp,
-				 v_xzxgzdmzybgzp);
+      INSERT INTO zjjk_mb_zlfh_gxb
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjxdtjcbg,
+         sfcjxqmjc,
+         sfcjxzxgzdmzybg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj, 
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         xdtjcbgzp,
+         xqmjczp,
+         xzxgzdmzybgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjxdtjcbg,
+         v_sfcjxqmjc,
+         v_sfcjxzxgzdmzybg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_xdtjcbgzp,
+         v_xqmjczp,
+         v_xzxgzdmzybgzp);
     end if;
     --更新复核状态
     update zjjk_mb_zlfh a
@@ -2976,16 +2984,16 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhzt           zjjk_mb_zlfh_fa.fhzt%TYPE; --复核状态（0 符合 1不符合）
     v_blxlx          zjjk_mb_zlfh_fa.blxlx%TYPE; --病理学类型
     v_blxlxxg        zjjk_mb_zlfh_fa.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp         zjjk_mb_zlfh_fa.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp         zjjk_mb_zlfh_fa.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp         zjjk_mb_zlfh_fa.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_hjblbgzp       zjjk_mb_zlfh_fa.hjblbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）经皮肺穿刺活检病理报告照片
-		v_qzjjcbgzp      zjjk_mb_zlfh_fa.qzjjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）纤维支气管镜检查报告照片
-		v_ctjcbgzp       zjjk_mb_zlfh_fa.ctjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）CT检查报告照片
-		v_mrijcbgzp      zjjk_mb_zlfh_fa.mrijcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）MRI检查报告照片
-		v_xxjcbgzp       zjjk_mb_zlfh_fa.xxjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）X线检查报告照片
-		v_ttlxbjcbgzp    zjjk_mb_zlfh_fa.ttlxbjcbgzp%TYPE;    --（复印或拍照）痰脱落细胞检查报告照片
-		
+    v_basyzp         zjjk_mb_zlfh_fa.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp         zjjk_mb_zlfh_fa.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp         zjjk_mb_zlfh_fa.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_hjblbgzp       zjjk_mb_zlfh_fa.hjblbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）经皮肺穿刺活检病理报告照片
+    v_qzjjcbgzp      zjjk_mb_zlfh_fa.qzjjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）纤维支气管镜检查报告照片
+    v_ctjcbgzp       zjjk_mb_zlfh_fa.ctjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）CT检查报告照片
+    v_mrijcbgzp      zjjk_mb_zlfh_fa.mrijcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）MRI检查报告照片
+    v_xxjcbgzp       zjjk_mb_zlfh_fa.xxjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）X线检查报告照片
+    v_ttlxbjcbgzp    zjjk_mb_zlfh_fa.ttlxbjcbgzp%TYPE;    --（复印或拍照）痰脱落细胞检查报告照片
+    
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
   
@@ -3046,17 +3054,17 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhjgpd         := Json_Str(v_Json_Data, 'fhjgpd');
     v_blxlx          := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg        := Json_Str(v_Json_Data, 'blxlxxg');
-		v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
-		v_hjblbgzp       := Json_Str(v_Json_Data, 'hjblbgzp');
-		v_qzjjcbgzp      := Json_Str(v_Json_Data, 'qzjjcbgzp');
-		v_ctjcbgzp       := Json_Str(v_Json_Data, 'ctjcbgzp');
-		v_mrijcbgzp      := Json_Str(v_Json_Data, 'mrijcbgzp');
-		v_xxjcbgzp       := Json_Str(v_Json_Data, 'xxjcbgzp');
-		v_ttlxbjcbgzp    := Json_Str(v_Json_Data, 'ttlxbjcbgzp');
-		
+    v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
+    v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
+    v_hjblbgzp       := Json_Str(v_Json_Data, 'hjblbgzp');
+    v_qzjjcbgzp      := Json_Str(v_Json_Data, 'qzjjcbgzp');
+    v_ctjcbgzp       := Json_Str(v_Json_Data, 'ctjcbgzp');
+    v_mrijcbgzp      := Json_Str(v_Json_Data, 'mrijcbgzp');
+    v_xxjcbgzp       := Json_Str(v_Json_Data, 'xxjcbgzp');
+    v_ttlxbjcbgzp    := Json_Str(v_Json_Data, 'ttlxbjcbgzp');
+    
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -3116,8 +3124,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -3222,12 +3230,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
-		
-		--更新资料完整性
+    
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -3261,211 +3269,211 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_fa a where a.id = v_id;
     if v_count > 0 then
       --修改
-			UPDATE zjjk_mb_zlfh_fa
-				 SET bkdw           = v_bkdw,
-						 zyh            = v_zyh,
-						 jbxxybgksfyz   = v_jbxxybgksfyz,
-						 kpzt           = v_kpzt,
-						 blh            = v_blh,
-						 bgkbm          = v_bgkbm,
-						 xm             = v_xm,
-						 xmxg           = v_xmxg,
-						 xb             = v_xb,
-						 xbxg           = v_xbxg,
-						 csrq           = v_csrq,
-						 csrqxg         = v_csrqxg,
-						 sfzh           = v_sfzh,
-						 sfzhxg         = v_sfzhxg,
-						 zdrq           = v_zdrq,
-						 zdrqxg         = v_zdrqxg,
-						 icd10          = v_icd10,
-						 icd10xg        = v_icd10xg,
-						 bgyysfwzdyy    = v_bgyysfwzdyy,
-						 zdyymc         = v_zdyymc,
-						 czbajldjttj    = v_czbajldjttj,
-						 qtczbajldtj    = v_qtczbajldtj,
-						 sfczbdcxgbazl  = v_sfczbdcxgbazl,
-						 bajlsfdzh      = v_bajlsfdzh,
-						 dzbasjnr       = v_dzbasjnr,
-						 wczbdcxgbazlyy = v_wczbdcxgbazlyy,
-						 qtknyy         = v_qtknyy,
-						 sfcjbasy       = v_sfcjbasy,
-						 sfcjcyxj       = v_sfcjcyxj,
-						 sfcjryjl       = v_sfcjryjl,
-						 sfcjhjblbg     = v_sfcjhjblbg,
-						 sfcjqzjjcbg    = v_sfcjqzjjcbg,
-						 sfcjctjcbg     = v_sfcjctjcbg,
-						 sfcjmrijcbg    = v_sfcjmrijcbg,
-						 sfcjxxjcbg     = v_sfcjxxjcbg,
-						 sfcjttlxbjcbg  = v_sfcjttlxbjcbg,
-						 zyzd           = v_zyzd,
-						 cyhqtzd        = v_cyhqtzd,
-						 chzt           = v_chzt,
-						 wlcdqtjcbg     = v_wlcdqtjcbg,
-						 blcjzqz        = v_blcjzqz,
-						 bacjzdw        = v_bacjzdw,
-						 fhbgrq         = v_fhbgrq,
-						 zdyj           = v_zdyj,
-						 zdyjxg         = v_zdyjxg,
-						 fhjgpd         = v_fhjgpd,
-						 zlwzx          = v_zlwzx,
-						 xgrid          = v_czyyhid,
-						 xgrxm          = v_czyyhxm,
-						 xgsj           = v_sysdate,
-						 blxlx          = v_blxlx,
-						 blxlxxg        = v_blxlxxg,
-						 fhzt           = '1',
-						 basyzp         = v_basyzp,
-						 cyxjzp         = v_cyxjzp,
-						 ryjlzp         = v_ryjlzp,
-						 hjblbgzp       = v_hjblbgzp,
-						 qzjjcbgzp      = v_qzjjcbgzp,
-						 ctjcbgzp       = v_ctjcbgzp,
-						 mrijcbgzp      = v_mrijcbgzp,
-						 xxjcbgzp       = v_xxjcbgzp,
-						 ttlxbjcbgzp    = v_ttlxbjcbgzp
-			 WHERE id = v_id;
+      UPDATE zjjk_mb_zlfh_fa
+         SET bkdw           = v_bkdw,
+             zyh            = v_zyh,
+             jbxxybgksfyz   = v_jbxxybgksfyz,
+             kpzt           = v_kpzt,
+             blh            = v_blh,
+             bgkbm          = v_bgkbm,
+             xm             = v_xm,
+             xmxg           = v_xmxg,
+             xb             = v_xb,
+             xbxg           = v_xbxg,
+             csrq           = v_csrq,
+             csrqxg         = v_csrqxg,
+             sfzh           = v_sfzh,
+             sfzhxg         = v_sfzhxg,
+             zdrq           = v_zdrq,
+             zdrqxg         = v_zdrqxg,
+             icd10          = v_icd10,
+             icd10xg        = v_icd10xg,
+             bgyysfwzdyy    = v_bgyysfwzdyy,
+             zdyymc         = v_zdyymc,
+             czbajldjttj    = v_czbajldjttj,
+             qtczbajldtj    = v_qtczbajldtj,
+             sfczbdcxgbazl  = v_sfczbdcxgbazl,
+             bajlsfdzh      = v_bajlsfdzh,
+             dzbasjnr       = v_dzbasjnr,
+             wczbdcxgbazlyy = v_wczbdcxgbazlyy,
+             qtknyy         = v_qtknyy,
+             sfcjbasy       = v_sfcjbasy,
+             sfcjcyxj       = v_sfcjcyxj,
+             sfcjryjl       = v_sfcjryjl,
+             sfcjhjblbg     = v_sfcjhjblbg,
+             sfcjqzjjcbg    = v_sfcjqzjjcbg,
+             sfcjctjcbg     = v_sfcjctjcbg,
+             sfcjmrijcbg    = v_sfcjmrijcbg,
+             sfcjxxjcbg     = v_sfcjxxjcbg,
+             sfcjttlxbjcbg  = v_sfcjttlxbjcbg,
+             zyzd           = v_zyzd,
+             cyhqtzd        = v_cyhqtzd,
+             chzt           = v_chzt,
+             wlcdqtjcbg     = v_wlcdqtjcbg,
+             blcjzqz        = v_blcjzqz,
+             bacjzdw        = v_bacjzdw,
+             fhbgrq         = v_fhbgrq,
+             zdyj           = v_zdyj,
+             zdyjxg         = v_zdyjxg,
+             fhjgpd         = v_fhjgpd,
+             zlwzx          = v_zlwzx,
+             xgrid          = v_czyyhid,
+             xgrxm          = v_czyyhxm,
+             xgsj           = v_sysdate,
+             blxlx          = v_blxlx,
+             blxlxxg        = v_blxlxxg,
+             fhzt           = '1',
+             basyzp         = v_basyzp,
+             cyxjzp         = v_cyxjzp,
+             ryjlzp         = v_ryjlzp,
+             hjblbgzp       = v_hjblbgzp,
+             qzjjcbgzp      = v_qzjjcbgzp,
+             ctjcbgzp       = v_ctjcbgzp,
+             mrijcbgzp      = v_mrijcbgzp,
+             xxjcbgzp       = v_xxjcbgzp,
+             ttlxbjcbgzp    = v_ttlxbjcbgzp
+       WHERE id = v_id;
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_fa
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjhjblbg,
-				 sfcjqzjjcbg,
-				 sfcjctjcbg,
-				 sfcjmrijcbg,
-				 sfcjxxjcbg,
-				 sfcjttlxbjcbg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 blxlx,
-				 blxlxxg,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 hjblbgzp,
-				 qzjjcbgzp,
-				 ctjcbgzp,
-				 mrijcbgzp,
-				 xxjcbgzp,
-				 ttlxbjcbgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjhjblbg,
-				 v_sfcjqzjjcbg,
-				 v_sfcjctjcbg,
-				 v_sfcjmrijcbg,
-				 v_sfcjxxjcbg,
-				 v_sfcjttlxbjcbg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_blxlx,
-				 v_blxlxxg,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_hjblbgzp,
-				 v_qzjjcbgzp,
-				 v_ctjcbgzp,
-				 v_mrijcbgzp,
-				 v_xxjcbgzp,
-				 v_ttlxbjcbgzp);
+      INSERT INTO zjjk_mb_zlfh_fa
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjhjblbg,
+         sfcjqzjjcbg,
+         sfcjctjcbg,
+         sfcjmrijcbg,
+         sfcjxxjcbg,
+         sfcjttlxbjcbg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         blxlx,
+         blxlxxg,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         hjblbgzp,
+         qzjjcbgzp,
+         ctjcbgzp,
+         mrijcbgzp,
+         xxjcbgzp,
+         ttlxbjcbgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjhjblbg,
+         v_sfcjqzjjcbg,
+         v_sfcjctjcbg,
+         v_sfcjmrijcbg,
+         v_sfcjxxjcbg,
+         v_sfcjttlxbjcbg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_blxlx,
+         v_blxlxxg,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_hjblbgzp,
+         v_qzjjcbgzp,
+         v_ctjcbgzp,
+         v_mrijcbgzp,
+         v_xxjcbgzp,
+         v_ttlxbjcbgzp);
     
     end if;
     --更新复核状态
@@ -3745,14 +3753,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhzt           zjjk_mb_zlfh_ga.fhzt%TYPE; --复核状态（0 符合 1不符合）
     v_blxlx          zjjk_mb_zlfh_ga.blxlx%TYPE; --病理学类型
     v_blxlxxg        zjjk_mb_zlfh_ga.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp         zjjk_mb_zlfh_ga.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp         zjjk_mb_zlfh_ga.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp         zjjk_mb_zlfh_ga.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_gcchjblbgzp    zjjk_mb_zlfh_ga.gcchjblbgzp%TYPE;    --（复印或拍照）肝穿刺活检病理报告照片
-		v_jtdbdxzdbgzp   zjjk_mb_zlfh_ga.jtdbdxzdbgzp%TYPE;    --（复印或拍照）甲胎蛋白（AFP）定性诊断报告（1型）照片
-		v_ctjcbgzp       zjjk_mb_zlfh_ga.ctjcbgzp%TYPE;    --（复印或拍照）CT检查报告照片
-		v_mrijcbgzp      zjjk_mb_zlfh_ga.mrijcbgzp%TYPE;    --（复印或拍照）MRI检查报告照片
-		v_bcjcbgzp       zjjk_mb_zlfh_ga.bcjcbgzp%TYPE;    --（复印或拍照）B超检查报告照片
+    v_basyzp         zjjk_mb_zlfh_ga.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp         zjjk_mb_zlfh_ga.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp         zjjk_mb_zlfh_ga.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_gcchjblbgzp    zjjk_mb_zlfh_ga.gcchjblbgzp%TYPE;    --（复印或拍照）肝穿刺活检病理报告照片
+    v_jtdbdxzdbgzp   zjjk_mb_zlfh_ga.jtdbdxzdbgzp%TYPE;    --（复印或拍照）甲胎蛋白（AFP）定性诊断报告（1型）照片
+    v_ctjcbgzp       zjjk_mb_zlfh_ga.ctjcbgzp%TYPE;    --（复印或拍照）CT检查报告照片
+    v_mrijcbgzp      zjjk_mb_zlfh_ga.mrijcbgzp%TYPE;    --（复印或拍照）MRI检查报告照片
+    v_bcjcbgzp       zjjk_mb_zlfh_ga.bcjcbgzp%TYPE;    --（复印或拍照）B超检查报告照片
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -3813,16 +3821,16 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhjgpd         := Json_Str(v_Json_Data, 'fhjgpd');
     v_blxlx          := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg        := Json_Str(v_Json_Data, 'blxlxxg');
-		v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
-		v_gcchjblbgzp    := Json_Str(v_Json_Data, 'gcchjblbgzp');
-		v_jtdbdxzdbgzp   := Json_Str(v_Json_Data, 'jtdbdxzdbgzp');
-		v_ctjcbgzp       := Json_Str(v_Json_Data, 'ctjcbgzp');
-		v_mrijcbgzp      := Json_Str(v_Json_Data, 'mrijcbgzp');
-		v_bcjcbgzp       := Json_Str(v_Json_Data, 'bcjcbgzp'); 
-		
+    v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
+    v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
+    v_gcchjblbgzp    := Json_Str(v_Json_Data, 'gcchjblbgzp');
+    v_jtdbdxzdbgzp   := Json_Str(v_Json_Data, 'jtdbdxzdbgzp');
+    v_ctjcbgzp       := Json_Str(v_Json_Data, 'ctjcbgzp');
+    v_mrijcbgzp      := Json_Str(v_Json_Data, 'mrijcbgzp');
+    v_bcjcbgzp       := Json_Str(v_Json_Data, 'bcjcbgzp'); 
+    
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -3882,8 +3890,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -3985,12 +3993,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
   
-		--更新资料完整性
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -4022,205 +4030,205 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_ga a where a.id = v_id;
     if v_count > 0 then
       --修改
-			UPDATE zjjk_mb_zlfh_ga
-				 SET bkdw           = v_bkdw,
-						 zyh            = v_zyh,
-						 jbxxybgksfyz   = v_jbxxybgksfyz,
-						 kpzt           = v_kpzt,
-						 blh            = v_blh,
-						 bgkbm          = v_bgkbm,
-						 xm             = v_xm,
-						 xmxg           = v_xmxg,
-						 xb             = v_xb,
-						 xbxg           = v_xbxg,
-						 csrq           = v_csrq,
-						 csrqxg         = v_csrqxg,
-						 sfzh           = v_sfzh,
-						 sfzhxg         = v_sfzhxg,
-						 zdrq           = v_zdrq,
-						 zdrqxg         = v_zdrqxg,
-						 icd10          = v_icd10,
-						 icd10xg        = v_icd10xg,
-						 bgyysfwzdyy    = v_bgyysfwzdyy,
-						 zdyymc         = v_zdyymc,
-						 czbajldjttj    = v_czbajldjttj,
-						 qtczbajldtj    = v_qtczbajldtj,
-						 sfczbdcxgbazl  = v_sfczbdcxgbazl,
-						 bajlsfdzh      = v_bajlsfdzh,
-						 dzbasjnr       = v_dzbasjnr,
-						 wczbdcxgbazlyy = v_wczbdcxgbazlyy,
-						 qtknyy         = v_qtknyy,
-						 sfcjbasy       = v_sfcjbasy,
-						 sfcjcyxj       = v_sfcjcyxj,
-						 sfcjryjl       = v_sfcjryjl,
-						 sfcjgcchjblbg  = v_sfcjgcchjblbg,
-						 sfcjjtdbdxzdbg = v_sfcjjtdbdxzdbg,
-						 sfcjctjcbg     = v_sfcjctjcbg,
-						 sfcjmrijcbg    = v_sfcjmrijcbg,
-						 sfcjbcjcbg     = v_sfcjbcjcbg,
-						 zyzd           = v_zyzd,
-						 cyhqtzd        = v_cyhqtzd,
-						 chzt           = v_chzt,
-						 wlcdqtjcbg     = v_wlcdqtjcbg,
-						 blcjzqz        = v_blcjzqz,
-						 bacjzdw        = v_bacjzdw,
-						 fhbgrq         = v_fhbgrq,
-						 zdyj           = v_zdyj,
-						 zdyjxg         = v_zdyjxg,
-						 fhjgpd         = v_fhjgpd,
-						 zlwzx          = v_zlwzx,
-						 xgrid          = v_czyyhid,
-						 xgrxm          = v_czyyhxm,
-						 xgsj           = v_sysdate,
-						 blxlx          = v_blxlx,
-						 blxlxxg        = v_blxlxxg,
-						 fhzt           = '1',
-						 basyzp         = v_basyzp,
-						 cyxjzp         = v_cyxjzp,
-						 ryjlzp         = v_ryjlzp,
-						 gcchjblbgzp    = v_gcchjblbgzp,
-						 jtdbdxzdbgzp   = v_jtdbdxzdbgzp,
-						 ctjcbgzp       = v_ctjcbgzp,
-						 mrijcbgzp      = v_mrijcbgzp,
-						 bcjcbgzp       = v_bcjcbgzp
-			 WHERE id = v_id;
+      UPDATE zjjk_mb_zlfh_ga
+         SET bkdw           = v_bkdw,
+             zyh            = v_zyh,
+             jbxxybgksfyz   = v_jbxxybgksfyz,
+             kpzt           = v_kpzt,
+             blh            = v_blh,
+             bgkbm          = v_bgkbm,
+             xm             = v_xm,
+             xmxg           = v_xmxg,
+             xb             = v_xb,
+             xbxg           = v_xbxg,
+             csrq           = v_csrq,
+             csrqxg         = v_csrqxg,
+             sfzh           = v_sfzh,
+             sfzhxg         = v_sfzhxg,
+             zdrq           = v_zdrq,
+             zdrqxg         = v_zdrqxg,
+             icd10          = v_icd10,
+             icd10xg        = v_icd10xg,
+             bgyysfwzdyy    = v_bgyysfwzdyy,
+             zdyymc         = v_zdyymc,
+             czbajldjttj    = v_czbajldjttj,
+             qtczbajldtj    = v_qtczbajldtj,
+             sfczbdcxgbazl  = v_sfczbdcxgbazl,
+             bajlsfdzh      = v_bajlsfdzh,
+             dzbasjnr       = v_dzbasjnr,
+             wczbdcxgbazlyy = v_wczbdcxgbazlyy,
+             qtknyy         = v_qtknyy,
+             sfcjbasy       = v_sfcjbasy,
+             sfcjcyxj       = v_sfcjcyxj,
+             sfcjryjl       = v_sfcjryjl,
+             sfcjgcchjblbg  = v_sfcjgcchjblbg,
+             sfcjjtdbdxzdbg = v_sfcjjtdbdxzdbg,
+             sfcjctjcbg     = v_sfcjctjcbg,
+             sfcjmrijcbg    = v_sfcjmrijcbg,
+             sfcjbcjcbg     = v_sfcjbcjcbg,
+             zyzd           = v_zyzd,
+             cyhqtzd        = v_cyhqtzd,
+             chzt           = v_chzt,
+             wlcdqtjcbg     = v_wlcdqtjcbg,
+             blcjzqz        = v_blcjzqz,
+             bacjzdw        = v_bacjzdw,
+             fhbgrq         = v_fhbgrq,
+             zdyj           = v_zdyj,
+             zdyjxg         = v_zdyjxg,
+             fhjgpd         = v_fhjgpd,
+             zlwzx          = v_zlwzx,
+             xgrid          = v_czyyhid,
+             xgrxm          = v_czyyhxm,
+             xgsj           = v_sysdate,
+             blxlx          = v_blxlx,
+             blxlxxg        = v_blxlxxg,
+             fhzt           = '1',
+             basyzp         = v_basyzp,
+             cyxjzp         = v_cyxjzp,
+             ryjlzp         = v_ryjlzp,
+             gcchjblbgzp    = v_gcchjblbgzp,
+             jtdbdxzdbgzp   = v_jtdbdxzdbgzp,
+             ctjcbgzp       = v_ctjcbgzp,
+             mrijcbgzp      = v_mrijcbgzp,
+             bcjcbgzp       = v_bcjcbgzp
+       WHERE id = v_id;
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_ga
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjgcchjblbg,
-				 sfcjjtdbdxzdbg,
-				 sfcjctjcbg,
-				 sfcjmrijcbg,
-				 sfcjbcjcbg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 blxlx,
-				 blxlxxg,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 gcchjblbgzp,
-				 jtdbdxzdbgzp,
-				 ctjcbgzp,
-				 mrijcbgzp,
-				 bcjcbgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjgcchjblbg,
-				 v_sfcjjtdbdxzdbg,
-				 v_sfcjctjcbg,
-				 v_sfcjmrijcbg,
-				 v_sfcjbcjcbg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_blxlx,
-				 v_blxlxxg,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_gcchjblbgzp,
-				 v_jtdbdxzdbgzp,
-				 v_ctjcbgzp,
-				 v_mrijcbgzp,
-				 v_bcjcbgzp);
+      INSERT INTO zjjk_mb_zlfh_ga
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjgcchjblbg,
+         sfcjjtdbdxzdbg,
+         sfcjctjcbg,
+         sfcjmrijcbg,
+         sfcjbcjcbg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         blxlx,
+         blxlxxg,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         gcchjblbgzp,
+         jtdbdxzdbgzp,
+         ctjcbgzp,
+         mrijcbgzp,
+         bcjcbgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjgcchjblbg,
+         v_sfcjjtdbdxzdbg,
+         v_sfcjctjcbg,
+         v_sfcjmrijcbg,
+         v_sfcjbcjcbg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_blxlx,
+         v_blxlxxg,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_gcchjblbgzp,
+         v_jtdbdxzdbgzp,
+         v_ctjcbgzp,
+         v_mrijcbgzp,
+         v_bcjcbgzp);
     
     end if;
     --更新复核状态
@@ -4498,13 +4506,13 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhzt              zjjk_mb_zlfh_wa.fhzt%TYPE; --复核状态（0 符合 1不符合）
     v_blxlx             zjjk_mb_zlfh_wa.blxlx%TYPE; --病理学类型
     v_blxlxxg           zjjk_mb_zlfh_wa.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp            zjjk_mb_zlfh_wa.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp            zjjk_mb_zlfh_wa.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp            zjjk_mb_zlfh_wa.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_qwwjxnmhjblbgzp   zjjk_mb_zlfh_wa.qwwjxnmhjblbgzp%TYPE;    --（复印或拍照）纤维胃镜下粘膜活检病理报告照片
-		v_wxxbcjcbgzp       zjjk_mb_zlfh_wa.wxxbcjcbgzp%TYPE;    --（复印或拍照）胃X线钡餐检查报告照片
-		v_wtlxbxjcbgzp      zjjk_mb_zlfh_wa.wtlxbxjcbgzp%TYPE;    --（复印或拍照）胃脱落细胞学检查报告照片
-		  
+    v_basyzp            zjjk_mb_zlfh_wa.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp            zjjk_mb_zlfh_wa.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp            zjjk_mb_zlfh_wa.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_qwwjxnmhjblbgzp   zjjk_mb_zlfh_wa.qwwjxnmhjblbgzp%TYPE;    --（复印或拍照）纤维胃镜下粘膜活检病理报告照片
+    v_wxxbcjcbgzp       zjjk_mb_zlfh_wa.wxxbcjcbgzp%TYPE;    --（复印或拍照）胃X线钡餐检查报告照片
+    v_wtlxbxjcbgzp      zjjk_mb_zlfh_wa.wtlxbxjcbgzp%TYPE;    --（复印或拍照）胃脱落细胞学检查报告照片
+      
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
   
@@ -4563,13 +4571,13 @@ UPDATE zjjk_mb_zlfh_gxb
     v_blxlx             := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg           := Json_Str(v_Json_Data, 'blxlxxg');
     v_zlwzx             := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp            := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp            := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp            := Json_Str(v_Json_Data, 'ryjlzp');
-		v_qwwjxnmhjblbgzp   := Json_Str(v_Json_Data, 'qwwjxnmhjblbgzp');
-		v_wxxbcjcbgzp       := Json_Str(v_Json_Data, 'wxxbcjcbgzp');
-		v_wtlxbxjcbgzp      := Json_Str(v_Json_Data, 'wtlxbxjcbgzp');
-		
+    v_basyzp            := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp            := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp            := Json_Str(v_Json_Data, 'ryjlzp');
+    v_qwwjxnmhjblbgzp   := Json_Str(v_Json_Data, 'qwwjxnmhjblbgzp');
+    v_wxxbcjcbgzp       := Json_Str(v_Json_Data, 'wxxbcjcbgzp');
+    v_wtlxbxjcbgzp      := Json_Str(v_Json_Data, 'wtlxbxjcbgzp');
+    
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -4629,8 +4637,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -4724,12 +4732,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
   
-		--更新资料完整性
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -4759,194 +4767,194 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_wa a where a.id = v_id;
     if v_count > 0 then
       --修改
-			UPDATE zjjk_mb_zlfh_wa
-				 SET bkdw              = v_bkdw,
-						 zyh               = v_zyh,
-						 jbxxybgksfyz      = v_jbxxybgksfyz,
-						 kpzt              = v_kpzt,
-						 blh               = v_blh,
-						 bgkbm             = v_bgkbm,
-						 xm                = v_xm,
-						 xmxg              = v_xmxg,
-						 xb                = v_xb,
-						 xbxg              = v_xbxg,
-						 csrq              = v_csrq,
-						 csrqxg            = v_csrqxg,
-						 sfzh              = v_sfzh,
-						 sfzhxg            = v_sfzhxg,
-						 zdrq              = v_zdrq,
-						 zdrqxg            = v_zdrqxg,
-						 icd10             = v_icd10,
-						 icd10xg           = v_icd10xg,
-						 bgyysfwzdyy       = v_bgyysfwzdyy,
-						 zdyymc            = v_zdyymc,
-						 czbajldjttj       = v_czbajldjttj,
-						 qtczbajldtj       = v_qtczbajldtj,
-						 sfczbdcxgbazl     = v_sfczbdcxgbazl,
-						 bajlsfdzh         = v_bajlsfdzh,
-						 dzbasjnr          = v_dzbasjnr,
-						 wczbdcxgbazlyy    = v_wczbdcxgbazlyy,
-						 qtknyy            = v_qtknyy,
-						 sfcjbasy          = v_sfcjbasy,
-						 sfcjcyxj          = v_sfcjcyxj,
-						 sfcjryjl          = v_sfcjryjl,
-						 sfcjqwwjxnmhjblbg = v_sfcjqwwjxnmhjblbg,
-						 sfcjwxxbcjcbg     = v_sfcjwxxbcjcbg,
-						 sfcjwtlxbxjcbg    = v_sfcjwtlxbxjcbg,
-						 zyzd              = v_zyzd,
-						 cyhqtzd           = v_cyhqtzd,
-						 chzt              = v_chzt,
-						 wlcdqtjcbg        = v_wlcdqtjcbg,
-						 blcjzqz           = v_blcjzqz,
-						 bacjzdw           = v_bacjzdw,
-						 fhbgrq            = v_fhbgrq,
-						 zdyj              = v_zdyj,
-						 zdyjxg            = v_zdyjxg,
-						 fhjgpd            = v_fhjgpd,
-						 zlwzx             = v_zlwzx,
-						 xgrid             = v_czyyhid,
-						 xgrxm             = v_czyyhxm,
-						 xgsj              = v_sysdate,
-						 blxlx             = v_blxlx,
-						 blxlxxg           = v_blxlxxg,
-						 fhzt              = '1',
-						 basyzp            = v_basyzp,
-						 cyxjzp            = v_cyxjzp,
-						 ryjlzp            = v_ryjlzp,
-						 qwwjxnmhjblbgzp   = v_qwwjxnmhjblbgzp,
-						 wxxbcjcbgzp       = v_wxxbcjcbgzp,
-						 wtlxbxjcbgzp      = v_wtlxbxjcbgzp
-			 WHERE id = v_id;
+      UPDATE zjjk_mb_zlfh_wa
+         SET bkdw              = v_bkdw,
+             zyh               = v_zyh,
+             jbxxybgksfyz      = v_jbxxybgksfyz,
+             kpzt              = v_kpzt,
+             blh               = v_blh,
+             bgkbm             = v_bgkbm,
+             xm                = v_xm,
+             xmxg              = v_xmxg,
+             xb                = v_xb,
+             xbxg              = v_xbxg,
+             csrq              = v_csrq,
+             csrqxg            = v_csrqxg,
+             sfzh              = v_sfzh,
+             sfzhxg            = v_sfzhxg,
+             zdrq              = v_zdrq,
+             zdrqxg            = v_zdrqxg,
+             icd10             = v_icd10,
+             icd10xg           = v_icd10xg,
+             bgyysfwzdyy       = v_bgyysfwzdyy,
+             zdyymc            = v_zdyymc,
+             czbajldjttj       = v_czbajldjttj,
+             qtczbajldtj       = v_qtczbajldtj,
+             sfczbdcxgbazl     = v_sfczbdcxgbazl,
+             bajlsfdzh         = v_bajlsfdzh,
+             dzbasjnr          = v_dzbasjnr,
+             wczbdcxgbazlyy    = v_wczbdcxgbazlyy,
+             qtknyy            = v_qtknyy,
+             sfcjbasy          = v_sfcjbasy,
+             sfcjcyxj          = v_sfcjcyxj,
+             sfcjryjl          = v_sfcjryjl,
+             sfcjqwwjxnmhjblbg = v_sfcjqwwjxnmhjblbg,
+             sfcjwxxbcjcbg     = v_sfcjwxxbcjcbg,
+             sfcjwtlxbxjcbg    = v_sfcjwtlxbxjcbg,
+             zyzd              = v_zyzd,
+             cyhqtzd           = v_cyhqtzd,
+             chzt              = v_chzt,
+             wlcdqtjcbg        = v_wlcdqtjcbg,
+             blcjzqz           = v_blcjzqz,
+             bacjzdw           = v_bacjzdw,
+             fhbgrq            = v_fhbgrq,
+             zdyj              = v_zdyj,
+             zdyjxg            = v_zdyjxg,
+             fhjgpd            = v_fhjgpd,
+             zlwzx             = v_zlwzx,
+             xgrid             = v_czyyhid,
+             xgrxm             = v_czyyhxm,
+             xgsj              = v_sysdate,
+             blxlx             = v_blxlx,
+             blxlxxg           = v_blxlxxg,
+             fhzt              = '1',
+             basyzp            = v_basyzp,
+             cyxjzp            = v_cyxjzp,
+             ryjlzp            = v_ryjlzp,
+             qwwjxnmhjblbgzp   = v_qwwjxnmhjblbgzp,
+             wxxbcjcbgzp       = v_wxxbcjcbgzp,
+             wtlxbxjcbgzp      = v_wtlxbxjcbgzp
+       WHERE id = v_id;
     
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_wa
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjqwwjxnmhjblbg,
-				 sfcjwxxbcjcbg,
-				 sfcjwtlxbxjcbg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 blxlx,
-				 blxlxxg,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 qwwjxnmhjblbgzp,
-				 wxxbcjcbgzp,
-				 wtlxbxjcbgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjqwwjxnmhjblbg,
-				 v_sfcjwxxbcjcbg,
-				 v_sfcjwtlxbxjcbg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_blxlx,
-				 v_blxlxxg,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_qwwjxnmhjblbgzp,
-				 v_wxxbcjcbgzp,
-				 v_wtlxbxjcbgzp);
+      INSERT INTO zjjk_mb_zlfh_wa
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjqwwjxnmhjblbg,
+         sfcjwxxbcjcbg,
+         sfcjwtlxbxjcbg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         blxlx,
+         blxlxxg,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         qwwjxnmhjblbgzp,
+         wxxbcjcbgzp,
+         wtlxbxjcbgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjqwwjxnmhjblbg,
+         v_sfcjwxxbcjcbg,
+         v_sfcjwtlxbxjcbg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_blxlx,
+         v_blxlxxg,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_qwwjxnmhjblbgzp,
+         v_wxxbcjcbgzp,
+         v_wtlxbxjcbgzp);
     
     end if;
     --更新复核状态
@@ -5223,12 +5231,12 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhzt              zjjk_mb_zlfh_sga.fhzt%TYPE; --复核状态（0 符合 1不符合）
     v_blxlx             zjjk_mb_zlfh_sga.blxlx%TYPE; --病理学类型
     v_blxlxxg           zjjk_mb_zlfh_sga.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp            zjjk_mb_zlfh_sga.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp            zjjk_mb_zlfh_sga.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp            zjjk_mb_zlfh_sga.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_sgjxhjblbgzp      zjjk_mb_zlfh_sga.sgjxhjblbgzp%TYPE;    --（复印或拍照）食管镜下活检病理报告照片
-		v_sgnmtlxbxjcbgzp   zjjk_mb_zlfh_sga.sgnmtlxbxjcbgzp%TYPE;    --（复印或拍照）食管黏膜脱落细胞学检查报告照片
-		v_xxtbjcbgzp        zjjk_mb_zlfh_sga.xxtbjcbgzp%TYPE;    --（复印或拍照）X线吞钡检查报告照片
+    v_basyzp            zjjk_mb_zlfh_sga.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp            zjjk_mb_zlfh_sga.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp            zjjk_mb_zlfh_sga.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_sgjxhjblbgzp      zjjk_mb_zlfh_sga.sgjxhjblbgzp%TYPE;    --（复印或拍照）食管镜下活检病理报告照片
+    v_sgnmtlxbxjcbgzp   zjjk_mb_zlfh_sga.sgnmtlxbxjcbgzp%TYPE;    --（复印或拍照）食管黏膜脱落细胞学检查报告照片
+    v_xxtbjcbgzp        zjjk_mb_zlfh_sga.xxtbjcbgzp%TYPE;    --（复印或拍照）X线吞钡检查报告照片
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -5288,13 +5296,13 @@ UPDATE zjjk_mb_zlfh_gxb
     v_blxlx             := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg           := Json_Str(v_Json_Data, 'blxlxxg');
     v_zlwzx             := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp            := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp            := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp            := Json_Str(v_Json_Data, 'ryjlzp');
-		v_sgjxhjblbgzp      := Json_Str(v_Json_Data, 'sgjxhjblbgzp');
-		v_sgnmtlxbxjcbgzp   := Json_Str(v_Json_Data, 'sgnmtlxbxjcbgzp');
-		v_xxtbjcbgzp        := Json_Str(v_Json_Data, 'xxtbjcbgzp');	
-			
+    v_basyzp            := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp            := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp            := Json_Str(v_Json_Data, 'ryjlzp');
+    v_sgjxhjblbgzp      := Json_Str(v_Json_Data, 'sgjxhjblbgzp');
+    v_sgnmtlxbxjcbgzp   := Json_Str(v_Json_Data, 'sgnmtlxbxjcbgzp');
+    v_xxtbjcbgzp        := Json_Str(v_Json_Data, 'xxtbjcbgzp'); 
+      
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -5354,8 +5362,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -5449,12 +5457,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
-		
-		--更新资料完整性
+    
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -5484,194 +5492,194 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1) into v_count from zjjk_mb_zlfh_sga a where a.id = v_id;
     if v_count > 0 then
       --修改
-				UPDATE zjjk_mb_zlfh_sga
-					 SET id                = v_id,
-							 bkdw              = v_bkdw,
-							 zyh               = v_zyh,
-							 jbxxybgksfyz      = v_jbxxybgksfyz,
-							 kpzt              = v_kpzt,
-							 blh               = v_blh,
-							 bgkbm             = v_bgkbm,
-							 xm                = v_xm,
-							 xmxg              = v_xmxg,
-							 xb                = v_xb,
-							 xbxg              = v_xbxg,
-							 csrq              = v_csrq,
-							 csrqxg            = v_csrqxg,
-							 sfzh              = v_sfzh,
-							 sfzhxg            = v_sfzhxg,
-							 zdrq              = v_zdrq,
-							 zdrqxg            = v_zdrqxg,
-							 icd10             = v_icd10,
-							 icd10xg           = v_icd10xg,
-							 bgyysfwzdyy       = v_bgyysfwzdyy,
-							 zdyymc            = v_zdyymc,
-							 czbajldjttj       = v_czbajldjttj,
-							 qtczbajldtj       = v_qtczbajldtj,
-							 sfczbdcxgbazl     = v_sfczbdcxgbazl,
-							 bajlsfdzh         = v_bajlsfdzh,
-							 dzbasjnr          = v_dzbasjnr,
-							 wczbdcxgbazlyy    = v_wczbdcxgbazlyy,
-							 qtknyy            = v_qtknyy,
-							 sfcjbasy          = v_sfcjbasy,
-							 sfcjcyxj          = v_sfcjcyxj,
-							 sfcjryjl          = v_sfcjryjl,
-							 sfcjsgjxhjblbg    = v_sfcjsgjxhjblbg,
-							 sfcjsgnmtlxbxjcbg = v_sfcjsgnmtlxbxjcbg,
-							 sfcjxxtbjcbg      = v_sfcjxxtbjcbg,
-							 zyzd              = v_zyzd,
-							 cyhqtzd           = v_cyhqtzd,
-							 chzt              = v_chzt,
-							 wlcdqtjcbg        = v_wlcdqtjcbg,
-							 blcjzqz           = v_blcjzqz,
-							 bacjzdw           = v_bacjzdw,
-							 fhbgrq            = v_fhbgrq,
-							 zdyj              = v_zdyj,
-							 zdyjxg            = v_zdyjxg,
-							 fhjgpd            = v_fhjgpd,
-							 zlwzx             = v_zlwzx,
-							 xgrid             = v_czyyhid,
-							 xgrxm             = v_czyyhxm,
-							 xgsj              = v_sysdate,
-							 blxlx             = v_blxlx,
-							 blxlxxg           = v_blxlxxg,
-							 fhzt              = '1',
-							 basyzp            = v_basyzp,
-							 cyxjzp            = v_cyxjzp,
-							 ryjlzp            = v_ryjlzp,
-							 sgjxhjblbgzp      = v_sgjxhjblbgzp,
-							 sgnmtlxbxjcbgzp   = v_sgnmtlxbxjcbgzp,
-							 xxtbjcbgzp        = v_xxtbjcbgzp
-				 WHERE id = v_id;
+        UPDATE zjjk_mb_zlfh_sga
+           SET id                = v_id,
+               bkdw              = v_bkdw,
+               zyh               = v_zyh,
+               jbxxybgksfyz      = v_jbxxybgksfyz,
+               kpzt              = v_kpzt,
+               blh               = v_blh,
+               bgkbm             = v_bgkbm,
+               xm                = v_xm,
+               xmxg              = v_xmxg,
+               xb                = v_xb,
+               xbxg              = v_xbxg,
+               csrq              = v_csrq,
+               csrqxg            = v_csrqxg,
+               sfzh              = v_sfzh,
+               sfzhxg            = v_sfzhxg,
+               zdrq              = v_zdrq,
+               zdrqxg            = v_zdrqxg,
+               icd10             = v_icd10,
+               icd10xg           = v_icd10xg,
+               bgyysfwzdyy       = v_bgyysfwzdyy,
+               zdyymc            = v_zdyymc,
+               czbajldjttj       = v_czbajldjttj,
+               qtczbajldtj       = v_qtczbajldtj,
+               sfczbdcxgbazl     = v_sfczbdcxgbazl,
+               bajlsfdzh         = v_bajlsfdzh,
+               dzbasjnr          = v_dzbasjnr,
+               wczbdcxgbazlyy    = v_wczbdcxgbazlyy,
+               qtknyy            = v_qtknyy,
+               sfcjbasy          = v_sfcjbasy,
+               sfcjcyxj          = v_sfcjcyxj,
+               sfcjryjl          = v_sfcjryjl,
+               sfcjsgjxhjblbg    = v_sfcjsgjxhjblbg,
+               sfcjsgnmtlxbxjcbg = v_sfcjsgnmtlxbxjcbg,
+               sfcjxxtbjcbg      = v_sfcjxxtbjcbg,
+               zyzd              = v_zyzd,
+               cyhqtzd           = v_cyhqtzd,
+               chzt              = v_chzt,
+               wlcdqtjcbg        = v_wlcdqtjcbg,
+               blcjzqz           = v_blcjzqz,
+               bacjzdw           = v_bacjzdw,
+               fhbgrq            = v_fhbgrq,
+               zdyj              = v_zdyj,
+               zdyjxg            = v_zdyjxg,
+               fhjgpd            = v_fhjgpd,
+               zlwzx             = v_zlwzx,
+               xgrid             = v_czyyhid,
+               xgrxm             = v_czyyhxm,
+               xgsj              = v_sysdate,
+               blxlx             = v_blxlx,
+               blxlxxg           = v_blxlxxg,
+               fhzt              = '1',
+               basyzp            = v_basyzp,
+               cyxjzp            = v_cyxjzp,
+               ryjlzp            = v_ryjlzp,
+               sgjxhjblbgzp      = v_sgjxhjblbgzp,
+               sgnmtlxbxjcbgzp   = v_sgnmtlxbxjcbgzp,
+               xxtbjcbgzp        = v_xxtbjcbgzp
+         WHERE id = v_id;
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_sga
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjsgjxhjblbg,
-				 sfcjsgnmtlxbxjcbg,
-				 sfcjxxtbjcbg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 blxlx,
-				 blxlxxg,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 sgjxhjblbgzp,
-				 sgnmtlxbxjcbgzp,
-				 xxtbjcbgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjsgjxhjblbg,
-				 v_sfcjsgnmtlxbxjcbg,
-				 v_sfcjxxtbjcbg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_blxlx,
-				 v_blxlxxg,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_sgjxhjblbgzp,
-				 v_sgnmtlxbxjcbgzp,
-				 v_xxtbjcbgzp);
+      INSERT INTO zjjk_mb_zlfh_sga
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjsgjxhjblbg,
+         sfcjsgnmtlxbxjcbg,
+         sfcjxxtbjcbg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         blxlx,
+         blxlxxg,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         sgjxhjblbgzp,
+         sgnmtlxbxjcbgzp,
+         xxtbjcbgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjsgjxhjblbg,
+         v_sfcjsgnmtlxbxjcbg,
+         v_sfcjxxtbjcbg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_blxlx,
+         v_blxlxxg,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_sgjxhjblbgzp,
+         v_sgnmtlxbxjcbgzp,
+         v_xxtbjcbgzp);
     
     end if;
     --更新复核状态
@@ -5950,13 +5958,13 @@ UPDATE zjjk_mb_zlfh_gxb
     v_xgsj           zjjk_mb_zlfh_jzca.xgsj%TYPE; --修改时间
     v_blxlx          zjjk_mb_zlfh_jzca.blxlx%TYPE; --病理学类型
     v_blxlxxg        zjjk_mb_zlfh_jzca.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp         zjjk_mb_zlfh_jzca.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp         zjjk_mb_zlfh_jzca.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp         zjjk_mb_zlfh_jzca.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_jcjxhjblbgzp   zjjk_mb_zlfh_jzca.jcjxhjblbgzp%TYPE;    --（复印或拍照）结肠镜下活检病理报告照片
-		v_zccssmjcbgzp   zjjk_mb_zlfh_jzca.zccssmjcbgzp%TYPE;    --（复印或拍照）直肠超声扫描检查报告照片
-		v_xqapkycdbgzp   zjjk_mb_zlfh_jzca.xqapkycdbgzp%TYPE;    --（复印或拍照）血清癌胚抗原（CEA）测定报告照片
-		v_tbgcxxjcbgzp   zjjk_mb_zlfh_jzca.tbgcxxjcbgzp%TYPE;    --（复印或拍照）钡灌肠X线检查报告照片
+    v_basyzp         zjjk_mb_zlfh_jzca.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp         zjjk_mb_zlfh_jzca.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp         zjjk_mb_zlfh_jzca.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_jcjxhjblbgzp   zjjk_mb_zlfh_jzca.jcjxhjblbgzp%TYPE;    --（复印或拍照）结肠镜下活检病理报告照片
+    v_zccssmjcbgzp   zjjk_mb_zlfh_jzca.zccssmjcbgzp%TYPE;    --（复印或拍照）直肠超声扫描检查报告照片
+    v_xqapkycdbgzp   zjjk_mb_zlfh_jzca.xqapkycdbgzp%TYPE;    --（复印或拍照）血清癌胚抗原（CEA）测定报告照片
+    v_tbgcxxjcbgzp   zjjk_mb_zlfh_jzca.tbgcxxjcbgzp%TYPE;    --（复印或拍照）钡灌肠X线检查报告照片
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -6016,14 +6024,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhjgpd         := Json_Str(v_Json_Data, 'fhjgpd');
     v_blxlx          := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg        := Json_Str(v_Json_Data, 'blxlxxg');
-		v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
-		v_jcjxhjblbgzp   := Json_Str(v_Json_Data, 'jcjxhjblbgzp');
-		v_zccssmjcbgzp   := Json_Str(v_Json_Data, 'zccssmjcbgzp');
-		v_xqapkycdbgzp   := Json_Str(v_Json_Data, 'xqapkycdbgzp');
-		v_tbgcxxjcbgzp   := Json_Str(v_Json_Data, 'tbgcxxjcbgzp');
+    v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
+    v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
+    v_jcjxhjblbgzp   := Json_Str(v_Json_Data, 'jcjxhjblbgzp');
+    v_zccssmjcbgzp   := Json_Str(v_Json_Data, 'zccssmjcbgzp');
+    v_xqapkycdbgzp   := Json_Str(v_Json_Data, 'xqapkycdbgzp');
+    v_tbgcxxjcbgzp   := Json_Str(v_Json_Data, 'tbgcxxjcbgzp');
   
     --校验权限
     if v_czyjgjb <> '3' then
@@ -6084,8 +6092,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -6183,12 +6191,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
   
-		--更新资料完整性
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -6212,15 +6220,15 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
-		
-		--综合结果判断验证
+    
+    --综合结果判断验证
     if (v_jbxxybgksfyz = '0' AND v_zlwzx ='0' AND v_fhjgpd='1')
        OR
        ((v_jbxxybgksfyz = '1' OR v_zlwzx ='1') AND v_fhjgpd='0') then
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1)
       into v_count
@@ -6228,195 +6236,195 @@ UPDATE zjjk_mb_zlfh_gxb
      where a.id = v_id;
     if v_count > 0 then
       --修改
-			UPDATE zjjk_mb_zlfh_jzca
-				 SET bkdw           = v_bkdw,
-						 zyh            = v_zyh,
-						 jbxxybgksfyz   = v_jbxxybgksfyz,
-						 kpzt           = v_kpzt,
-						 blh            = v_blh,
-						 bgkbm          = v_bgkbm,
-						 xm             = v_xm,
-						 xmxg           = v_xmxg,
-						 xb             = v_xb,
-						 xbxg           = v_xbxg,
-						 csrq           = v_csrq,
-						 csrqxg         = v_csrqxg,
-						 sfzh           = v_sfzh,
-						 sfzhxg         = v_sfzhxg,
-						 zdrq           = v_zdrq,
-						 zdrqxg         = v_zdrqxg,
-						 icd10          = v_icd10,
-						 icd10xg        = v_icd10xg,
-						 bgyysfwzdyy    = v_bgyysfwzdyy,
-						 zdyymc         = v_zdyymc,
-						 czbajldjttj    = v_czbajldjttj,
-						 qtczbajldtj    = v_qtczbajldtj,
-						 sfczbdcxgbazl  = v_sfczbdcxgbazl,
-						 bajlsfdzh      = v_bajlsfdzh,
-						 dzbasjnr       = v_dzbasjnr,
-						 wczbdcxgbazlyy = v_wczbdcxgbazlyy,
-						 qtknyy         = v_qtknyy,
-						 sfcjbasy       = v_sfcjbasy,
-						 sfcjcyxj       = v_sfcjcyxj,
-						 sfcjryjl       = v_sfcjryjl,
-						 sfcjjcjxhjblbg = v_sfcjjcjxhjblbg,
-						 sfcjzccssmjcbg = v_sfcjzccssmjcbg,
-						 sfcjxqapkycdbg = v_sfcjxqapkycdbg,
-						 sfcjtbgcxxjcbg = v_sfcjtbgcxxjcbg,
-						 zyzd           = v_zyzd,
-						 cyhqtzd        = v_cyhqtzd,
-						 chzt           = v_chzt,
-						 wlcdqtjcbg     = v_wlcdqtjcbg,
-						 blcjzqz        = v_blcjzqz,
-						 bacjzdw        = v_bacjzdw,
-						 fhbgrq         = v_fhbgrq,
-						 zdyj           = v_zdyj,
-						 zdyjxg         = v_zdyjxg,
-						 fhjgpd         = v_fhjgpd,
-						 zlwzx          = v_zlwzx,
-						 xgrid          = v_czyyhid,
-						 xgrxm          = v_czyyhxm,
-						 xgsj           = v_sysdate,
-						 blxlx          = v_blxlx,
-						 blxlxxg        = v_blxlxxg,
-						 fhzt           = '1',
-						 basyzp         = v_basyzp,
-						 cyxjzp         = v_cyxjzp,
-						 ryjlzp         = v_ryjlzp,
-						 jcjxhjblbgzp   = v_jcjxhjblbgzp,
-						 zccssmjcbgzp   = v_zccssmjcbgzp,
-						 xqapkycdbgzp   = v_xqapkycdbgzp,
-						 tbgcxxjcbgzp   = v_tbgcxxjcbgzp
-			 WHERE id = v_id;
+      UPDATE zjjk_mb_zlfh_jzca
+         SET bkdw           = v_bkdw,
+             zyh            = v_zyh,
+             jbxxybgksfyz   = v_jbxxybgksfyz,
+             kpzt           = v_kpzt,
+             blh            = v_blh,
+             bgkbm          = v_bgkbm,
+             xm             = v_xm,
+             xmxg           = v_xmxg,
+             xb             = v_xb,
+             xbxg           = v_xbxg,
+             csrq           = v_csrq,
+             csrqxg         = v_csrqxg,
+             sfzh           = v_sfzh,
+             sfzhxg         = v_sfzhxg,
+             zdrq           = v_zdrq,
+             zdrqxg         = v_zdrqxg,
+             icd10          = v_icd10,
+             icd10xg        = v_icd10xg,
+             bgyysfwzdyy    = v_bgyysfwzdyy,
+             zdyymc         = v_zdyymc,
+             czbajldjttj    = v_czbajldjttj,
+             qtczbajldtj    = v_qtczbajldtj,
+             sfczbdcxgbazl  = v_sfczbdcxgbazl,
+             bajlsfdzh      = v_bajlsfdzh,
+             dzbasjnr       = v_dzbasjnr,
+             wczbdcxgbazlyy = v_wczbdcxgbazlyy,
+             qtknyy         = v_qtknyy,
+             sfcjbasy       = v_sfcjbasy,
+             sfcjcyxj       = v_sfcjcyxj,
+             sfcjryjl       = v_sfcjryjl,
+             sfcjjcjxhjblbg = v_sfcjjcjxhjblbg,
+             sfcjzccssmjcbg = v_sfcjzccssmjcbg,
+             sfcjxqapkycdbg = v_sfcjxqapkycdbg,
+             sfcjtbgcxxjcbg = v_sfcjtbgcxxjcbg,
+             zyzd           = v_zyzd,
+             cyhqtzd        = v_cyhqtzd,
+             chzt           = v_chzt,
+             wlcdqtjcbg     = v_wlcdqtjcbg,
+             blcjzqz        = v_blcjzqz,
+             bacjzdw        = v_bacjzdw,
+             fhbgrq         = v_fhbgrq,
+             zdyj           = v_zdyj,
+             zdyjxg         = v_zdyjxg,
+             fhjgpd         = v_fhjgpd,
+             zlwzx          = v_zlwzx,
+             xgrid          = v_czyyhid,
+             xgrxm          = v_czyyhxm,
+             xgsj           = v_sysdate,
+             blxlx          = v_blxlx,
+             blxlxxg        = v_blxlxxg,
+             fhzt           = '1',
+             basyzp         = v_basyzp,
+             cyxjzp         = v_cyxjzp,
+             ryjlzp         = v_ryjlzp,
+             jcjxhjblbgzp   = v_jcjxhjblbgzp,
+             zccssmjcbgzp   = v_zccssmjcbgzp,
+             xqapkycdbgzp   = v_xqapkycdbgzp,
+             tbgcxxjcbgzp   = v_tbgcxxjcbgzp
+       WHERE id = v_id;
     
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_jzca
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjjcjxhjblbg,
-				 sfcjzccssmjcbg,
-				 sfcjxqapkycdbg,
-				 sfcjtbgcxxjcbg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 blxlx,
-				 blxlxxg,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 jcjxhjblbgzp,
-				 zccssmjcbgzp,
-				 xqapkycdbgzp,
-				 tbgcxxjcbgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjjcjxhjblbg,
-				 v_sfcjzccssmjcbg,
-				 v_sfcjxqapkycdbg,
-				 v_sfcjtbgcxxjcbg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_blxlx,
-				 v_blxlxxg,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_jcjxhjblbgzp,
-				 v_zccssmjcbgzp,
-				 v_xqapkycdbgzp,
-				 v_tbgcxxjcbgzp);
+      INSERT INTO zjjk_mb_zlfh_jzca
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjjcjxhjblbg,
+         sfcjzccssmjcbg,
+         sfcjxqapkycdbg,
+         sfcjtbgcxxjcbg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         blxlx,
+         blxlxxg,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         jcjxhjblbgzp,
+         zccssmjcbgzp,
+         xqapkycdbgzp,
+         tbgcxxjcbgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjjcjxhjblbg,
+         v_sfcjzccssmjcbg,
+         v_sfcjxqapkycdbg,
+         v_sfcjtbgcxxjcbg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_blxlx,
+         v_blxlxxg,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_jcjxhjblbgzp,
+         v_zccssmjcbgzp,
+         v_xqapkycdbgzp,
+         v_tbgcxxjcbgzp);
     
     end if;
     --更新复核状态
@@ -6694,13 +6702,13 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhzt             zjjk_mb_zlfh_nxrxa.fhzt%TYPE; --复核状态（0 符合 1不符合）
     v_blxlx            zjjk_mb_zlfh_nxrxa.blxlx%TYPE; --病理学类型
     v_blxlxxg          zjjk_mb_zlfh_nxrxa.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp           zjjk_mb_zlfh_nxrxa.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp           zjjk_mb_zlfh_nxrxa.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp           zjjk_mb_zlfh_nxrxa.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_rxzzxblbgzp      zjjk_mb_zlfh_nxrxa.rxzzxblbgzp%TYPE;    --（复印或拍照）乳腺组织学病理报告照片
-		v_rxcsjcbgzp       zjjk_mb_zlfh_nxrxa.rxcsjcbgzp%TYPE;    --（复印或拍照）乳腺超声检查报告照片
-		v_rxzxjcbgzp       zjjk_mb_zlfh_nxrxa.rxzxjcbgzp%TYPE;    --（复印或拍照）乳腺照相检查报告照片
-		v_rxadjsstztbgzp   zjjk_mb_zlfh_nxrxa.rxadjsstztbgzp%TYPE;    --（复印或拍照）乳腺癌的激素受体（ER/PR）状态报告照片
+    v_basyzp           zjjk_mb_zlfh_nxrxa.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp           zjjk_mb_zlfh_nxrxa.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp           zjjk_mb_zlfh_nxrxa.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_rxzzxblbgzp      zjjk_mb_zlfh_nxrxa.rxzzxblbgzp%TYPE;    --（复印或拍照）乳腺组织学病理报告照片
+    v_rxcsjcbgzp       zjjk_mb_zlfh_nxrxa.rxcsjcbgzp%TYPE;    --（复印或拍照）乳腺超声检查报告照片
+    v_rxzxjcbgzp       zjjk_mb_zlfh_nxrxa.rxzxjcbgzp%TYPE;    --（复印或拍照）乳腺照相检查报告照片
+    v_rxadjsstztbgzp   zjjk_mb_zlfh_nxrxa.rxadjsstztbgzp%TYPE;    --（复印或拍照）乳腺癌的激素受体（ER/PR）状态报告照片
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -6761,15 +6769,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_blxlx            := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg          := Json_Str(v_Json_Data, 'blxlxxg');
     v_zlwzx            := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp           := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp   	       := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp           := Json_Str(v_Json_Data, 'ryjlzp');
-		v_rxzzxblbgzp      := Json_Str(v_Json_Data, 'rxzzxblbgzp');
-		v_rxcsjcbgzp       := Json_Str(v_Json_Data, 'rxcsjcbgzp');
-		v_rxzxjcbgzp       := Json_Str(v_Json_Data, 'rxzxjcbgzp');
-		v_rxadjsstztbgzp   := Json_Str(v_Json_Data, 'rxadjsstztbgzp');
+    v_basyzp           := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp           := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp           := Json_Str(v_Json_Data, 'ryjlzp');
+    v_rxzzxblbgzp      := Json_Str(v_Json_Data, 'rxzzxblbgzp');
+    v_rxcsjcbgzp       := Json_Str(v_Json_Data, 'rxcsjcbgzp');
+    v_rxzxjcbgzp       := Json_Str(v_Json_Data, 'rxzxjcbgzp');
+    v_rxadjsstztbgzp   := Json_Str(v_Json_Data, 'rxadjsstztbgzp');
 
-		
+    
     --校验权限
     if v_czyjgjb <> '3' then
       --非区县
@@ -6829,8 +6837,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -6928,12 +6936,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
   
-		--更新资料完整性
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -6957,15 +6965,15 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
-		
-		--综合结果判断验证
+    
+    --综合结果判断验证
     if (v_jbxxybgksfyz = '0' AND v_zlwzx ='0' AND v_fhjgpd='1')
        OR
        ((v_jbxxybgksfyz = '1' OR v_zlwzx ='1') AND v_fhjgpd='0') then
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1)
       into v_count
@@ -6973,195 +6981,195 @@ UPDATE zjjk_mb_zlfh_gxb
      where a.id = v_id;
     if v_count > 0 then
       --修改
-			UPDATE zjjk_mb_zlfh_nxrxa
-				 SET id               = v_id,
-						 bkdw             = v_bkdw,
-						 zyh              = v_zyh,
-						 jbxxybgksfyz     = v_jbxxybgksfyz,
-						 kpzt             = v_kpzt,
-						 blh              = v_blh,
-						 bgkbm            = v_bgkbm,
-						 xm               = v_xm,
-						 xmxg             = v_xmxg,
-						 xb               = v_xb,
-						 xbxg             = v_xbxg,
-						 csrq             = v_csrq,
-						 csrqxg           = v_csrqxg,
-						 sfzh             = v_sfzh,
-						 sfzhxg           = v_sfzhxg,
-						 zdrq             = v_zdrq,
-						 zdrqxg           = v_zdrqxg,
-						 icd10            = v_icd10,
-						 icd10xg          = v_icd10xg,
-						 bgyysfwzdyy      = v_bgyysfwzdyy,
-						 zdyymc           = v_zdyymc,
-						 czbajldjttj      = v_czbajldjttj,
-						 qtczbajldtj      = v_qtczbajldtj,
-						 sfczbdcxgbazl    = v_sfczbdcxgbazl,
-						 bajlsfdzh        = v_bajlsfdzh,
-						 dzbasjnr         = v_dzbasjnr,
-						 wczbdcxgbazlyy   = v_wczbdcxgbazlyy,
-						 qtknyy           = v_qtknyy,
-						 sfcjbasy         = v_sfcjbasy,
-						 sfcjcyxj         = v_sfcjcyxj,
-						 sfcjryjl         = v_sfcjryjl,
-						 sfcjrxzzxblbg    = v_sfcjrxzzxblbg,
-						 sfcjrxcsjcbg     = v_sfcjrxcsjcbg,
-						 sfcjrxzxjcbg     = v_sfcjrxzxjcbg,
-						 sfcjrxadjsstztbg = v_sfcjrxadjsstztbg,
-						 zyzd             = v_zyzd,
-						 cyhqtzd          = v_cyhqtzd,
-						 chzt             = v_chzt,
-						 wlcdqtjcbg       = v_wlcdqtjcbg,
-						 blcjzqz          = v_blcjzqz,
-						 bacjzdw          = v_bacjzdw,
-						 fhbgrq           = v_fhbgrq,
-						 zdyj             = v_zdyj,
-						 zdyjxg           = v_zdyjxg,
-						 fhjgpd           = v_fhjgpd,
-						 zlwzx            = v_zlwzx,
-						 xgrid            = v_czyyhid,
-						 xgrxm            = v_czyyhxm,
-						 xgsj             = v_sysdate,
-						 blxlx            = v_blxlx,
-						 blxlxxg          = v_blxlxxg,
-						 fhzt             = '1',
-						 basyzp           = v_basyzp,
-						 cyxjzp           = v_cyxjzp,
-						 ryjlzp           = v_ryjlzp,
-						 rxzzxblbgzp      = v_rxzzxblbgzp,
-						 rxcsjcbgzp       = v_rxcsjcbgzp,
-						 rxzxjcbgzp       = v_rxzxjcbgzp,
-						 rxadjsstztbgzp   = v_rxadjsstztbgzp
-			 WHERE id = v_id;
+      UPDATE zjjk_mb_zlfh_nxrxa
+         SET id               = v_id,
+             bkdw             = v_bkdw,
+             zyh              = v_zyh,
+             jbxxybgksfyz     = v_jbxxybgksfyz,
+             kpzt             = v_kpzt,
+             blh              = v_blh,
+             bgkbm            = v_bgkbm,
+             xm               = v_xm,
+             xmxg             = v_xmxg,
+             xb               = v_xb,
+             xbxg             = v_xbxg,
+             csrq             = v_csrq,
+             csrqxg           = v_csrqxg,
+             sfzh             = v_sfzh,
+             sfzhxg           = v_sfzhxg,
+             zdrq             = v_zdrq,
+             zdrqxg           = v_zdrqxg,
+             icd10            = v_icd10,
+             icd10xg          = v_icd10xg,
+             bgyysfwzdyy      = v_bgyysfwzdyy,
+             zdyymc           = v_zdyymc,
+             czbajldjttj      = v_czbajldjttj,
+             qtczbajldtj      = v_qtczbajldtj,
+             sfczbdcxgbazl    = v_sfczbdcxgbazl,
+             bajlsfdzh        = v_bajlsfdzh,
+             dzbasjnr         = v_dzbasjnr,
+             wczbdcxgbazlyy   = v_wczbdcxgbazlyy,
+             qtknyy           = v_qtknyy,
+             sfcjbasy         = v_sfcjbasy,
+             sfcjcyxj         = v_sfcjcyxj,
+             sfcjryjl         = v_sfcjryjl,
+             sfcjrxzzxblbg    = v_sfcjrxzzxblbg,
+             sfcjrxcsjcbg     = v_sfcjrxcsjcbg,
+             sfcjrxzxjcbg     = v_sfcjrxzxjcbg,
+             sfcjrxadjsstztbg = v_sfcjrxadjsstztbg,
+             zyzd             = v_zyzd,
+             cyhqtzd          = v_cyhqtzd,
+             chzt             = v_chzt,
+             wlcdqtjcbg       = v_wlcdqtjcbg,
+             blcjzqz          = v_blcjzqz,
+             bacjzdw          = v_bacjzdw,
+             fhbgrq           = v_fhbgrq,
+             zdyj             = v_zdyj,
+             zdyjxg           = v_zdyjxg,
+             fhjgpd           = v_fhjgpd,
+             zlwzx            = v_zlwzx,
+             xgrid            = v_czyyhid,
+             xgrxm            = v_czyyhxm,
+             xgsj             = v_sysdate,
+             blxlx            = v_blxlx,
+             blxlxxg          = v_blxlxxg,
+             fhzt             = '1',
+             basyzp           = v_basyzp,
+             cyxjzp           = v_cyxjzp,
+             ryjlzp           = v_ryjlzp,
+             rxzzxblbgzp      = v_rxzzxblbgzp,
+             rxcsjcbgzp       = v_rxcsjcbgzp,
+             rxzxjcbgzp       = v_rxzxjcbgzp,
+             rxadjsstztbgzp   = v_rxadjsstztbgzp
+       WHERE id = v_id;
     else
       --新增
-				INSERT INTO zjjk_mb_zlfh_nxrxa
-					(id,
-					 bkdw,
-					 zyh,
-					 jbxxybgksfyz,
-					 kpzt,
-					 blh,
-					 bgkbm,
-					 xm,
-					 xmxg,
-					 xb,
-					 xbxg,
-					 csrq,
-					 csrqxg,
-					 sfzh,
-					 sfzhxg,
-					 zdrq,
-					 zdrqxg,
-					 icd10,
-					 icd10xg,
-					 bgyysfwzdyy,
-					 zdyymc,
-					 czbajldjttj,
-					 qtczbajldtj,
-					 sfczbdcxgbazl,
-					 bajlsfdzh,
-					 dzbasjnr,
-					 wczbdcxgbazlyy,
-					 qtknyy,
-					 sfcjbasy,
-					 sfcjcyxj,
-					 sfcjryjl,
-					 sfcjrxzzxblbg,
-					 sfcjrxcsjcbg,
-					 sfcjrxzxjcbg,
-					 sfcjrxadjsstztbg,
-					 zyzd,
-					 cyhqtzd,
-					 chzt,
-					 wlcdqtjcbg,
-					 blcjzqz,
-					 bacjzdw,
-					 fhbgrq,
-					 zdyj,
-					 zdyjxg,
-					 fhjgpd,
-					 zlwzx,
-					 fhzt,
-					 cjrid,
-					 cjrxm,
-					 cjsj,
-					 xgrid,
-					 xgrxm,
-					 xgsj,
-					 blxlx,
-					 blxlxxg,
-					 basyzp,
-					 cyxjzp,
-					 ryjlzp,
-					 rxzzxblbgzp,
-					 rxcsjcbgzp,
-					 rxzxjcbgzp,
-					 rxadjsstztbgzp)
-				VALUES
-					(v_id,
-					 v_bkdw,
-					 v_zyh,
-					 v_jbxxybgksfyz,
-					 v_kpzt,
-					 v_blh,
-					 v_bgkbm,
-					 v_xm,
-					 v_xmxg,
-					 v_xb,
-					 v_xbxg,
-					 v_csrq,
-					 v_csrqxg,
-					 v_sfzh,
-					 v_sfzhxg,
-					 v_zdrq,
-					 v_zdrqxg,
-					 v_icd10,
-					 v_icd10xg,
-					 v_bgyysfwzdyy,
-					 v_zdyymc,
-					 v_czbajldjttj,
-					 v_qtczbajldtj,
-					 v_sfczbdcxgbazl,
-					 v_bajlsfdzh,
-					 v_dzbasjnr,
-					 v_wczbdcxgbazlyy,
-					 v_qtknyy,
-					 v_sfcjbasy,
-					 v_sfcjcyxj,
-					 v_sfcjryjl,
-					 v_sfcjrxzzxblbg,
-					 v_sfcjrxcsjcbg,
-					 v_sfcjrxzxjcbg,
-					 v_sfcjrxadjsstztbg,
-					 v_zyzd,
-					 v_cyhqtzd,
-					 v_chzt,
-					 v_wlcdqtjcbg,
-					 v_blcjzqz,
-					 v_bacjzdw,
-					 v_fhbgrq,
-					 v_zdyj,
-					 v_zdyjxg,
-					 v_fhjgpd,
-					 v_zlwzx,
-					 '1',
-					 v_czyyhid,
-					 v_czyyhxm,
-					 v_sysdate,
-					 v_czyyhid,
-					 v_czyyhxm,
-					 v_sysdate,
-					 v_blxlx,
-					 v_blxlxxg,
-					 v_basyzp,
-					 v_cyxjzp,
-					 v_ryjlzp,
-					 v_rxzzxblbgzp,
-					 v_rxcsjcbgzp,
-					 v_rxzxjcbgzp,
-					 v_rxadjsstztbgzp);
+        INSERT INTO zjjk_mb_zlfh_nxrxa
+          (id,
+           bkdw,
+           zyh,
+           jbxxybgksfyz,
+           kpzt,
+           blh,
+           bgkbm,
+           xm,
+           xmxg,
+           xb,
+           xbxg,
+           csrq,
+           csrqxg,
+           sfzh,
+           sfzhxg,
+           zdrq,
+           zdrqxg,
+           icd10,
+           icd10xg,
+           bgyysfwzdyy,
+           zdyymc,
+           czbajldjttj,
+           qtczbajldtj,
+           sfczbdcxgbazl,
+           bajlsfdzh,
+           dzbasjnr,
+           wczbdcxgbazlyy,
+           qtknyy,
+           sfcjbasy,
+           sfcjcyxj,
+           sfcjryjl,
+           sfcjrxzzxblbg,
+           sfcjrxcsjcbg,
+           sfcjrxzxjcbg,
+           sfcjrxadjsstztbg,
+           zyzd,
+           cyhqtzd,
+           chzt,
+           wlcdqtjcbg,
+           blcjzqz,
+           bacjzdw,
+           fhbgrq,
+           zdyj,
+           zdyjxg,
+           fhjgpd,
+           zlwzx,
+           fhzt,
+           cjrid,
+           cjrxm,
+           cjsj,
+           xgrid,
+           xgrxm,
+           xgsj,
+           blxlx,
+           blxlxxg,
+           basyzp,
+           cyxjzp,
+           ryjlzp,
+           rxzzxblbgzp,
+           rxcsjcbgzp,
+           rxzxjcbgzp,
+           rxadjsstztbgzp)
+        VALUES
+          (v_id,
+           v_bkdw,
+           v_zyh,
+           v_jbxxybgksfyz,
+           v_kpzt,
+           v_blh,
+           v_bgkbm,
+           v_xm,
+           v_xmxg,
+           v_xb,
+           v_xbxg,
+           v_csrq,
+           v_csrqxg,
+           v_sfzh,
+           v_sfzhxg,
+           v_zdrq,
+           v_zdrqxg,
+           v_icd10,
+           v_icd10xg,
+           v_bgyysfwzdyy,
+           v_zdyymc,
+           v_czbajldjttj,
+           v_qtczbajldtj,
+           v_sfczbdcxgbazl,
+           v_bajlsfdzh,
+           v_dzbasjnr,
+           v_wczbdcxgbazlyy,
+           v_qtknyy,
+           v_sfcjbasy,
+           v_sfcjcyxj,
+           v_sfcjryjl,
+           v_sfcjrxzzxblbg,
+           v_sfcjrxcsjcbg,
+           v_sfcjrxzxjcbg,
+           v_sfcjrxadjsstztbg,
+           v_zyzd,
+           v_cyhqtzd,
+           v_chzt,
+           v_wlcdqtjcbg,
+           v_blcjzqz,
+           v_bacjzdw,
+           v_fhbgrq,
+           v_zdyj,
+           v_zdyjxg,
+           v_fhjgpd,
+           v_zlwzx,
+           '1',
+           v_czyyhid,
+           v_czyyhxm,
+           v_sysdate,
+           v_czyyhid,
+           v_czyyhxm,
+           v_sysdate,
+           v_blxlx,
+           v_blxlxxg,
+           v_basyzp,
+           v_cyxjzp,
+           v_ryjlzp,
+           v_rxzzxblbgzp,
+           v_rxcsjcbgzp,
+           v_rxzxjcbgzp,
+           v_rxadjsstztbgzp);
     
     end if;
     --更新复核状态
@@ -7437,11 +7445,11 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhzt           zjjk_mb_zlfh_qtexzl.fhzt%TYPE; --复核状态（0 符合 1不符合）
     v_blxlx          zjjk_mb_zlfh_qtexzl.blxlx%TYPE; --病理学类型
     v_blxlxxg        zjjk_mb_zlfh_qtexzl.blxlxxg%TYPE; --病理学类型修改
-		v_basyzp         zjjk_mb_zlfh_qtexzl.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
-		v_cyxjzp         zjjk_mb_zlfh_qtexzl.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
-		v_ryjlzp         zjjk_mb_zlfh_qtexzl.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
-		v_zzxblbgzp      zjjk_mb_zlfh_qtexzl.zzxblbgzp%TYPE;    --（复印或拍照）组织学病理报告照片
-		v_ctmrijcbgzp    zjjk_mb_zlfh_qtexzl.ctmrijcbgzp%TYPE;    --（复印或拍照）CT/MRI检查报告照片
+    v_basyzp         zjjk_mb_zlfh_qtexzl.basyzp%TYPE;    --（复印或拍照）医院病案首页照片
+    v_cyxjzp         zjjk_mb_zlfh_qtexzl.cyxjzp%TYPE;    --（复印或拍照）医院出院小结/死亡记录照片
+    v_ryjlzp         zjjk_mb_zlfh_qtexzl.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
+    v_zzxblbgzp      zjjk_mb_zlfh_qtexzl.zzxblbgzp%TYPE;    --（复印或拍照）组织学病理报告照片
+    v_ctmrijcbgzp    zjjk_mb_zlfh_qtexzl.ctmrijcbgzp%TYPE;    --（复印或拍照）CT/MRI检查报告照片
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -7499,12 +7507,12 @@ UPDATE zjjk_mb_zlfh_gxb
     v_fhjgpd         := Json_Str(v_Json_Data, 'fhjgpd');
     v_blxlx          := Json_Str(v_Json_Data, 'blxlx');
     v_blxlxxg        := Json_Str(v_Json_Data, 'blxlxxg');
-		v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
-		v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
-		v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
-		v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
-		v_zzxblbgzp      := Json_Str(v_Json_Data, 'zzxblbgzp');
-		v_ctmrijcbgzp    := Json_Str(v_Json_Data, 'ctmrijcbgzp');
+    v_zlwzx          := Json_Str(v_Json_Data, 'zlwzx');
+    v_basyzp         := Json_Str(v_Json_Data, 'basyzp');
+    v_cyxjzp         := Json_Str(v_Json_Data, 'cyxjzp');
+    v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
+    v_zzxblbgzp      := Json_Str(v_Json_Data, 'zzxblbgzp');
+    v_ctmrijcbgzp    := Json_Str(v_Json_Data, 'ctmrijcbgzp');
   
     --校验权限
     if v_czyjgjb <> '3' then
@@ -7565,8 +7573,8 @@ UPDATE zjjk_mb_zlfh_gxb
     if v_sfzh is null then
       --v_err := '身份证号不能为空!';
       --raise err_custom;
-			--如果没有身份证号，则设为否
-			v_sfzh:='无';
+      --如果没有身份证号，则设为否
+      v_sfzh:='无';
     end if;
     if v_zdrq is null then
       v_err := '诊断日期（发病日期）不能为空!';
@@ -7656,12 +7664,12 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '诊断依据不能为空!';
       raise err_custom;
     end if;
-		if v_zlwzx is null then
+    if v_zlwzx is null then
       v_err := '病案结果判断不能为空!';
       raise err_custom;
     end if;
   
-		--更新资料完整性
+    --更新资料完整性
     --基本信息判断验证
     if ((v_xmxg IS NULL AND v_xbxg IS NULL AND v_csrqxg IS NULL AND v_sfzhxg IS NULL 
          ) AND v_jbxxybgksfyz='1')
@@ -7683,15 +7691,15 @@ UPDATE zjjk_mb_zlfh_gxb
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
-		
-		--综合结果判断验证
+    
+    --综合结果判断验证
     if (v_jbxxybgksfyz = '0' AND v_zlwzx ='0' AND v_fhjgpd='1')
        OR
        ((v_jbxxybgksfyz = '1' OR v_zlwzx ='1') AND v_fhjgpd='0') then
        v_err := '结果判断验证不通过!';
       raise err_custom;
     end if;
-		
+    
     --判断新增还是修改
     select count(1)
       into v_count
@@ -7699,184 +7707,184 @@ UPDATE zjjk_mb_zlfh_gxb
      where a.id = v_id;
     if v_count > 0 then
       --修改
-			UPDATE zjjk_mb_zlfh_qtexzl
-				 SET id             = v_id,
-						 bkdw           = v_bkdw,
-						 zyh            = v_zyh,
-						 jbxxybgksfyz   = v_jbxxybgksfyz,
-						 kpzt           = v_kpzt,
-						 blh            = v_blh,
-						 bgkbm          = v_bgkbm,
-						 xm             = v_xm,
-						 xmxg           = v_xmxg,
-						 xb             = v_xb,
-						 xbxg           = v_xbxg,
-						 csrq           = v_csrq,
-						 csrqxg         = v_csrqxg,
-						 sfzh           = v_sfzh,
-						 sfzhxg         = v_sfzhxg,
-						 zdrq           = v_zdrq,
-						 zdrqxg         = v_zdrqxg,
-						 icd10          = v_icd10,
-						 icd10xg        = v_icd10xg,
-						 bgyysfwzdyy    = v_bgyysfwzdyy,
-						 zdyymc         = v_zdyymc,
-						 czbajldjttj    = v_czbajldjttj,
-						 qtczbajldtj    = v_qtczbajldtj,
-						 sfczbdcxgbazl  = v_sfczbdcxgbazl,
-						 bajlsfdzh      = v_bajlsfdzh,
-						 dzbasjnr       = v_dzbasjnr,
-						 wczbdcxgbazlyy = v_wczbdcxgbazlyy,
-						 qtknyy         = v_qtknyy,
-						 sfcjbasy       = v_sfcjbasy,
-						 sfcjcyxj       = v_sfcjcyxj,
-						 sfcjryjl       = v_sfcjryjl,
-						 sfcjzzxblbg    = v_sfcjzzxblbg,
-						 sfcjctmrijcbg  = v_sfcjctmrijcbg,
-						 zyzd           = v_zyzd,
-						 cyhqtzd        = v_cyhqtzd,
-						 chzt           = v_chzt,
-						 wlcdqtjcbg     = v_wlcdqtjcbg,
-						 blcjzqz        = v_blcjzqz,
-						 bacjzdw        = v_bacjzdw,
-						 fhbgrq         = v_fhbgrq,
-						 zdyj           = v_zdyj,
-						 zdyjxg         = v_zdyjxg,
-						 fhjgpd         = v_fhjgpd,
-						 zlwzx          = v_zlwzx,
-						 xgrid          = v_czyyhid,
-						 xgrxm          = v_czyyhxm,
-						 xgsj           = v_sysdate,
-						 blxlx          = v_blxlx,
-						 blxlxxg        = v_blxlxxg,
-						 fhzt           = '1',
-						 basyzp         = v_basyzp,
-						 cyxjzp         = v_cyxjzp,
-						 ryjlzp         = v_ryjlzp,
-						 zzxblbgzp      = v_zzxblbgzp,
-						 ctmrijcbgzp    = v_ctmrijcbgzp
-			 WHERE id = v_id;
+      UPDATE zjjk_mb_zlfh_qtexzl
+         SET id             = v_id,
+             bkdw           = v_bkdw,
+             zyh            = v_zyh,
+             jbxxybgksfyz   = v_jbxxybgksfyz,
+             kpzt           = v_kpzt,
+             blh            = v_blh,
+             bgkbm          = v_bgkbm,
+             xm             = v_xm,
+             xmxg           = v_xmxg,
+             xb             = v_xb,
+             xbxg           = v_xbxg,
+             csrq           = v_csrq,
+             csrqxg         = v_csrqxg,
+             sfzh           = v_sfzh,
+             sfzhxg         = v_sfzhxg,
+             zdrq           = v_zdrq,
+             zdrqxg         = v_zdrqxg,
+             icd10          = v_icd10,
+             icd10xg        = v_icd10xg,
+             bgyysfwzdyy    = v_bgyysfwzdyy,
+             zdyymc         = v_zdyymc,
+             czbajldjttj    = v_czbajldjttj,
+             qtczbajldtj    = v_qtczbajldtj,
+             sfczbdcxgbazl  = v_sfczbdcxgbazl,
+             bajlsfdzh      = v_bajlsfdzh,
+             dzbasjnr       = v_dzbasjnr,
+             wczbdcxgbazlyy = v_wczbdcxgbazlyy,
+             qtknyy         = v_qtknyy,
+             sfcjbasy       = v_sfcjbasy,
+             sfcjcyxj       = v_sfcjcyxj,
+             sfcjryjl       = v_sfcjryjl,
+             sfcjzzxblbg    = v_sfcjzzxblbg,
+             sfcjctmrijcbg  = v_sfcjctmrijcbg,
+             zyzd           = v_zyzd,
+             cyhqtzd        = v_cyhqtzd,
+             chzt           = v_chzt,
+             wlcdqtjcbg     = v_wlcdqtjcbg,
+             blcjzqz        = v_blcjzqz,
+             bacjzdw        = v_bacjzdw,
+             fhbgrq         = v_fhbgrq,
+             zdyj           = v_zdyj,
+             zdyjxg         = v_zdyjxg,
+             fhjgpd         = v_fhjgpd,
+             zlwzx          = v_zlwzx,
+             xgrid          = v_czyyhid,
+             xgrxm          = v_czyyhxm,
+             xgsj           = v_sysdate,
+             blxlx          = v_blxlx,
+             blxlxxg        = v_blxlxxg,
+             fhzt           = '1',
+             basyzp         = v_basyzp,
+             cyxjzp         = v_cyxjzp,
+             ryjlzp         = v_ryjlzp,
+             zzxblbgzp      = v_zzxblbgzp,
+             ctmrijcbgzp    = v_ctmrijcbgzp
+       WHERE id = v_id;
     
     else
       --新增
-			INSERT INTO zjjk_mb_zlfh_qtexzl
-				(id,
-				 bkdw,
-				 zyh,
-				 jbxxybgksfyz,
-				 kpzt,
-				 blh,
-				 bgkbm,
-				 xm,
-				 xmxg,
-				 xb,
-				 xbxg,
-				 csrq,
-				 csrqxg,
-				 sfzh,
-				 sfzhxg,
-				 zdrq,
-				 zdrqxg,
-				 icd10,
-				 icd10xg,
-				 bgyysfwzdyy,
-				 zdyymc,
-				 czbajldjttj,
-				 qtczbajldtj,
-				 sfczbdcxgbazl,
-				 bajlsfdzh,
-				 dzbasjnr,
-				 wczbdcxgbazlyy,
-				 qtknyy,
-				 sfcjbasy,
-				 sfcjcyxj,
-				 sfcjryjl,
-				 sfcjzzxblbg,
-				 sfcjctmrijcbg,
-				 zyzd,
-				 cyhqtzd,
-				 chzt,
-				 wlcdqtjcbg,
-				 blcjzqz,
-				 bacjzdw,
-				 fhbgrq,
-				 zdyj,
-				 zdyjxg,
-				 fhjgpd,
-				 zlwzx,
-				 fhzt,
-				 cjrid,
-				 cjrxm,
-				 cjsj,
-				 xgrid,
-				 xgrxm,
-				 xgsj,
-				 blxlx,
-				 blxlxxg,
-				 basyzp,
-				 cyxjzp,
-				 ryjlzp,
-				 zzxblbgzp,
-				 ctmrijcbgzp)
-			VALUES
-				(v_id,
-				 v_bkdw,
-				 v_zyh,
-				 v_jbxxybgksfyz,
-				 v_kpzt,
-				 v_blh,
-				 v_bgkbm,
-				 v_xm,
-				 v_xmxg,
-				 v_xb,
-				 v_xbxg,
-				 v_csrq,
-				 v_csrqxg,
-				 v_sfzh,
-				 v_sfzhxg,
-				 v_zdrq,
-				 v_zdrqxg,
-				 v_icd10,
-				 v_icd10xg,
-				 v_bgyysfwzdyy,
-				 v_zdyymc,
-				 v_czbajldjttj,
-				 v_qtczbajldtj,
-				 v_sfczbdcxgbazl,
-				 v_bajlsfdzh,
-				 v_dzbasjnr,
-				 v_wczbdcxgbazlyy,
-				 v_qtknyy,
-				 v_sfcjbasy,
-				 v_sfcjcyxj,
-				 v_sfcjryjl,
-				 v_sfcjzzxblbg,
-				 v_sfcjctmrijcbg,
-				 v_zyzd,
-				 v_cyhqtzd,
-				 v_chzt,
-				 v_wlcdqtjcbg,
-				 v_blcjzqz,
-				 v_bacjzdw,
-				 v_fhbgrq,
-				 v_zdyj,
-				 v_zdyjxg,
-				 v_fhjgpd,
-				 v_zlwzx,
-				 '1',
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_czyyhid,
-				 v_czyyhxm,
-				 v_sysdate,
-				 v_blxlx,
-				 v_blxlxxg,
-				 v_basyzp,
-				 v_cyxjzp,
-				 v_ryjlzp,
-				 v_zzxblbgzp,
-				 v_ctmrijcbgzp);
+      INSERT INTO zjjk_mb_zlfh_qtexzl
+        (id,
+         bkdw,
+         zyh,
+         jbxxybgksfyz,
+         kpzt,
+         blh,
+         bgkbm,
+         xm,
+         xmxg,
+         xb,
+         xbxg,
+         csrq,
+         csrqxg,
+         sfzh,
+         sfzhxg,
+         zdrq,
+         zdrqxg,
+         icd10,
+         icd10xg,
+         bgyysfwzdyy,
+         zdyymc,
+         czbajldjttj,
+         qtczbajldtj,
+         sfczbdcxgbazl,
+         bajlsfdzh,
+         dzbasjnr,
+         wczbdcxgbazlyy,
+         qtknyy,
+         sfcjbasy,
+         sfcjcyxj,
+         sfcjryjl,
+         sfcjzzxblbg,
+         sfcjctmrijcbg,
+         zyzd,
+         cyhqtzd,
+         chzt,
+         wlcdqtjcbg,
+         blcjzqz,
+         bacjzdw,
+         fhbgrq,
+         zdyj,
+         zdyjxg,
+         fhjgpd,
+         zlwzx,
+         fhzt,
+         cjrid,
+         cjrxm,
+         cjsj,
+         xgrid,
+         xgrxm,
+         xgsj,
+         blxlx,
+         blxlxxg,
+         basyzp,
+         cyxjzp,
+         ryjlzp,
+         zzxblbgzp,
+         ctmrijcbgzp)
+      VALUES
+        (v_id,
+         v_bkdw,
+         v_zyh,
+         v_jbxxybgksfyz,
+         v_kpzt,
+         v_blh,
+         v_bgkbm,
+         v_xm,
+         v_xmxg,
+         v_xb,
+         v_xbxg,
+         v_csrq,
+         v_csrqxg,
+         v_sfzh,
+         v_sfzhxg,
+         v_zdrq,
+         v_zdrqxg,
+         v_icd10,
+         v_icd10xg,
+         v_bgyysfwzdyy,
+         v_zdyymc,
+         v_czbajldjttj,
+         v_qtczbajldtj,
+         v_sfczbdcxgbazl,
+         v_bajlsfdzh,
+         v_dzbasjnr,
+         v_wczbdcxgbazlyy,
+         v_qtknyy,
+         v_sfcjbasy,
+         v_sfcjcyxj,
+         v_sfcjryjl,
+         v_sfcjzzxblbg,
+         v_sfcjctmrijcbg,
+         v_zyzd,
+         v_cyhqtzd,
+         v_chzt,
+         v_wlcdqtjcbg,
+         v_blcjzqz,
+         v_bacjzdw,
+         v_fhbgrq,
+         v_zdyj,
+         v_zdyjxg,
+         v_fhjgpd,
+         v_zlwzx,
+         '1',
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_czyyhid,
+         v_czyyhxm,
+         v_sysdate,
+         v_blxlx,
+         v_blxlxxg,
+         v_basyzp,
+         v_cyxjzp,
+         v_ryjlzp,
+         v_zzxblbgzp,
+         v_ctmrijcbgzp);
     
     end if;
     --更新复核状态
