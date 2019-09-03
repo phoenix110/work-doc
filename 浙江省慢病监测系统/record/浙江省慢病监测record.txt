@@ -904,7 +904,8 @@ zjjkjk2019接口接收死亡卡数据改造，发布到正式环境。
 伤害监测报告卡接收部分字段异常的问题修复，及所有的历史旧数据处理。
 	zjjkjk2019\src\com\wondersgroup\zjjk\model\ZjmbShjcBgkEntity.java
 
-质量复核抽查不出数据的异常修复
+质量复核-慢性病病例-慢性病病例抽查-抽查数据报错的异常修复
+	正式数据库中缺少function :fn_zjjk_zlfh_mb_getfhjg
 
 排序
 20190802中
@@ -931,71 +932,23 @@ zjjkjk2019接口接收死亡卡数据改造，发布到正式环境。
 	ZJJK_DATAEX_VALIDATE_NEW
 	已提交git，已发测试，已发正式
 
-4.zjmbUpload接口，新增一套传送新表 ZJMB_SW_WJW_BGK 数据的接口。频率10分钟。旧的所有接口的频率也改为10分钟。
+4.zjmbUpload接口，新增一套传送新表 ZJMB_SW_WJW_BGK 数据的接口。频率10分钟。旧的其它报卡的频率不变。
 	新表的 参数  TableName ： ZJMB_SW_BGK_ORI
 	用户密码：wanda2
 			wd@zjcdc
 
 	测试环境：
 	http://10.44.3.191:18001/cdczj-bigdata-service/api/dataSynService?wsdl
-	接口已经部署好了，用户名和密码，孙工应该给你了吧。
+
 
 5.zjmbupload 搭建测试环境，并在测试环境进行联调
+	已完成
 
-6.发布正式代码，修改配置文件中的频率，修改日志路径，移动旧日志到新路径,注意不要错发了测试的地址和用户密码,
-改 jdbc.properties 中的 ws用户名
-改 ClientPasswordCallbackSwori.java 中的 密码
+6.发布正式代码，修改配置文件中的频率，修改日志路径，移动旧日志到新路径
 
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/Utils/DateUtil.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/Utils/ZJJKStringUtils.java
+7.excel 死亡的validate单独抽取出来，另起一个任务
 
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/task/SjkTaskH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/upload/AllBgkUpload.java
-
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkShbgkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkSwbgkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkTnbbgkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkTnbsfkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkXnxgbgkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkXnxgcfkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkXnxgsfkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkZlbgkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkZlcfkTempServiceImplH.java
-Modified : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkZlsfkTempServiceImplH.java
-
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/TnbBgkEntity.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/shbgk/ShBgkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgk/SwbgkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/tnbsfk/TnbSfkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/xnxgbgk/XnxgBgkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/xnxgcfk/XnxgCfkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/xnxgsfk/XnxgSfkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/zlbgk/ZlBgkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/zlcfk/ZlCfkEntityH.java
-/ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/zlsfk/ZlSfkEntityH.java
-
-hibernate.cfg.xml
-log4j.properties
-jdbc.properties
-
-
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/dao/SwBgkOriTempDaoH.java
-
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/dao/impl/SwBgkOriTempDaoImpH.java
-
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriBody.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriDataList.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriHeader.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriHeaderT.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriHeaderW.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwOriPostXML.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/model/swbgkori/SwbgkOriEntityH.java
-
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/SwOriReportServiceIH.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/ZjjkSwbgkOriTempServiceIH.java
-
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/SwOriReportServiceImpIH.java
-Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkSwbgkOriTempServiceImpIH.java
+排序
 
 
 
@@ -1017,11 +970,150 @@ Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkSwbg
 --backup to excute : update MIDDLEOF_ZJJK_ZL_CCSFK set operate = 'insert' where operate is null;
 
 
+0827
+bug 190823002 属地确认社区问题
+	/zjmb/public/js/commonDic.js
+	/zjmb/public/js/commonUtil.js
+	/zjmb/web/csdjgl/sdqr/csbgksdqr.js
+	/zjmb/web/index/index.js
+	/zjmb/web/swdjgl/sdqr/swbgksdqr.js
+	/zjmb/web/tnbgl/sdqr/tnbbgksdqr.js
+	/zjmb/web/xnxggl/sdqr/xnxgglsdqr.js
+	/zjmb/web/zlgl/sdqr/zlbgksdqr.js
+	sqldy 000000-3
+
+bug 190823002 质量复核-初、随访病例-初随访病例抽查报错
+	fn_zjjk_zlfh_csf_getfhjg
+	
+bug 190823004 伤害报告卡导出填报日期去除，肿瘤报告卡，心脑报告卡界面未显示卡片编号
+	\zjmb\web\shjcgl\bgkgl\shjcbgkgl.js
+	\zjmb\web\zlgl\bbgl\zlbgk_edit.html
+
+0828	
+190823006
+	1.省级账号-系统辅助-质量复核条件中三个抽查设置中设置的抽查条数，若下级区县账号根据该条件抽查的时候符合条件的报告卡少于设置的条数，有多少抽多少条。
+		sqldy 021005-01
+		sqldy 021005-02
+		sqldy 021005-03
+		sqldy 021005-04
+		sqldy 021005-05
+		sqldy 021001-02
+		sqldy 021001-03
+		sqldy 021001-04
+		已发布
+
+190819004
+	1.有住院号的优先抽查！
+	3.抽样规则：先抽取住院号不为空的报告卡，若抽出来符合条件的报告卡小于抽样条件的条数，从剩下的报告卡中抽。按顺抽查顺序排序
+	4.抽查界面显示住院号字段
+
+		zjjk_mb_zlfh 和 zjjk_csf_zlfh 两张表增加 CCXH（抽查序号）字段
+
+		sqldy 021001-01 
+		sqldy 021001-02 
+		sqldy 021001-03 
+		sqldy 021001-04 
+		sqldy 021001-07 
+		sqldy 021001-08 
+		sqldy 021001-09 
+		sqldy 021001-10 
+		sqldy 021005-01 
+		sqldy 021005-02 
+		sqldy 021005-03 
+		sqldy 021005-04 
+		sqldy 021005-05 
+		sqldy 021005-11 
+		sqldy 021005-12 
+		sqldy 021005-13 
+		sqldy 021005-14 
+		sqldy 021005-15 
+
+		\zjmb\web\zlfhgl\csfbl\csfblcc.js
+		\zjmb\web\zlfhgl\mxbbl\mbblcc.js
+
+		pkg_zjmb_zlfh_bgk
+		pkg_zjmb_zlfh_csf
+
+		已发
+
+
+
+0830
+190823006 2.区县账号-质量复核-慢性病病例复核，初随访病例复核根据抽查排序后的序号来复核，若上一个编号的未完成，不可做下面编号的
+	zjmb/web/zlfhgl/csfbl/csfblfh.html
+	zjmb/web/zlfhgl/mxbbl/mbblfh.html
+	sqldy 021001-07 
+	sqldy 021001-08 
+	sqldy 021001-09 
+	sqldy 021001-10 
+	sqldy 021005-11 
+	sqldy 021005-12 
+	sqldy 021005-13 
+	sqldy 021005-14 
+	sqldy 021005-15 
+	已发
+
+190819004 
+	2.慢性病病例抽查，初随访抽查，增加导出功能
+		/zjmb/web/zlfhgl/csfbl/csfblcc.html
+		/zjmb/web/zlfhgl/csfbl/csfblcc.js
+		/zjmb/web/zlfhgl/mxbbl/mbblcc.html
+		/zjmb/web/zlfhgl/mxbbl/mbblcc.js
+		已发
+	肿瘤复核诊断发病日期为空
+		sqldy 021002-13
+		已发
+
+0902
+190819004 慢性病病例复核时无法上传图片的问题
+
+190425017  如果质量复核抽查中总池里的条数少于抽查条件设置的条数，有多少条抽取多少（如抽查条数设置为10，但一共只有五条就抽取五条）(已在190819004中处理)
+
+190425022 慢病只抽查有住院号的(已在190819004中处理)
+
+190823006 3.采集到的其他检测报告（图片中红框），增加是否选项，若为是，可以上传照片，并显示文本框填写内容。如图中黄框所示（经沟通不做）
+
+
+
+0903
+死亡未审核报卡接收和对账结果回传更改
+
+浙江省数据交换服务新增衢州配置
+
+190823006 5.省级账号-系统辅助-质量复核条件中三个抽查设置中加入一个条件即选择卡状态，可以多选，以此条件限制抽查报告卡的类型
+	/zjmb/web/xtfz/zlfhtj/zlfhtj_cf_edit.html
+	/zjmb/web/xtfz/zlfhtj/zlfhtj_cf_edit.js
+	/zjmb/web/xtfz/zlfhtj/zlfhtj_edit.html
+	/zjmb/web/xtfz/zlfhtj/zlfhtj_edit.js
+	/zjmb/web/xtfz/zlfhtj/zlfhtj_sf_edit.html
+	/zjmb/web/xtfz/zlfhtj/zlfhtj_sf_edit.js
+	zjjk_zlfhsj, zjjk_zlfhsj_cf, zjjk_zlfhsj_sf 三张表增加bgkzt字段
+	PACKAGE BODY pkg_zjmb_xtfz
+	sqldy 021001-06
+	sqldy 021005-06
+	sqldy 021005-07
+	sqldy 021001-01
+	sqldy 021001-02
+	sqldy 021001-03
+	sqldy 021001-04
+	sqldy 021005-01
+	sqldy 021005-02
+	sqldy 021005-03
+	sqldy 021005-04
+	已发
 
 
 
 
-代谢病安全漏洞
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1043,25 +1135,3 @@ Added : /ZjjkMbUpload/src/com/wondersgroup/zjjk/webservice/service/impl/ZjjkSwbg
 					param.vc_hkjddm_like = window.user.xzqh;
 				}
 
-
-死亡报告卡
-心脑报告卡
-心脑初访卡
-心脑随访卡
-肿瘤报告卡
-肿瘤初访卡
-肿瘤随访卡
-糖尿病报告卡
-糖尿病随访卡
-伤害报告卡
-死亡原始
-
-#webservice账号密码
-ws.address=http://10.44.3.191:9001/cdczj-bigdata-service/api/dataSynService?wsdl
-ws.username=wanda
-ws.pwd=wd@zjcdc
-
-#死亡原始webservice账号密码
-swori.ws.address=http://10.44.3.191:9001/cdczj-bigdata-service/api/dataSynService?wsdl
-swori.ws.username=wanda
-swori.ws.pwd=wd@zjcdc
