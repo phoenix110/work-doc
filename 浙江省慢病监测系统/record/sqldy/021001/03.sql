@@ -445,6 +445,7 @@ select vc_bgkid,
                                   AND trunc(a.dt_cjsj) <= trunc(sj.dt_jsrq)
                                   AND sj.ccbz LIKE '%3%'
                                   AND (sj.tnbicd10 IS NULL OR sj.tnbicd10||',' LIKE '%'||SUBSTR(a.vc_icd10,0,3)||',%')
+                                  AND (sj.bgkzt is null or a.vc_bgkzt in (select column_value from TABLE(split(sj.bgkzt, ','))))
                                   AND sj.zt='1')
                    AND NOT EXISTS(SELECT 1
                                     FROM zjjk_mb_zlfh fh
@@ -453,4 +454,4 @@ select vc_bgkid,
                                      AND fh.bccjgid = a.vc_bgdw
                                      AND fh.zt = '1'
                                      AND fh.fhbz = '1')
-                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                                                                                
+                   ) WHERE rowsnumber <= (SELECT tj.ccts FROM zjjk_zlfhsj tj WHERE tj.zt = '1'))                                                                                                                                                                                                 

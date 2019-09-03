@@ -1788,6 +1788,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
     v_gxbicd10 zjjk_zlfhsj.gxbicd10%TYPE; --冠心病icd10
     v_tnbicd10 zjjk_zlfhsj.tnbicd10%TYPE; --糖尿病icd10
     v_zlicd10  zjjk_zlfhsj.zlicd10%TYPE; --肿瘤icd10
+    v_bgkzt    zjjk_zlfhsj.bgkzt%TYPE; --报告卡状态
   
   BEGIN
     json_data(data_in, '质量复核时间设置-慢性病', v_json_data);
@@ -1809,6 +1810,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
     v_czyjgjb  := json_str(v_json_data, 'czyjgjb'); --获取机构级别
     v_czyyhid  := json_str(v_json_data, 'czyyhid'); --操作员id
     v_czyyhxm  := json_str(v_json_data, 'czyyhxm'); --操作员姓名
+    v_bgkzt    := json_str(v_json_data, 'bgkzt'); --抽查病种
   
     if v_czyjgjb <> 1 then
       v_err := '没有设置权限!';
@@ -1831,7 +1833,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
          nczicd10,
          gxbicd10,
          tnbicd10,
-         zlicd10)
+         zlicd10,
+         bgkzt)
       VALUES
         (sys_guid(),
          v_dt_ksrq,
@@ -1846,7 +1849,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
          v_nczicd10,
          v_gxbicd10,
          v_tnbicd10,
-         v_zlicd10);
+         v_zlicd10,
+         v_bgkzt);
     ELSE
       UPDATE zjjk_zlfhsj
          SET szrid  = v_czyyhid,
@@ -1894,6 +1898,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
     v_gxbicd10 zjjk_zlfhsj.gxbicd10%TYPE; --冠心病icd10
     v_tnbicd10 zjjk_zlfhsj.tnbicd10%TYPE; --糖尿病icd10
     v_zlicd10  zjjk_zlfhsj.zlicd10%TYPE; --肿瘤icd10
+    v_bgkzt    zjjk_zlfhsj.bgkzt%TYPE; --报告卡状态
   
   BEGIN
     json_data(data_in, '质量复核时间设置-初访', v_json_data);
@@ -1915,6 +1920,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
     v_czyjgjb  := json_str(v_json_data, 'czyjgjb'); --获取机构级别
     v_czyyhid  := json_str(v_json_data, 'czyyhid'); --操作员id
     v_czyyhxm  := json_str(v_json_data, 'czyyhxm'); --操作员姓名
+    v_bgkzt    := json_str(v_json_data, 'bgkzt'); --操作员姓名
   
     if v_czyjgjb <> 1 then
       v_err := '没有设置权限!';
@@ -1937,7 +1943,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
          nczicd10,
          gxbicd10,
          tnbicd10,
-         zlicd10)
+         zlicd10,
+         bgkzt)
       VALUES
         (sys_guid(),
          v_dt_ksrq,
@@ -1952,7 +1959,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
          v_nczicd10,
          v_gxbicd10,
          v_tnbicd10,
-         v_zlicd10);
+         v_zlicd10,
+         v_bgkzt);
     ELSE
       UPDATE zjjk_zlfhsj_cf
          SET szrid  = v_czyyhid,
@@ -2000,6 +2008,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
     v_gxbicd10 zjjk_zlfhsj.gxbicd10%TYPE; --冠心病icd10
     v_tnbicd10 zjjk_zlfhsj.tnbicd10%TYPE; --糖尿病icd10
     v_zlicd10  zjjk_zlfhsj.zlicd10%TYPE; --肿瘤icd10
+    v_bgkzt    zjjk_zlfhsj.bgkzt%TYPE; --报告卡状态
   
   BEGIN
     json_data(data_in, '质量复核时间设置-随访', v_json_data);
@@ -2021,6 +2030,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
     v_czyjgjb  := json_str(v_json_data, 'czyjgjb'); --获取机构级别
     v_czyyhid  := json_str(v_json_data, 'czyyhid'); --操作员id
     v_czyyhxm  := json_str(v_json_data, 'czyyhxm'); --操作员姓名
+    v_bgkzt    := json_str(v_json_data, 'bgkzt'); --抽查病种
   
     if v_czyjgjb <> 1 then
       v_err := '没有设置权限!';
@@ -2043,7 +2053,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
          nczicd10,
          gxbicd10,
          tnbicd10,
-         zlicd10)
+         zlicd10,
+         bgkzt)
       VALUES
         (sys_guid(),
          v_dt_ksrq,
@@ -2058,7 +2069,8 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xtfz AS
          v_nczicd10,
          v_gxbicd10,
          v_tnbicd10,
-         v_zlicd10);
+         v_zlicd10,
+         v_bgkzt);
     ELSE
       UPDATE zjjk_zlfhsj_sf
          SET szrid  = v_czyyhid,

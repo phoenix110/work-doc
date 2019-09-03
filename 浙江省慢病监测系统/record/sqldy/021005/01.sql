@@ -97,6 +97,7 @@ SELECT vc_sfkid,
                              AND trunc(dt_cjsj) <= trunc(cf.dt_jsrq)
                              AND cf.ccbz LIKE '%1%'
                              AND (cf.nczicd10 is null or cf.nczicd10||',' LIKE '%'||SUBSTR(vc_icd10,0,3)||',%')
+                             AND (cf.bgkzt is null or vc_kzt in (select column_value from TABLE(split(cf.bgkzt, ','))))
                              AND cf.zt = '1')) OR
                        (#{vc_csflx} = '2' AND EXISTS
                         (SELECT 1
@@ -105,6 +106,7 @@ SELECT vc_sfkid,
                              AND trunc(dt_cjsj) <= trunc(sf.dt_jsrq)
                              AND sf.ccbz LIKE '%1%'
                              AND (sf.nczicd10 is null or sf.nczicd10||',' LIKE '%'||SUBSTR(vc_icd10,0,3)||',%')
+                             AND (sf.bgkzt is null or vc_kzt in (select column_value from TABLE(split(sf.bgkzt, ','))))
                              AND sf.zt = '1'))))
          WHERE rowsnumber <= 
          <if if(StringUtils.isNotBlank(#{vc_csflx}) && "1".equals(#{vc_csflx}))>
@@ -113,4 +115,4 @@ SELECT vc_sfkid,
          <if if(StringUtils.isNotBlank(#{vc_csflx}) && "2".equals(#{vc_csflx}))>
              (SELECT tj.ccts FROM zjjk_zlfhsj_sf tj WHERE tj.zt = '1')
          </if>
-         )                                                                                                                                                                                                                                                  
+         )                                                                                                                                                                                                                                                                                            

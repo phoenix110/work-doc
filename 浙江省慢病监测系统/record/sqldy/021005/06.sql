@@ -22,6 +22,8 @@ SELECT jlbh,
            AND rownum <= 100) tnbicd10,
        pkg_zjmb_tnb.fun_getdicnames('C_ZL_JCZDBW',zlicd10) zlicd10,
        decode(zt, 0, '停用', '1', '启用') ztmc,
+       pkg_zjmb_tnb.fun_getdicnames('C_COMM_BGKZT', bgkzt) bgkzt_text,
+       bgkzt,
        total,
        rn
   FROM (SELECT jlbh,
@@ -38,6 +40,7 @@ SELECT jlbh,
                gxbicd10,
                tnbicd10,
                zlicd10,  
+               bgkzt,
                total,
                rownum rn
           FROM (SELECT jlbh,
@@ -54,8 +57,9 @@ SELECT jlbh,
                        gxbicd10,
                        tnbicd10,
                        zlicd10,
+                       bgkzt,
                        COUNT(1) over() total
                   FROM zjjk_zlfhsj_cf
                  ORDER BY zt DESC, szsj DESC, dt_jsrq DESC, dt_ksrq)
          WHERE rownum <= #{rn_e})
- WHERE rn >= #{rn_s}                                
+ WHERE rn >= #{rn_s}                                    

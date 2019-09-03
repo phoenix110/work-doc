@@ -68,6 +68,7 @@ SELECT sf.vc_sfkid,
                              AND trunc(dt_cjsj) <= trunc(cf.dt_jsrq)
                              AND cf.ccbz LIKE '%3%'
                              AND (cf.tnbicd10 is null or cf.tnbicd10||',' LIKE '%'||SUBSTR(vc_icd10,0,3)||',%')
+                             AND (cf.bgkzt is null or vc_bgkzt in (select column_value from TABLE(split(cf.bgkzt, ','))))
                              AND cf.zt = '1')) OR
                        (#{vc_csflx} = '2' AND EXISTS
                         (SELECT 1
@@ -76,6 +77,7 @@ SELECT sf.vc_sfkid,
                              AND trunc(dt_cjsj) <= trunc(sf.dt_jsrq)
                              AND sf.ccbz LIKE '%3%'
                              AND (sf.tnbicd10 is null or sf.tnbicd10||',' LIKE '%'||SUBSTR(vc_icd10,0,3)||',%')
+                             AND (sf.bgkzt is null or vc_bgkzt in (select column_value from TABLE(split(sf.bgkzt, ','))))
                              AND sf.zt = '1')))
                    AND NOT EXISTS
                  (SELECT 1
@@ -94,4 +96,4 @@ SELECT sf.vc_sfkid,
          ) sf,
        zjjk_tnb_hzxx hzxx
  WHERE sf.vc_hzid = hzxx.vc_personid
-   AND rn >= 0                                                                                                                                                                                                                                
+   AND rn >= 0                                                                                                                                                                                                                                                                    
