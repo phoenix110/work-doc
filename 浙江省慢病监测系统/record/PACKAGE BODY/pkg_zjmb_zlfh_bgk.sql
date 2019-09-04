@@ -2993,6 +2993,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_mrijcbgzp      zjjk_mb_zlfh_fa.mrijcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）MRI检查报告照片
     v_xxjcbgzp       zjjk_mb_zlfh_fa.xxjcbgzp%TYPE;    --（复印或拍照）是否采集（复印或拍照）X线检查报告照片
     v_ttlxbjcbgzp    zjjk_mb_zlfh_fa.ttlxbjcbgzp%TYPE;    --（复印或拍照）痰脱落细胞检查报告照片
+    v_icdo3bm        zjjk_mb_zlfh_fa.icdo3bm%TYPE;    --ICD-O-3编码
+    v_icdo3bmxg      zjjk_mb_zlfh_fa.icdo3bmxg%TYPE;    -- ICD-O-3编码修改
     
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -3064,6 +3066,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_mrijcbgzp      := Json_Str(v_Json_Data, 'mrijcbgzp');
     v_xxjcbgzp       := Json_Str(v_Json_Data, 'xxjcbgzp');
     v_ttlxbjcbgzp    := Json_Str(v_Json_Data, 'ttlxbjcbgzp');
+    v_icdo3bm        := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg      := Json_Str(v_Json_Data, 'icdo3bmxg');
     
     --校验权限
     if v_czyjgjb <> '3' then
@@ -3336,6 +3340,8 @@ UPDATE zjjk_mb_zlfh_gxb
              ctjcbgzp       = v_ctjcbgzp,
              mrijcbgzp      = v_mrijcbgzp,
              xxjcbgzp       = v_xxjcbgzp,
+             icdo3bm        = v_icdo3bm,
+             icdo3bmxg     = v_icdo3bmxg,
              ttlxbjcbgzp    = v_ttlxbjcbgzp
        WHERE id = v_id;
     else
@@ -3406,6 +3412,8 @@ UPDATE zjjk_mb_zlfh_gxb
          ctjcbgzp,
          mrijcbgzp,
          xxjcbgzp,
+         icdo3bm,
+         icdo3bmxg,
          ttlxbjcbgzp)
       VALUES
         (v_id,
@@ -3473,6 +3481,8 @@ UPDATE zjjk_mb_zlfh_gxb
          v_ctjcbgzp,
          v_mrijcbgzp,
          v_xxjcbgzp,
+         v_icdo3bm,
+         v_icdo3bmxg,
          v_ttlxbjcbgzp);
     
     end if;
@@ -3761,6 +3771,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_ctjcbgzp       zjjk_mb_zlfh_ga.ctjcbgzp%TYPE;    --（复印或拍照）CT检查报告照片
     v_mrijcbgzp      zjjk_mb_zlfh_ga.mrijcbgzp%TYPE;    --（复印或拍照）MRI检查报告照片
     v_bcjcbgzp       zjjk_mb_zlfh_ga.bcjcbgzp%TYPE;    --（复印或拍照）B超检查报告照片
+    v_icdo3bm        zjjk_mb_zlfh_ga.icdo3bm%TYPE;    -- ICD-O-3编码
+    v_icdo3bmxg      zjjk_mb_zlfh_ga.icdo3bmxg%TYPE;    -- ICD-O-3编码修改
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -3830,6 +3842,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_ctjcbgzp       := Json_Str(v_Json_Data, 'ctjcbgzp');
     v_mrijcbgzp      := Json_Str(v_Json_Data, 'mrijcbgzp');
     v_bcjcbgzp       := Json_Str(v_Json_Data, 'bcjcbgzp'); 
+    v_icdo3bm        := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg      := Json_Str(v_Json_Data, 'icdo3bmxg');    
     
     --校验权限
     if v_czyjgjb <> '3' then
@@ -4095,6 +4109,8 @@ UPDATE zjjk_mb_zlfh_gxb
              jtdbdxzdbgzp   = v_jtdbdxzdbgzp,
              ctjcbgzp       = v_ctjcbgzp,
              mrijcbgzp      = v_mrijcbgzp,
+             icdo3bm        = v_icdo3bm,
+             icdo3bmxg     = v_icdo3bmxg,             
              bcjcbgzp       = v_bcjcbgzp
        WHERE id = v_id;
     else
@@ -4163,6 +4179,8 @@ UPDATE zjjk_mb_zlfh_gxb
          jtdbdxzdbgzp,
          ctjcbgzp,
          mrijcbgzp,
+         icdo3bm,
+         icdo3bmxg,         
          bcjcbgzp)
       VALUES
         (v_id,
@@ -4228,6 +4246,8 @@ UPDATE zjjk_mb_zlfh_gxb
          v_jtdbdxzdbgzp,
          v_ctjcbgzp,
          v_mrijcbgzp,
+         v_icdo3bm,
+         v_icdo3bmxg,        
          v_bcjcbgzp);
     
     end if;
@@ -4512,6 +4532,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_qwwjxnmhjblbgzp   zjjk_mb_zlfh_wa.qwwjxnmhjblbgzp%TYPE;    --（复印或拍照）纤维胃镜下粘膜活检病理报告照片
     v_wxxbcjcbgzp       zjjk_mb_zlfh_wa.wxxbcjcbgzp%TYPE;    --（复印或拍照）胃X线钡餐检查报告照片
     v_wtlxbxjcbgzp      zjjk_mb_zlfh_wa.wtlxbxjcbgzp%TYPE;    --（复印或拍照）胃脱落细胞学检查报告照片
+    v_icdo3bm           zjjk_mb_zlfh_wa.icdo3bm%TYPE;    -- ICD-O-3编码
+    v_icdo3bmxg         zjjk_mb_zlfh_wa.icdo3bmxg%TYPE;    -- ICD-O-3编码修改    
       
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -4577,6 +4599,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_qwwjxnmhjblbgzp   := Json_Str(v_Json_Data, 'qwwjxnmhjblbgzp');
     v_wxxbcjcbgzp       := Json_Str(v_Json_Data, 'wxxbcjcbgzp');
     v_wtlxbxjcbgzp      := Json_Str(v_Json_Data, 'wtlxbxjcbgzp');
+    v_icdo3bm           := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg         := Json_Str(v_Json_Data, 'icdo3bmxg');    
     
     --校验权限
     if v_czyjgjb <> '3' then
@@ -4828,6 +4852,8 @@ UPDATE zjjk_mb_zlfh_gxb
              ryjlzp            = v_ryjlzp,
              qwwjxnmhjblbgzp   = v_qwwjxnmhjblbgzp,
              wxxbcjcbgzp       = v_wxxbcjcbgzp,
+             icdo3bm        = v_icdo3bm,
+             icdo3bmxg     = v_icdo3bmxg,             
              wtlxbxjcbgzp      = v_wtlxbxjcbgzp
        WHERE id = v_id;
     
@@ -4893,6 +4919,8 @@ UPDATE zjjk_mb_zlfh_gxb
          ryjlzp,
          qwwjxnmhjblbgzp,
          wxxbcjcbgzp,
+         icdo3bm,
+         icdo3bmxg,         
          wtlxbxjcbgzp)
       VALUES
         (v_id,
@@ -4954,6 +4982,8 @@ UPDATE zjjk_mb_zlfh_gxb
          v_ryjlzp,
          v_qwwjxnmhjblbgzp,
          v_wxxbcjcbgzp,
+         v_icdo3bm,
+         v_icdo3bmxg,         
          v_wtlxbxjcbgzp);
     
     end if;
@@ -5237,6 +5267,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_sgjxhjblbgzp      zjjk_mb_zlfh_sga.sgjxhjblbgzp%TYPE;    --（复印或拍照）食管镜下活检病理报告照片
     v_sgnmtlxbxjcbgzp   zjjk_mb_zlfh_sga.sgnmtlxbxjcbgzp%TYPE;    --（复印或拍照）食管黏膜脱落细胞学检查报告照片
     v_xxtbjcbgzp        zjjk_mb_zlfh_sga.xxtbjcbgzp%TYPE;    --（复印或拍照）X线吞钡检查报告照片
+    v_icdo3bm           zjjk_mb_zlfh_sga.icdo3bm%TYPE;    -- ICD-O-3编码
+    v_icdo3bmxg         zjjk_mb_zlfh_sga.icdo3bmxg%TYPE;    -- ICD-O-3编码修改   
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -5301,7 +5333,9 @@ UPDATE zjjk_mb_zlfh_gxb
     v_ryjlzp            := Json_Str(v_Json_Data, 'ryjlzp');
     v_sgjxhjblbgzp      := Json_Str(v_Json_Data, 'sgjxhjblbgzp');
     v_sgnmtlxbxjcbgzp   := Json_Str(v_Json_Data, 'sgnmtlxbxjcbgzp');
-    v_xxtbjcbgzp        := Json_Str(v_Json_Data, 'xxtbjcbgzp'); 
+    v_xxtbjcbgzp        := Json_Str(v_Json_Data, 'xxtbjcbgzp');
+    v_icdo3bm           := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg         := Json_Str(v_Json_Data, 'icdo3bmxg');      
       
     --校验权限
     if v_czyjgjb <> '3' then
@@ -5554,6 +5588,8 @@ UPDATE zjjk_mb_zlfh_gxb
                ryjlzp            = v_ryjlzp,
                sgjxhjblbgzp      = v_sgjxhjblbgzp,
                sgnmtlxbxjcbgzp   = v_sgnmtlxbxjcbgzp,
+               icdo3bm           = v_icdo3bm,
+               icdo3bmxg         = v_icdo3bmxg,               
                xxtbjcbgzp        = v_xxtbjcbgzp
          WHERE id = v_id;
     else
@@ -5618,6 +5654,8 @@ UPDATE zjjk_mb_zlfh_gxb
          ryjlzp,
          sgjxhjblbgzp,
          sgnmtlxbxjcbgzp,
+         icdo3bm,
+         icdo3bmxg,         
          xxtbjcbgzp)
       VALUES
         (v_id,
@@ -5679,6 +5717,8 @@ UPDATE zjjk_mb_zlfh_gxb
          v_ryjlzp,
          v_sgjxhjblbgzp,
          v_sgnmtlxbxjcbgzp,
+         v_icdo3bm,
+         v_icdo3bmxg,         
          v_xxtbjcbgzp);
     
     end if;
@@ -5965,6 +6005,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_zccssmjcbgzp   zjjk_mb_zlfh_jzca.zccssmjcbgzp%TYPE;    --（复印或拍照）直肠超声扫描检查报告照片
     v_xqapkycdbgzp   zjjk_mb_zlfh_jzca.xqapkycdbgzp%TYPE;    --（复印或拍照）血清癌胚抗原（CEA）测定报告照片
     v_tbgcxxjcbgzp   zjjk_mb_zlfh_jzca.tbgcxxjcbgzp%TYPE;    --（复印或拍照）钡灌肠X线检查报告照片
+    v_icdo3bm        zjjk_mb_zlfh_jzca.icdo3bm%TYPE;    -- ICD-O-3编码
+    v_icdo3bmxg      zjjk_mb_zlfh_jzca.icdo3bmxg%TYPE;    -- ICD-O-3编码修改    
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -6032,6 +6074,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_zccssmjcbgzp   := Json_Str(v_Json_Data, 'zccssmjcbgzp');
     v_xqapkycdbgzp   := Json_Str(v_Json_Data, 'xqapkycdbgzp');
     v_tbgcxxjcbgzp   := Json_Str(v_Json_Data, 'tbgcxxjcbgzp');
+    v_icdo3bm        := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg      := Json_Str(v_Json_Data, 'icdo3bmxg');    
   
     --校验权限
     if v_czyjgjb <> '3' then
@@ -6294,6 +6338,8 @@ UPDATE zjjk_mb_zlfh_gxb
              jcjxhjblbgzp   = v_jcjxhjblbgzp,
              zccssmjcbgzp   = v_zccssmjcbgzp,
              xqapkycdbgzp   = v_xqapkycdbgzp,
+             icdo3bm        = v_icdo3bm,
+             icdo3bmxg      = v_icdo3bmxg,            
              tbgcxxjcbgzp   = v_tbgcxxjcbgzp
        WHERE id = v_id;
     
@@ -6361,6 +6407,8 @@ UPDATE zjjk_mb_zlfh_gxb
          jcjxhjblbgzp,
          zccssmjcbgzp,
          xqapkycdbgzp,
+         icdo3bm,
+         icdo3bmxg,         
          tbgcxxjcbgzp)
       VALUES
         (v_id,
@@ -6424,6 +6472,8 @@ UPDATE zjjk_mb_zlfh_gxb
          v_jcjxhjblbgzp,
          v_zccssmjcbgzp,
          v_xqapkycdbgzp,
+         v_icdo3bm,
+         v_icdo3bmxg,         
          v_tbgcxxjcbgzp);
     
     end if;
@@ -6709,6 +6759,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_rxcsjcbgzp       zjjk_mb_zlfh_nxrxa.rxcsjcbgzp%TYPE;    --（复印或拍照）乳腺超声检查报告照片
     v_rxzxjcbgzp       zjjk_mb_zlfh_nxrxa.rxzxjcbgzp%TYPE;    --（复印或拍照）乳腺照相检查报告照片
     v_rxadjsstztbgzp   zjjk_mb_zlfh_nxrxa.rxadjsstztbgzp%TYPE;    --（复印或拍照）乳腺癌的激素受体（ER/PR）状态报告照片
+    v_icdo3bm          zjjk_mb_zlfh_nxrxa.icdo3bm%TYPE;    -- ICD-O-3编码
+    v_icdo3bmxg        zjjk_mb_zlfh_nxrxa.icdo3bmxg%TYPE;    -- ICD-O-3编码修改 
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -6776,6 +6828,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_rxcsjcbgzp       := Json_Str(v_Json_Data, 'rxcsjcbgzp');
     v_rxzxjcbgzp       := Json_Str(v_Json_Data, 'rxzxjcbgzp');
     v_rxadjsstztbgzp   := Json_Str(v_Json_Data, 'rxadjsstztbgzp');
+    v_icdo3bm          := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg        := Json_Str(v_Json_Data, 'icdo3bmxg');    
 
     
     --校验权限
@@ -7040,6 +7094,8 @@ UPDATE zjjk_mb_zlfh_gxb
              rxzzxblbgzp      = v_rxzzxblbgzp,
              rxcsjcbgzp       = v_rxcsjcbgzp,
              rxzxjcbgzp       = v_rxzxjcbgzp,
+             icdo3bm        = v_icdo3bm,
+             icdo3bmxg     = v_icdo3bmxg,             
              rxadjsstztbgzp   = v_rxadjsstztbgzp
        WHERE id = v_id;
     else
@@ -7106,6 +7162,8 @@ UPDATE zjjk_mb_zlfh_gxb
            rxzzxblbgzp,
            rxcsjcbgzp,
            rxzxjcbgzp,
+           icdo3bm,
+           icdo3bmxg,           
            rxadjsstztbgzp)
         VALUES
           (v_id,
@@ -7169,6 +7227,8 @@ UPDATE zjjk_mb_zlfh_gxb
            v_rxzzxblbgzp,
            v_rxcsjcbgzp,
            v_rxzxjcbgzp,
+           v_icdo3bm,
+           v_icdo3bmxg,           
            v_rxadjsstztbgzp);
     
     end if;
@@ -7450,6 +7510,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_ryjlzp         zjjk_mb_zlfh_qtexzl.ryjlzp%TYPE;    --（复印或拍照）医院入院记录（首次病程）照片
     v_zzxblbgzp      zjjk_mb_zlfh_qtexzl.zzxblbgzp%TYPE;    --（复印或拍照）组织学病理报告照片
     v_ctmrijcbgzp    zjjk_mb_zlfh_qtexzl.ctmrijcbgzp%TYPE;    --（复印或拍照）CT/MRI检查报告照片
+    v_icdo3bm        zjjk_mb_zlfh_qtexzl.icdo3bm%TYPE;    -- ICD-O-3编码
+    v_icdo3bmxg      zjjk_mb_zlfh_qtexzl.icdo3bmxg%TYPE;    -- ICD-O-3编码修改
   
     --其他变量
     v_bgkid_s VARCHAR2(2000); --被抽查的报告卡IDs
@@ -7513,6 +7575,8 @@ UPDATE zjjk_mb_zlfh_gxb
     v_ryjlzp         := Json_Str(v_Json_Data, 'ryjlzp');
     v_zzxblbgzp      := Json_Str(v_Json_Data, 'zzxblbgzp');
     v_ctmrijcbgzp    := Json_Str(v_Json_Data, 'ctmrijcbgzp');
+    v_icdo3bm        := Json_Str(v_Json_Data, 'icdo3bm');
+    v_icdo3bmxg      := Json_Str(v_Json_Data, 'icdo3bmxg');   
   
     --校验权限
     if v_czyjgjb <> '3' then
@@ -7762,6 +7826,8 @@ UPDATE zjjk_mb_zlfh_gxb
              cyxjzp         = v_cyxjzp,
              ryjlzp         = v_ryjlzp,
              zzxblbgzp      = v_zzxblbgzp,
+             icdo3bm        = v_icdo3bm,
+             icdo3bmxg     = v_icdo3bmxg,             
              ctmrijcbgzp    = v_ctmrijcbgzp
        WHERE id = v_id;
     
@@ -7825,6 +7891,8 @@ UPDATE zjjk_mb_zlfh_gxb
          cyxjzp,
          ryjlzp,
          zzxblbgzp,
+         icdo3bm,
+         icdo3bmxg,         
          ctmrijcbgzp)
       VALUES
         (v_id,
@@ -7884,6 +7952,8 @@ UPDATE zjjk_mb_zlfh_gxb
          v_cyxjzp,
          v_ryjlzp,
          v_zzxblbgzp,
+         v_icdo3bm,
+         v_icdo3bmxg,         
          v_ctmrijcbgzp);
     
     end if;
