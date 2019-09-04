@@ -12,7 +12,8 @@ SELECT a.vc_bgkid   bgkid,
        a.vc_icd10   icd10,
        a.vc_zdyh    zdyj,
        a.vc_blxlx blxlx,
+       a.vc_icdo3bm icdo3bm,
        nvl2(a.dt_swrq, '0', '1') sfsw
   FROM zjjk_zl_bgk a, zjjk_zl_hzxx b
  WHERE a.vc_hzid = b.vc_personid
-   AND a.vc_bgkid = #{vc_bgkid}                                                            
+   AND a.vc_bgkid = #{vc_bgkid}                                                                                                                        

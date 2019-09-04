@@ -64,6 +64,8 @@ SELECT id,
        ryjlzp,
        qwwjxnmhjblbgzp,
        wxxbcjcbgzp,
+       icdo3bm,
+       icdo3bmxg,       
        wtlxbxjcbgzp
   FROM zjjk_mb_zlfh_wa
- WHERE id = #{id}                                                                                
+ WHERE id = #{id}                                                                                                    

@@ -70,6 +70,8 @@ SELECT id,
        ctjcbgzp,
        mrijcbgzp,
        xxjcbgzp,
+       icdo3bm,
+       icdo3bmxg,
        ttlxbjcbgzp
   FROM zjjk_mb_zlfh_fa
- WHERE id = #{id}                                                                                
+ WHERE id = #{id}                                                                                                                        
