@@ -1072,13 +1072,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjyscf, '1') <> '0' or
        nvl(v_sfcjydxbzskt, '1') <> '0' or nvl(v_sfcjxtbg, '1') <> '0' or
        nvl(v_sfcjtnxsybg, '1') <> '0' or nvl(v_sfcjthxhdbjcbg, '1') <> '0' or
-       nvl(v_sfcjncg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjncg, '1') <> '0' or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjyscf, '1') = '0' AND
        nvl(v_sfcjydxbzskt, '1') = '0' AND nvl(v_sfcjxtbg, '1') = '0' AND
        nvl(v_sfcjtnxsybg, '1') = '0' AND nvl(v_sfcjthxhdbjcbg, '1') = '0' AND
-       nvl(v_sfcjncg, '1') =  '0') AND v_zlwzx='1') then
+       nvl(v_sfcjncg, '1') =  '0') AND v_zlwzx='1' and v_icd10xg is null and v_zdrqxg is null) then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -1803,11 +1803,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     --病案结果判断验证
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjtbjcbb, '1') <> '0' or
-       nvl(v_sfcjyzccjcbg, '1') <> '0' or nvl(v_sfcjxgzybg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjyzccjcbg, '1') <> '0' or nvl(v_sfcjxgzybg, '1') <> '0'
+       or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjtbjcbb, '1') = '0' AND
-       nvl(v_sfcjyzccjcbg, '1') = '0' AND nvl(v_sfcjxgzybg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjyzccjcbg, '1') = '0' AND nvl(v_sfcjxgzybg, '1') = '0'
+       and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -2512,11 +2514,13 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_bgk AS
     --病案结果判断验证
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjxdtjcbg, '1') <> '0' or
-       nvl(v_sfcjxqmjc, '1') <> '0' or nvl(v_sfcjxzxgzdmzybg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjxqmjc, '1') <> '0' or nvl(v_sfcjxzxgzdmzybg, '1') <> '0'
+       or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjxdtjcbg, '1') = '0' AND
-       nvl(v_sfcjxqmjc, '1') = '0' AND nvl(v_sfcjxzxgzdmzybg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjxqmjc, '1') = '0' AND nvl(v_sfcjxzxgzdmzybg, '1') = '0'
+       and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -3255,13 +3259,14 @@ UPDATE zjjk_mb_zlfh_gxb
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjhjblbg, '1') <> '0' or
        nvl(v_sfcjxxjcbg, '1') <> '0' or nvl(v_sfcjctjcbg, '1') <> '0' or
        nvl(v_sfcjmrijcbg, '1') <> '0' or nvl(v_sfcjxxjcbg, '1') <> '0' or
-       nvl(v_sfcjttlxbjcbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjttlxbjcbg, '1') <> '0' or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjhjblbg, '1') = '0' AND
        nvl(v_sfcjxxjcbg, '1') = '0' AND nvl(v_sfcjctjcbg, '1') = '0' AND
        nvl(v_sfcjmrijcbg, '1') = '0' AND nvl(v_sfcjxxjcbg, '1') = '0' AND
-       nvl(v_sfcjttlxbjcbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjttlxbjcbg, '1') = '0') AND v_zlwzx='1'
+       and v_icd10xg is null and v_zdrqxg is null) then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -4053,12 +4058,14 @@ UPDATE zjjk_mb_zlfh_gxb
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjgcchjblbg, '1') <> '0' or
        nvl(v_sfcjjtdbdxzdbg, '1') <> '0' or nvl(v_sfcjctjcbg, '1') <> '0' or
-       nvl(v_sfcjmrijcbg, '1') <> '0' or nvl(v_sfcjbcjcbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjmrijcbg, '1') <> '0' or nvl(v_sfcjbcjcbg, '1') <> '0'
+       or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjgcchjblbg, '1') = '0' AND
        nvl(v_sfcjjtdbdxzdbg, '1') = '0' AND nvl(v_sfcjctjcbg, '1') = '0' AND
-       nvl(v_sfcjmrijcbg, '1') = '0' AND nvl(v_sfcjbcjcbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjmrijcbg, '1') = '0' AND nvl(v_sfcjbcjcbg, '1') = '0'
+       and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -4827,11 +4834,13 @@ UPDATE zjjk_mb_zlfh_gxb
     --病案结果判断验证
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjqwwjxnmhjblbg, '1') <> '0' or
-       nvl(v_sfcjwxxbcjcbg, '1') <> '0' or nvl(v_sfcjwtlxbxjcbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjwxxbcjcbg, '1') <> '0' or nvl(v_sfcjwtlxbxjcbg, '1') <> '0'
+       or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjqwwjxnmhjblbg, '1') = '0' AND
-       nvl(v_sfcjwxxbcjcbg, '1') = '0' AND nvl(v_sfcjwtlxbxjcbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjwxxbcjcbg, '1') = '0' AND nvl(v_sfcjwtlxbxjcbg, '1') = '0'
+       and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -5588,11 +5597,13 @@ UPDATE zjjk_mb_zlfh_gxb
     --病案结果判断验证
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjsgjxhjblbg, '1') <> '0' or
-       nvl(v_sfcjsgnmtlxbxjcbg, '1') <> '0' or nvl(v_sfcjxxtbjcbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjsgnmtlxbxjcbg, '1') <> '0' or nvl(v_sfcjxxtbjcbg, '1') <> '0'
+       or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjsgjxhjblbg, '1') = '0' AND
-       nvl(v_sfcjsgnmtlxbxjcbg, '1') = '0' AND nvl(v_sfcjxxtbjcbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjsgnmtlxbxjcbg, '1') = '0' AND nvl(v_sfcjxxtbjcbg, '1') = '0'
+       and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -6359,12 +6370,12 @@ UPDATE zjjk_mb_zlfh_gxb
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjjcjxhjblbg, '1') <> '0' or
        nvl(v_sfcjzccssmjcbg, '1') <> '0' or nvl(v_sfcjxqapkycdbg, '1') <> '0' or
-       nvl(v_sfcjtbgcxxjcbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjtbgcxxjcbg, '1') <> '0' or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjjcjxhjblbg, '1') = '0' AND
        nvl(v_sfcjzccssmjcbg, '1') = '0' AND nvl(v_sfcjxqapkycdbg, '1') = '0' AND
-       nvl(v_sfcjtbgcxxjcbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjtbgcxxjcbg, '1') = '0' and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -7140,12 +7151,12 @@ UPDATE zjjk_mb_zlfh_gxb
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjrxzzxblbg, '1') <> '0' or
        nvl(v_sfcjrxcsjcbg, '1') <> '0' or nvl(v_sfcjrxzxjcbg, '1') <> '0' or
-       nvl(v_sfcjrxadjsstztbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjrxadjsstztbg, '1') <> '0' or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjrxzzxblbg, '1') = '0' AND
        nvl(v_sfcjrxcsjcbg, '1') = '0' AND nvl(v_sfcjrxzxjcbg, '1') = '0' AND
-       nvl(v_sfcjrxadjsstztbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjrxadjsstztbg, '1') = '0' and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
@@ -7903,11 +7914,11 @@ UPDATE zjjk_mb_zlfh_gxb
     --病案结果判断验证
     if ((nvl(v_sfcjbasy, '1') <> '0' or nvl(v_sfcjcyxj, '1') <> '0' or
        nvl(v_sfcjryjl, '1') <> '0' or nvl(v_sfcjzzxblbg, '1') <> '0' or
-       nvl(v_sfcjctmrijcbg, '1') <> '0') AND v_zlwzx='0')
+       nvl(v_sfcjctmrijcbg, '1') <> '0' or v_icd10xg is not null or v_zdrqxg is not null) AND v_zlwzx='0')
        OR
        ((nvl(v_sfcjbasy, '1') = '0' AND nvl(v_sfcjcyxj, '1') = '0' AND
        nvl(v_sfcjryjl, '1') = '0' AND nvl(v_sfcjzzxblbg, '1') = '0' AND
-       nvl(v_sfcjctmrijcbg, '1') = '0') AND v_zlwzx='1') then
+       nvl(v_sfcjctmrijcbg, '1') = '0' and v_icd10xg is null and v_zdrqxg is null) AND v_zlwzx='1') then
        v_err := '病案结果判断验证不通过!';
       raise err_custom;
     end if;
