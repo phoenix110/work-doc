@@ -1103,18 +1103,63 @@ bug 190823004 伤害报告卡导出填报日期去除，肿瘤报告卡，心脑
 	已发
 
 
+190823006 4.肿瘤-在复核表和审核表中如图所示位置加入ICD-O-3的显示，并且如icd-10一样有是否按钮，点否可以有修改出现在ICD-O-3下方
+	PACKAGE BODY: pkg_zjmb_zlfh_bgk
+	增加 icdo3bm 和 icdo3bm, icdo3bmsh 三个字段：
+		zjjk_mb_zlfh_fa, zjjk_mb_zlfh_ga, zjjk_mb_zlfh_wa, zjjk_mb_zlfh_sga, zjjk_mb_zlfh_jzca, zjjk_mb_zlfh_nxrxa, zjjk_mb_zlfh_qtexzl
+	sqldy 021002-04
+	sqldy 021002-05
+	sqldy 021002-06
+	sqldy 021002-07
+	sqldy 021002-08
+	sqldy 021002-09
+	sqldy 021002-10
+	sqldy 021002-13
+	/zjmb/web/zlfhgl/mxbbl/zlfh_fa.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_fa.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_ga.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_ga.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_jzca.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_jzca.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_nxrxa.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_nxrxa.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_qtexzl.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_qtexzl.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_sga.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_sga.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_wa.html
+	/zjmb/web/zlfhgl/mxbbl/zlfh_wa.js
+	已发
+
+糖尿病查询优化
 
 
+质量复核-肿瘤各类型-审核各字段不通过修复及icd-o-3增加==
+	PACKAGE BODY: pkg_zjmb_zlfh_bgk
+	sqldy 021002-04
+	sqldy 021002-05
+	sqldy 021002-06
+	sqldy 021002-07
+	sqldy 021002-08
+	sqldy 021002-09
+	sqldy 021002-10
+	/zjmb/web/zlfhgl/mxbbl/zlsh_fa.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_fa.js
+	/zjmb/web/zlfhgl/mxbbl/zlsh_ga.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_ga.js
+	/zjmb/web/zlfhgl/mxbbl/zlsh_jzca.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_jzca.js
+	/zjmb/web/zlfhgl/mxbbl/zlsh_nxrxa.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_nxrxa.js
+	/zjmb/web/zlfhgl/mxbbl/zlsh_qtexzl.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_qtexzl.js
+	/zjmb/web/zlfhgl/mxbbl/zlsh_sga.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_sga.js
+	/zjmb/web/zlfhgl/mxbbl/zlsh_wa.html
+	/zjmb/web/zlfhgl/mxbbl/zlsh_wa.js
+	已发
 
-
-
-
-
-
-
-
-
-
+衢州数据正式环境重传
 
 
 
