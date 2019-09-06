@@ -3639,6 +3639,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_fa.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_fa.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_fa.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_fa.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_fa.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_fa.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_fa.icdo3bmsh%TYPE; --ICD-O-3编码审核
   
     --公共变量
     v_sysdate date;
@@ -3659,6 +3667,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -3684,7 +3701,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_fa a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_fa a
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh
+    where a.id = v_id;
   
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -4404,6 +4430,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_ga.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_ga.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_ga.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_ga.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_ga.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_ga.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_ga.icdo3bmsh%TYPE; --ICD-O-3编码审核
   
     --公共变量
     v_sysdate date;
@@ -4424,6 +4458,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -4449,7 +4492,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_ga a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_ga a 
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh       
+    where a.id = v_id;
   
     result_out := return_succ_json(v_json_return);
   EXCEPTION
@@ -5140,6 +5192,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_wa.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_wa.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_wa.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_wa.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_wa.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_wa.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_wa.icdo3bmsh%TYPE; --ICD-O-3编码审核    
   
     --公共变量
     v_sysdate date;
@@ -5160,6 +5220,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');    
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -5185,7 +5254,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_wa a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_wa a 
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh      
+    where a.id = v_id;
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
@@ -5875,6 +5953,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_sga.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_sga.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_sga.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_sga.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_sga.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_sga.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_sga.icdo3bmsh%TYPE; --ICD-O-3编码审核    
   
     --公共变量
     v_sysdate date;
@@ -5895,6 +5981,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');    
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -5920,7 +6015,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_sga a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_sga a 
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh       
+    where a.id = v_id;
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
@@ -6630,6 +6734,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_jzca.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_jzca.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_jzca.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_jzca.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_jzca.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_jzca.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_jzca.icdo3bmsh%TYPE; --ICD-O-3编码审核    
   
     --公共变量
     v_sysdate date;
@@ -6650,6 +6762,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');    
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -6675,7 +6796,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_jzca a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_jzca a 
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh       
+    where a.id = v_id;
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
@@ -7385,6 +7515,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_nxrxa.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_nxrxa.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_nxrxa.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_nxrxa.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_nxrxa.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_nxrxa.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_nxrxa.icdo3bmsh%TYPE; --ICD-O-3编码审核    
   
     --公共变量
     v_sysdate date;
@@ -7405,6 +7543,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');    
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -7430,7 +7577,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_nxrxa a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_nxrxa a 
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh       
+    where a.id = v_id;
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
@@ -8110,6 +8266,14 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   zjjk_mb_zlfh.id%TYPE; --ID
     v_shzt zjjk_mb_zlfh.fhzt%TYPE; --ID
     v_shyj zjjk_mb_zlfh.shyj%TYPE; --复核意见
+    
+    v_xmsh zjjk_mb_zlfh_qtexzl.xmsh%TYPE; --姓名审核
+    v_xbsh zjjk_mb_zlfh_qtexzl.xbsh%TYPE; --性别审核
+    v_csrqsh zjjk_mb_zlfh_qtexzl.csrqsh%TYPE; --出生日期审核
+    v_sfzhsh zjjk_mb_zlfh_qtexzl.sfzhsh%TYPE; --身份证审核
+    v_icd10sh zjjk_mb_zlfh_qtexzl.icd10sh%TYPE; --ICD10审核
+    v_zdrqsh zjjk_mb_zlfh_qtexzl.zdrqsh%TYPE; --诊断日期审核
+    v_icdo3bmsh zjjk_mb_zlfh_qtexzl.icdo3bmsh%TYPE; --ICD-O-3编码审核    
   
     --公共变量
     v_sysdate date;
@@ -8130,6 +8294,15 @@ UPDATE zjjk_mb_zlfh_gxb
     v_id   := Json_Str(v_Json_Data, 'id');
     v_shzt := Json_Str(v_Json_Data, 'fhzt');
     v_shyj := Json_Str(v_Json_Data, 'shyj');
+    
+    v_xmsh := Json_Str(v_Json_Data, 'xmsh');
+    v_xbsh := Json_Str(v_Json_Data, 'xbsh');
+    v_csrqsh := Json_Str(v_Json_Data, 'csrqsh');
+    v_sfzhsh := Json_Str(v_Json_Data, 'sfzhsh');
+    v_icd10sh := Json_Str(v_Json_Data, 'icd10sh');
+    v_zdrqsh := Json_Str(v_Json_Data, 'zdrqsh');
+    v_icdo3bmsh := Json_Str(v_Json_Data, 'icdo3bmsh');    
+    
     if v_id is null then
       v_err := 'id不能为空!';
       raise err_custom;
@@ -8155,7 +8328,16 @@ UPDATE zjjk_mb_zlfh_gxb
       v_err := '更新病例审核状态出错!';
       raise err_custom;
     end if;
-    update zjjk_mb_zlfh_qtexzl a set a.fhzt = v_shzt where a.id = v_id;
+    update zjjk_mb_zlfh_qtexzl a 
+       set a.fhzt = v_shzt,
+           a.xmsh = v_xmsh,
+           a.xbsh = v_xbsh,
+           a.csrqsh = v_csrqsh,
+           a.sfzhsh = v_sfzhsh,
+           a.icd10sh = v_icd10sh,
+           a.zdrqsh = v_zdrqsh,
+           a.icdo3bmsh = v_icdo3bmsh       
+    where a.id = v_id;
     result_out := return_succ_json(v_json_return);
   EXCEPTION
     WHEN err_custom THEN
