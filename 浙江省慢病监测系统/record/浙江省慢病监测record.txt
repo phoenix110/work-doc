@@ -1134,7 +1134,7 @@ bug 190823004 伤害报告卡导出填报日期去除，肿瘤报告卡，心脑
 糖尿病查询优化
 
 
-质量复核-肿瘤各类型-审核各字段不通过修复及icd-o-3增加==
+质量复核-肿瘤各类型-审核各字段不通过修复及icd-o-3增加
 	PACKAGE BODY: pkg_zjmb_zlfh_bgk
 	sqldy 021002-04
 	sqldy 021002-05
@@ -1161,7 +1161,40 @@ bug 190823004 伤害报告卡导出填报日期去除，肿瘤报告卡，心脑
 
 衢州数据正式环境重传
 
+0906
+190823006  6.慢病四种疾病的复核表里若icd-10选否，则诊断信息判断结果判断为不符合
+190425026  肿瘤增加判断条件 编码符合判断		
+190425023  诊断/发病日期放到复核结果判断模块里
+	PACKAGE BODY: pkg_zjmb_zlfh_bgk
+	/zjmb/web/zlfhgl/mxbbl/zlfh_fa.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_ga.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_gxb.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_jzca.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_ncz.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_nxrxa.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_qtexzl.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_sga.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_tnb.js
+	/zjmb/web/zlfhgl/mxbbl/zlfh_wa.js
+	已发
 
+系统响应变慢问题：
+1.死亡卡审核完成后弹出来一个保存成功的框，得点确定才能消掉。
+2.点完确定后，显示很久才恢复到正常，中间有个圈一直转。
+3.死亡卡查重，点身份证查重，老是点不开，那个圈一直在转呀转。
+	\zjmb\web\swdjgl\bgkgl\swbgk_edit.js
+	sqldy 020601-1
+	sqldy 020601-8
+	/*create index INDEX_SW_SHBZ on ZJMB_SW_BGK (VC_SHBZ); -- 死亡卡创建审核标志索引*/
+	/*create index INDEX_SW_sfzhm on ZJMB_SW_BGK (vc_sfzhm); -- 死亡卡创建身份证索引*/
+
+
+190905008 死亡报告卡管理和无名尸管理界面死亡地点修复
+	/zjmb/web/swdjgl/bgkgl/swbgkgl.html
+	/zjmb/web/swdjgl/bgkgl/swbgkgl.js
+	/zjmb/web/swdjgl/bgkgl/wmsbgkgl.html
+	/zjmb/web/swdjgl/bgkgl/wmsbgkgl.js
+	已发
 
 
 性能问题

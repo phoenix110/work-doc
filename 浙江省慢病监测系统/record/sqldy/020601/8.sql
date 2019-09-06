@@ -13,7 +13,7 @@ select /*+INDEX(BGK INDEX_SW_GLDW)*/ nvl(sum(decode(bgk.vc_shbz, '4', 1, 0)),0) 
                       AND BGK.vc_bgklb = #{vc_bgklb}
                  </if>
                  <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                      AND (instr(#{vc_shbz},BGK.VC_SHBZ) > 0) 
+                      AND BGK.VC_SHBZ = #{vc_shbz}
                  </if>
                  <if if(StringUtils.isNotBlank(#{vc_qx}))>
                       AND (BGK.VC_JKDW like #{vc_qx}||'%')
