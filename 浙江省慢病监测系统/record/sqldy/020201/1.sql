@@ -446,7 +446,7 @@ select vc_bgkid,
                      and a.vc_bgkzt = #{vc_bgkzt}
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                     and instr(#{vc_shbz},a.vc_shbz) > 0
+                     and a.vc_shbz = #{vc_shbz}
                    </if>
                    <if if(StringUtils.isNotBlank(#{fbnl_ks}))>
                      and a.vc_sznl >= #{fbnl_ks}
@@ -557,4 +557,4 @@ select vc_bgkid,
                    
                    )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

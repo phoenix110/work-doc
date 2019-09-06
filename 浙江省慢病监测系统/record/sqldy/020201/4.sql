@@ -33,7 +33,7 @@ select  /*+INDEX(a INDEX_TNB_GLDW)*/ nvl(sum(decode(a.vc_shbz, '4', 1, 0)),0) qx
                      and a.vc_bgkzt = #{vc_bgkzt}
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                     and instr(#{vc_shbz},a.vc_shbz) > 0
+                     and a.vc_shbz = #{vc_shbz}
                    </if>
                    <if if(StringUtils.isNotBlank(#{fbnl_ks}))>
                      and a.vc_sznl >= #{fbnl_ks}
