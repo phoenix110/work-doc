@@ -1,11 +1,3 @@
-<if if(StringUtils.isNotBlank(#{xzqh_organ}))>
-   with xzqh_list as
-     (SELECT REGEXP_SUBSTR(#{xzqh_organ}, '[^,]+', 1, LEVEL, 'i') AS xzqh_item
-        FROM DUAL
-      CONNECT BY LEVEL <=
-                 LENGTH(#{xzqh_organ}) - LENGTH(REGEXP_REPLACE(#{xzqh_organ}, ',', '')) + 1
-    )
-</if>
 select vc_bgkid,
        vc_bgklx,
        vc_hzid,
@@ -131,7 +123,7 @@ select vc_bgkid,
                   from zjjk_zl_bgk a, zjjk_zl_hzxx b
                  where a.vc_hzid = b.vc_personid
                    <if if(StringUtils.isNotBlank(#{xzqh_organ}))>
-                       and exists (select 1 from xzqh_list xt where b.vc_hkjddm like xt.xzqh_item || '%')
+                       and exists (select 1 from TABLE(split(#{xzqh_organ}, ',')) xt where b.vc_hkjddm like xt.column_value || '%')
                    </if>
                    <if if(StringUtils.isBlank(#{xzqh_organ}))>
                        and b.vc_hkjddm like #{jgszqh} || '%' 
@@ -139,6 +131,7 @@ select vc_bgkid,
                    and a.vc_sdqrzt = '0'
                    and a.vc_scbz = '0'
                    and a.vc_shbz = '3'
+                   and a.vc_bgkzt = '0'
                    <if if(StringUtils.isNotBlank(#{vc_bgkid}))>
                      and a.vc_bgkid like #{vc_bgkid}||'%'
                    </if>
@@ -153,9 +146,6 @@ select vc_bgkid,
                    </if>
                     <if if(StringUtils.isNotBlank(#{vc_bksznl}))>
                      and a.vc_bksznl = #{vc_bksznl}
-                   </if>
-                   <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
-                     and a.vc_bgkzt = #{vc_bgkzt}
                    </if>
                    <if if(StringUtils.isNotBlank(#{fbnl_ks}))>
                      and a.sznl >= #{fbnl_ks}
@@ -236,4 +226,4 @@ select vc_bgkid,
  
                    )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
