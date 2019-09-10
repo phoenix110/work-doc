@@ -509,8 +509,11 @@ SELECT decode(vc_bgklb,
                 <if if(StringUtils.isNotBlank(#{vc_bgklb}))>
                      AND BGK.vc_bgklb = #{vc_bgklb}
                 </if>
-                <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                     AND (instr(#{vc_shbz},BGK.VC_SHBZ) > 0) 
+                <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                  and BGK.vc_shbz = #{vc_shbz}
+                </if>
+                <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                  and instr(#{vc_shbz},bgk.vc_shbz) > 0
                 </if>
                 /*
                 <if if(StringUtils.isNotBlank(#{jgjb}) && "1".equals(#{jgjb}))>
@@ -602,4 +605,4 @@ SELECT decode(vc_bgklb,
                  ORDER BY bgk.dt_cjsj)
          WHERE rownum <= #{rn_e})
  WHERE rn >= #{rn_s}  
- </if>                                                                                                                                                                                                                                                   
+ </if>                                                                                                                                                                                                                                                                                                         

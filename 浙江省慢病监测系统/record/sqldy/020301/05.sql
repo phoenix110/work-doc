@@ -60,8 +60,11 @@ select  /*+INDEX(bgk INDEX_ZL_GLDW)*/ nvl(sum(decode(BGK.vc_shbz, '4', 1, 0)), 0
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                        and hzxx.Vc_Sfzh = #{vc_sfzh}
                    </if>
-                   <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                       AND instr(#{vc_shbz},BGK.VC_SHBZ) > 0  
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                     and BGK.vc_shbz = #{vc_shbz}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                     and instr(#{vc_shbz},bgk.vc_shbz) > 0
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_sfhs}))>
                        and hzxx.Vc_Sfhs = #{vc_sfhs}

@@ -220,8 +220,11 @@ select vc_bgkid as vc_bgkid,
                    <if if(StringUtils.isNotBlank(#{vc_sfzh}))>
                        and b.Vc_Sfzh = #{vc_sfzh}
                    </if>
-                   <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                       and instr(#{vc_shbz},a.VC_SHBZ)  > 0
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                     and a.vc_shbz = #{vc_shbz}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                     and instr(#{vc_shbz},a.vc_shbz) > 0
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_sfhs}))>
                        and b.Vc_Sfhs = #{vc_sfhs}

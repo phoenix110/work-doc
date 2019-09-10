@@ -366,8 +366,11 @@ select vc_bgkbh as vc_bgkbh,
                    <if if(StringUtils.isNotBlank(#{vc_xm}))>
                        and vc_hzxm like '%' || #{vc_xm} || '%'
                    </if>
-                   <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                       AND instr(#{vc_shbz},vc_shbz) > 0
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                     and vc_shbz = #{vc_shbz}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                     and instr(#{vc_shbz},vc_shbz) > 0
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
                        and vc_kzt = #{vc_bgkzt}

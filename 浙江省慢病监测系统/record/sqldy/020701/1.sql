@@ -436,9 +436,12 @@ select vc_bgkid,
                         <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
                            and a.vc_bgkzt = #{vc_bgkzt}
                         </if>
-                        <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                           and instr(#{vc_shbz},a.vc_shbz) > 0 
-                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                             and a.vc_shbz = #{vc_shbz}
+                         </if>
+                         <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                            and instr(#{vc_shbz},a.vc_shbz) > 0
+                         </if>
                         <if if(StringUtils.isNotBlank(#{vc_zz}))>
                            and a.vc_zz like #{vc_zz}||'%'
                         </if>
@@ -487,4 +490,4 @@ select vc_bgkid,
                         </if>
                         )
      where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

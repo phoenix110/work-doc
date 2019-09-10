@@ -12,8 +12,11 @@ select /*+INDEX(BGK INDEX_SW_GLDW)*/ nvl(sum(decode(bgk.vc_shbz, '4', 1, 0)),0) 
                  <if if(StringUtils.isNotBlank(#{vc_bgklb}))>
                       AND BGK.vc_bgklb = #{vc_bgklb}
                  </if>
-                 <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                      AND BGK.VC_SHBZ = #{vc_shbz}
+                 <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                   and BGK.vc_shbz = #{vc_shbz}
+                 </if>
+                 <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                   and instr(#{vc_shbz},bgk.vc_shbz) > 0
                  </if>
                  <if if(StringUtils.isNotBlank(#{vc_qx}))>
                       AND (BGK.VC_JKDW like #{vc_qx}||'%')

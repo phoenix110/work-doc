@@ -495,8 +495,11 @@ select VC_BGKID,
                   <if if(StringUtils.isNotBlank(#{vc_bgklb}))>
                       AND BGK.vc_bgklb = #{vc_bgklb}
                  </if>
-                 <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                      AND (instr(#{vc_shbz},BGK.VC_SHBZ) > 0)
+                 <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                   and BGK.vc_shbz = #{vc_shbz}
+                 </if>
+                 <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                   and instr(#{vc_shbz},bgk.vc_shbz) > 0
                  </if>
                  <if if(StringUtils.isNotBlank(#{jgjb}) && "1".equals(#{jgjb}))>
                       AND (BGK.VC_SHBZ IN ('1', '3', '5', '6', '7', '8'))
@@ -590,4 +593,4 @@ select VC_BGKID,
                  </if>
                  ORDER BY BGK.DT_CJSJ DESC)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

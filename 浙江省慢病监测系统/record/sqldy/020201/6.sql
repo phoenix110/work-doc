@@ -243,7 +243,10 @@ select vc_bgkcode as vc_bgkcode,
                 <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
                   and t.vc_bgkzt = #{vc_bgkzt}
                 </if>
-                <if if(StringUtils.isNotBlank(#{vc_shbz}))>
+                <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                  and t.vc_shbz = #{vc_shbz}
+                </if>
+                <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
                   and instr(#{vc_shbz},t.vc_shbz) > 0
                 </if>
                 <if if(StringUtils.isNotBlank(#{fbnl_ks}))>

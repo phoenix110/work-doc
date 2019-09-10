@@ -32,8 +32,11 @@ select  /*+INDEX(a INDEX_TNB_GLDW)*/ nvl(sum(decode(a.vc_shbz, '4', 1, 0)),0) qx
                    <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
                      and a.vc_bgkzt = #{vc_bgkzt}
                    </if>
-                   <if if(StringUtils.isNotBlank(#{vc_shbz}))>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
                      and a.vc_shbz = #{vc_shbz}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                     and instr(#{vc_shbz},a.vc_shbz) > 0
                    </if>
                    <if if(StringUtils.isNotBlank(#{fbnl_ks}))>
                      and a.vc_sznl >= #{fbnl_ks}

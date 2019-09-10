@@ -43,8 +43,11 @@ select  /*+INDEX(BGK INDEX_XNXG_GLDW)*/ nvl(sum(decode(BGK.vc_shbz, '4', 1, 0)),
                    <if if(StringUtils.isNotBlank(#{vc_xm}))>
                        and BGK.vc_hzxm like '%' || #{vc_xm} || '%'
                    </if>
-                   <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                       AND instr(#{vc_shbz},BGK.VC_SHBZ) > 0  
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                     and BGK.vc_shbz = #{vc_shbz}
+                   </if>
+                   <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                     and instr(#{vc_shbz},bgk.vc_shbz) > 0
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
                        and BGK.vc_kzt = #{vc_bgkzt}

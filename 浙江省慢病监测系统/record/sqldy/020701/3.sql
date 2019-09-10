@@ -36,9 +36,12 @@ select  /*+INDEX(a INDEX_SHJC_GLDW)*/ nvl(sum(decode(a.vc_shbz, '4', 1, 0)),0) q
                         <if if(StringUtils.isNotBlank(#{vc_bgkzt}))>
                            and a.vc_bgkzt = #{vc_bgkzt}
                         </if>
-                        <if if(StringUtils.isNotBlank(#{vc_shbz}))>
-                           and instr(#{vc_shbz},a.vc_shbz) > 0   
-                        </if>
+                        <if if(StringUtils.isNotBlank(#{vc_shbz}) && !#{vc_shbz}.contains(","))>
+                            and a.vc_shbz = #{vc_shbz}
+                         </if>
+                         <if if(StringUtils.isNotBlank(#{vc_shbz}) && #{vc_shbz}.contains(","))>
+                            and instr(#{vc_shbz},a.vc_shbz) > 0
+                         </if>
                         <if if(StringUtils.isNotBlank(#{vc_zz}))>
                            and a.vc_zz like #{vc_zz}||'%'
                         </if>
