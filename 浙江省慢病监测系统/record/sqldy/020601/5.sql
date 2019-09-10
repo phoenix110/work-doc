@@ -174,21 +174,9 @@ select VC_BGKID,
        decode(vc_hkqcs,
               '0',
               '浙江省' ||
-              (select name
-                 from code_info
-                where code = vc_hksdm
-                  and code_info_id =
-                      (select id from code_info where code = 'C_COMM_SJDM')) ||
-              (select name
-                 from code_info
-                where code = vc_hkqxdm
-                  and code_info_id =
-                      (select id from code_info where code = 'C_COMM_QXDM')) ||
-              (select name
-                 from code_info
-                where code = vc_hkjddm
-                  and code_info_id =
-                      (select id from code_info where code = 'C_COMM_JDDM')) ||
+              pkg_zjmb_tnb.fun_getxzqhmc(vc_hksdm) ||
+              pkg_zjmb_tnb.fun_getxzqhmc(vc_hkqxdm) ||
+              pkg_zjmb_tnb.fun_getxzqhmc(vc_hkjddm) ||
               vc_hkjw||vc_hkxxdz,
               '1',
               '外省') hkdz_text,
@@ -593,4 +581,4 @@ select VC_BGKID,
                  </if>
                  ORDER BY BGK.DT_CJSJ DESC)
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 

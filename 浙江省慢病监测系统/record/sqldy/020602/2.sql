@@ -21,21 +21,9 @@ SELECT decode(vc_bgklb,
        pkg_zjmb_tnb.fun_getcommdic('C_SMTJSW_GRSF', vc_zy) grsf,
        vc_sfzhm zjhm,
        decode(vc_hkqcs, '0', '浙江省', '1', '外省') hjdzs,
-       (SELECT NAME
-          FROM code_info
-         WHERE code = vc_hksdm
-           AND code_info_id =
-               (SELECT id FROM code_info WHERE code = 'C_COMM_SJDM')) hkdzsi,
-       (SELECT NAME
-          FROM code_info
-         WHERE code = vc_hkqxdm
-           AND code_info_id =
-               (SELECT id FROM code_info WHERE code = 'C_COMM_QXDM')) hkdzqx,
-       (SELECT NAME
-          FROM code_info
-         WHERE code = vc_hkjddm
-           AND code_info_id =
-               (SELECT id FROM code_info WHERE code = 'C_COMM_JDDM')) hkdzjd,
+       pkg_zjmb_tnb.fun_getxzqhmc(vc_hksdm) hkdzsi,
+       pkg_zjmb_tnb.fun_getxzqhmc(vc_hkqxdm) hkdzqx,
+       pkg_zjmb_tnb.fun_getxzqhmc(vc_hkjddm) hkdzjd,
        vc_hkjw hkxxdz,
        vc_hkxxdz mqjzdz,
        vc_hyzk || '  ' ||
@@ -152,24 +140,11 @@ SELECT decode(vc_bgklb,
            AND t.code_info_id =
                (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_SHEDM')) jzsdm,
        vc_jzsdm || '  ' ||
-       (SELECT t.name
-          FROM code_info t
-         WHERE t.code = vc_jzsdm
-           AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_SJDM')) jzsidm,
+       pkg_zjmb_tnb.fun_getxzqhmc(vc_jzsdm) jzsidm,
        vc_jzqxdm || '  ' ||
-       (SELECT t.name
-          FROM code_info t
-         WHERE t.code = vc_jzqxdm
-           AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_QXDM')) jzqdm,
+       pkg_zjmb_tnb.fun_getxzqhmc(vc_jzqxdm) jzqdm,
        vc_jzjddm || '  ' ||
-       (SELECT t.name
-          FROM code_info t
-         WHERE t.code = vc_jzjddm
-           AND removed = '0'
-           AND t.code_info_id =
-               (SELECT f.id FROM code_info f WHERE f.code = 'C_COMM_JDDM')) jzjddm,
+       pkg_zjmb_tnb.fun_getxzqhmc(vc_jzjddm) jzjddm,
        vc_jzjw jzxxdz,
        vc_wsjzshendm || '  ' ||
        (SELECT t.name FROM area_qg t WHERE t.code = vc_wsjzshendm) wsjzdm,
@@ -588,4 +563,4 @@ SELECT decode(vc_bgklb,
  <if if(1==1)>
          WHERE rownum <= #{rn_e})
  WHERE rn >= #{rn_s}  
- </if>                                                                                                                                       
+ </if>                                                                                                                                                                  
