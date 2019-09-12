@@ -215,10 +215,17 @@ select vc_bgkcode as vc_bgkcode,
                 
                   from zjjk_tnb_bgk t, zjjk_tnb_hzxx h
                  where t.vc_hzid = h.vc_personid
-                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                   <if if("A1".equals(#{jglx}))>
+                       and t.vc_bgdw like #{vc_gldw} || '%'
+                   </if>
+                   <if if("B1".equals(#{jglx}))>
+                       and ((t.vc_shbz = '1' and t.vc_bgdw like #{vc_gldw} || '%') or 
+                       (t.vc_shbz != '1' and (t.vc_cjdw like #{vc_gldw} || '%' or t.vc_gldw like #{vc_gldw} || '%' or h.vc_hkjd like #{jgszqh} || '%')))
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isNotBlank(#{jgszqh}))>
                      and (t.vc_cjdw like #{vc_gldw} || '%' or t.vc_gldw like #{vc_gldw} || '%' or h.vc_hkjd like #{jgszqh} || '%')
                    </if>
-                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isBlank(#{jgszqh}))>
                      and (t.vc_cjdw like #{vc_gldw} || '%' or t.vc_gldw like #{vc_gldw} || '%') 
                    </if>
                    and t.vc_scbz = '0'

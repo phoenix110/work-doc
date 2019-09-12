@@ -4,11 +4,18 @@ select  /*+INDEX(a INDEX_TNB_GLDW)*/ nvl(sum(decode(a.vc_shbz, '4', 1, 0)),0) qx
        nvl(sum(case when a.vc_sdqrzt = '0' and a.vc_shbz = '3' and b.vc_hkjd like #{vc_gldw} || '%' then 1 else 0 end),0) dsdqr
   from zjjk_tnb_bgk a, zjjk_tnb_hzxx b
  where a.vc_hzid = b.vc_personid
-                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                   <if if("A1".equals(#{jglx}))>
+                       and a.vc_bgdw like #{vc_gldw} || '%'
+                   </if>
+                   <if if("B1".equals(#{jglx}))>
+                       and ((a.vc_shbz = '1' and a.vc_bgdw like #{vc_gldw} || '%') or 
+                       (a.vc_shbz != '1' and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%' or b.vc_hkjd like #{jgszqh} || '%')))
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isNotBlank(#{jgszqh}))>
                      and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%' or b.vc_hkjd like #{jgszqh} || '%')
                    </if>
-                   <if if(StringUtils.isBlank(#{jgszqh}))>
-                     and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%')
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isBlank(#{jgszqh}))>
+                     and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%') 
                    </if>
                    and a.vc_scbz = '0'
                    <if if(StringUtils.isNotBlank(#{vc_zyh}))>

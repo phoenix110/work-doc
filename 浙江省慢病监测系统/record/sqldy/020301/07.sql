@@ -192,11 +192,18 @@ select vc_bgkid as vc_bgkid,
                   from ZJJK_ZL_BGK a, ZJJK_ZL_HZXX b
                  where a.VC_HZID = b.VC_PERSONID
                    and a.vc_scbz = '0'
-                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
-                     AND (a.VC_CJDW like #{vc_gldw} || '%' OR a.VC_GLDW like #{vc_gldw} || '%' or b.VC_HKJDDM like #{jgszqh} || '%')
+                  <if if("A1".equals(#{jglx}))>
+                       and a.vc_bgdw like #{vc_gldw} || '%'
                    </if>
-                   <if if(StringUtils.isBlank(#{jgszqh}))>
-                     AND (a.VC_CJDW like #{vc_gldw} || '%' OR a.VC_GLDW like #{vc_gldw} || '%')
+                   <if if("B1".equals(#{jglx}))>
+                       and ((a.vc_shbz = '1' and a.vc_bgdw like #{vc_gldw} || '%') or 
+                       (a.vc_shbz != '1' and (a.VC_CJDW like #{vc_gldw}|| '%' OR a.VC_GLDW like #{vc_gldw}|| '%' or b.VC_HKJDDM like #{jgszqh} || '%')))
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isNotBlank(#{jgszqh}))>
+                     AND (a.VC_CJDW like #{vc_gldw}|| '%' OR a.VC_GLDW like #{vc_gldw}|| '%' or b.VC_HKJDDM like #{jgszqh} || '%')
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isBlank(#{jgszqh}))>
+                     AND (a.VC_CJDW like #{vc_gldw}|| '%' OR a.VC_GLDW like #{vc_gldw}|| '%')
                    </if>
                    
                    <if if(StringUtils.isNotBlank(#{vc_bghks}))>

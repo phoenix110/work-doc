@@ -475,12 +475,19 @@ SELECT decode(vc_bgklb,
                  COUNT(1) over() AS total
                   FROM zjmb_sw_bgk bgk
                  WHERE (bgk.vc_scbz LIKE '2')
-                <if if(StringUtils.isNotBlank(#{jgszqh}))>
-                  AND (bgk.vc_cjdwdm LIKE #{vc_gldw} || '%' OR bgk.vc_gldwdm LIKE #{vc_gldw} || '%' or BGK.VC_HKJDDM like #{jgszqh} || '%')
-                </if>
-                <if if(StringUtils.isBlank(#{jgszqh}))>
-                  AND (bgk.vc_cjdwdm LIKE #{vc_gldw} || '%' OR bgk.vc_gldwdm LIKE #{vc_gldw} || '%')
-                </if>
+                   <if if("A1".equals(#{jglx}))>
+                       and BGK.vc_jkdw like #{vc_gldw} || '%'
+                   </if>
+                   <if if("B1".equals(#{jglx}))>
+                       and ((bgk.vc_shbz = '1' and BGK.vc_jkdw like #{vc_gldw} || '%') or 
+                       (bgk.vc_shbz != '1' and (BGK.VC_CJDWDM like #{vc_gldw}|| '%' OR BGK.VC_GLDWDM like #{vc_gldw}|| '%' or BGK.VC_HKJDDM like #{jgszqh} || '%')))
+                   </if>
+                 <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isNotBlank(#{jgszqh}))>
+                   AND (BGK.VC_CJDWDM like #{vc_gldw}|| '%' OR BGK.VC_GLDWDM like #{vc_gldw}|| '%' or BGK.VC_HKJDDM like #{jgszqh} || '%')
+                 </if>
+                 <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isBlank(#{jgszqh}))>
+                   AND (BGK.VC_CJDWDM like #{vc_gldw}|| '%' OR BGK.VC_GLDWDM like #{vc_gldw}|| '%')
+                 </if>
                 <if if(StringUtils.isNotBlank(#{vc_bgklb}))>
                      AND BGK.vc_bgklb = #{vc_bgklb}
                 </if>
@@ -580,4 +587,4 @@ SELECT decode(vc_bgklb,
                  ORDER BY bgk.dt_cjsj)
          WHERE rownum <= #{rn_e})
  WHERE rn >= #{rn_s}  
- </if>                                                                                                                                                                                                                                                                                                                                    
+ </if>                                                                                                                                                                                                                                                                                                                                                               

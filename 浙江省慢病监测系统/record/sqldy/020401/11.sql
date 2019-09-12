@@ -327,10 +327,17 @@ select vc_bgkbh as vc_bgkbh,
         count(1) over() as total
         from zjjk_xnxg_bgk
                  where  vc_scbz = '2'
-                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
-                     AND (vc_cjdwdm  like #{vc_gldw}|| '%' OR vc_gldwdm like #{vc_gldw}|| '%' or vc_czhkjd like #{jgszqh} || '%')
+                   <if if("A1".equals(#{jglx}))>
+                       and vc_bkdwyy like #{vc_gldw} || '%'
                    </if>
-                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                   <if if("B1".equals(#{jglx}))>
+                       and ((vc_shbz = '1' and vc_bkdwyy like #{vc_gldw} || '%') or 
+                       (vc_shbz != '1' and (vc_cjdwdm  like #{vc_gldw}|| '%' OR vc_gldwdm like #{vc_gldw}|| '%' or vc_czhkjd like #{jgszqh} || '%')))
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isNotBlank(#{jgszqh}))>
+                     AND (vc_cjdwdm like #{vc_gldw}|| '%' OR vc_gldwdm like #{vc_gldw}|| '%' or vc_czhkjd like #{jgszqh} || '%')
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isBlank(#{jgszqh}))>
                      AND (vc_cjdwdm  like #{vc_gldw}|| '%' OR vc_gldwdm like #{vc_gldw}|| '%')
                    </if>
                    <if if(StringUtils.isNotBlank(#{vc_bghks}))>

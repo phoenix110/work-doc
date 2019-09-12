@@ -417,10 +417,17 @@ select vc_bgkid,
                        count(1) over() as total
                   from zjjk_tnb_bgk a, zjjk_tnb_hzxx b
                  where a.vc_hzid = b.vc_personid
-                   <if if(StringUtils.isNotBlank(#{jgszqh}))>
+                   <if if("A1".equals(#{jglx}))>
+                       and a.vc_bgdw like #{vc_gldw} || '%'
+                   </if>
+                   <if if("B1".equals(#{jglx}))>
+                       and ((a.vc_shbz = '1' and a.vc_bgdw like #{vc_gldw} || '%') or 
+                       (a.vc_shbz != '1' and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%' or b.vc_hkjd like #{jgszqh} || '%')))
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isNotBlank(#{jgszqh}))>
                      and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%' or b.vc_hkjd like #{jgszqh} || '%')
                    </if>
-                   <if if(StringUtils.isBlank(#{jgszqh}))>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}) && StringUtils.isBlank(#{jgszqh}))>
                      and (a.vc_cjdw like #{vc_gldw} || '%' or a.vc_gldw like #{vc_gldw} || '%') 
                    </if>
                    and a.vc_scbz = '0'
@@ -560,4 +567,4 @@ select vc_bgkid,
                    
                    )
          where rownum <= #{rn_e})
- where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+ where rn >= #{rn_s}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

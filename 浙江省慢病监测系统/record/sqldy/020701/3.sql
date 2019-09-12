@@ -1,8 +1,17 @@
 select  /*+INDEX(a INDEX_SHJC_GLDW)*/ nvl(sum(decode(a.vc_shbz, '4', 1, 0)),0) qxshbtg,
        nvl(sum(decode(a.vc_shbz, '3', 1, 0)),0) qxshtg
   from zjmb_shjc_bgk a
- where (a.vc_glbz like #{vc_gldw}||'%' or a.vc_cjdwdm like #{vc_gldw}||'%' or a.vc_jkdw like #{vc_gldw}||'%')
-                           and a.vc_scbz = '0'
+ where a.vc_scbz = '0'
+                    <if if("A1".equals(#{jglx}))>
+                       and a.vc_jkdw like #{vc_gldw} || '%'
+                   </if>
+                   <if if("B1".equals(#{jglx}))>
+                       and ((a.vc_shbz = '1' and a.vc_jkdw like #{vc_gldw} || '%') or 
+                       (a.vc_shbz != '1' and (a.vc_glbz like #{vc_gldw}||'%' or a.vc_cjdwdm like #{vc_gldw}||'%' or a.vc_jkdw like #{vc_gldw}||'%')))
+                   </if>
+                   <if if(!"A1".equals(#{jglx}) && !"B1".equals(#{jglx}))>
+                       and (a.vc_glbz like #{vc_gldw}||'%' or a.vc_cjdwdm like #{vc_gldw}||'%' or a.vc_jkdw like #{vc_gldw}||'%')
+                   </if>         
                         <if if(StringUtils.isNotBlank(#{jgjb}) && "1".equals(#{jgjb}))>
                            and (a.vc_shbz in ('1', '3', '5', '6', '7', '8'))
                         </if>
