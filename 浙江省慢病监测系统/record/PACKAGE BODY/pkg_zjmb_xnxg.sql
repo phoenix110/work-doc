@@ -147,7 +147,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
     v_vc_nczzd         zjjk_xnxg_bgk.vc_nczzd%TYPE; --脑卒中诊断
     v_vc_hkjd_bgq      zjjk_xnxg_bgk.vc_czhkjd%type; --原本户口街道
     v_vc_hkqx_bgq      zjjk_xnxg_bgk.vc_czhkqx%type; --原本户口区县
-		v_vc_hkjw_bgq      zjjk_xnxg_bgk.vc_czhkjw%TYPE; --户口居委
+        v_vc_hkjw_bgq      zjjk_xnxg_bgk.vc_czhkjw%TYPE; --户口居委
     v_vc_hkxx_bgq      zjjk_xnxg_bgk.vc_czhkxxdz%TYPE; --户口详细地址
   
     --公共变量
@@ -804,9 +804,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
                vc_gldwdm,
                vc_kzt,
                vc_sfsw,
-							 vc_czhkjw,
-							 vc_czhkxxdz,
-							 vc_sfcf
+                             vc_czhkjw,
+                             vc_czhkxxdz,
+                             vc_sfcf
           into v_vc_hkjd_bgq,
                v_vc_hkqx_bgq,
                v_vc_shbz,
@@ -814,9 +814,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
                v_vc_gldwdm,
                v_vc_kzt,
                v_vc_sfsw,
-							 v_vc_hkjw_bgq,
-							 v_vc_hkxx_bgq,
-							 v_vc_sfcf
+                             v_vc_hkjw_bgq,
+                             v_vc_hkxx_bgq,
+                             v_vc_sfcf
           from zjjk_xnxg_bgk
          where vc_bgkid = v_vc_bgkid;
       exception
@@ -899,7 +899,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_xnxg AS
             --确定属地
             v_vc_sdqrzt := '1';
           else
-            v_vc_gldwdm := '';
+            v_vc_gldwdm := v_vc_czhkqx;
             v_vc_sdqrzt := '0';
           end if;
           --外省

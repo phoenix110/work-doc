@@ -971,7 +971,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
             --确定属地
             v_vc_sdqr := '1';
           else
-            v_vc_gldwdm := '';
+            v_vc_gldwdm := v_vc_hkqxdm;
             v_vc_sdqr   := '0';
           end if;
           if v_vc_hkqcs = '1' then
@@ -2580,7 +2580,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
           --确定属地
           v_vc_sdqr := '1';
         else
-          v_vc_gldwdm := '';
+          v_vc_gldwdm := v_vc_hkqxdm;
           v_vc_sdqr   := '0';
         end if;
         if v_vc_hkqcs = '1' then
@@ -3653,7 +3653,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
             --确定属地
             v_vc_sdqr := '1';
           else
-            v_vc_gldwdm := '';
+            v_vc_gldwdm := v_vc_hkqxdm;
             v_vc_sdqr   := '0';
           end if;
           if v_vc_hkqcs = '1' then
