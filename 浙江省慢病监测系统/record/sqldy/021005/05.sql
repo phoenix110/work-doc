@@ -61,7 +61,7 @@ SELECT vc_bgkid vc_sfkid,
                    AND bgk.vc_bgklb = '0'
                    AND bgk.vc_scbz = '2'
                    AND bgk.vc_shbz IN ('3', '5', '6', '7', '8')
-                   AND bgk.vc_hkhs IS NULL
+                   AND bgk.vc_hkhs IS not NULL
                    AND bgk.vc_gldwdm LIKE #{vc_bgdw}||'%'
                    AND EXISTS (SELECT 1
                                  FROM p_yljgjb jg
