@@ -20,16 +20,16 @@ SELECT sf.vc_sfkid,
               hzxx.vc_hkxxdz,
               '1',
               '外省') hjdz,
-       vc_bgdw,
+       vc_gldw vc_bgdw,
        vc_zyh,
-       (SELECT mc FROM p_yljg WHERE dm = sf.vc_bgdw) bkdw,
+       (SELECT mc FROM p_yljg WHERE dm = sf.vc_gldw) bkdw,
        rn
   FROM (SELECT vc_sfkid,
                vc_bgkid,
                vc_hzid,
                vc_bgkcode,
                vc_bgkzt,
-               vc_bgdw,
+               vc_gldw,
                vc_zyh,
                rownum rn
           FROM (SELECT vc_sfkid,
@@ -37,10 +37,10 @@ SELECT sf.vc_sfkid,
                        vc_hzid,
                        vc_bgkcode,
                        vc_bgkzt,
-                       vc_bgdw,
+                       vc_gldw,
                        vc_zyh,
-                       row_number() OVER(PARTITION BY vc_bgdw ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
-                       COUNT(1) over(PARTITION BY vc_bgdw) countnumber
+                       row_number() OVER(PARTITION BY vc_gldw ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
+                       COUNT(1) over(PARTITION BY vc_gldw) countnumber
                   FROM (SELECT row_number() over(PARTITION BY sfk.vc_bgkid ORDER BY sfk.dt_cjsj) csfrn,
                                sfk.vc_sfkid,
                                sfk.vc_bgkid,
@@ -48,15 +48,15 @@ SELECT sf.vc_sfkid,
                                bgk.vc_hzid,
                                bgk.vc_bgkid vc_bgkcode,
                                bgk.vc_bgkzt,
-                               bgk.vc_bgdw,
+                               bgk.vc_gldw,
                                bgk.vc_zyh,
                                bgk.vc_icd10
                           FROM zjjk_zl_sfk sfk, zjjk_zl_bgk bgk
                          WHERE sfk.vc_bgkid = bgk.vc_bgkid
-                           AND bgk.vc_bgdw LIKE #{vc_bgdw}||'%'
+                           AND bgk.vc_gldw LIKE #{vc_bgdw}||'%'
                            AND EXISTS (SELECT 1
                                  FROM p_yljgjb jg
-                                WHERE bgk.vc_bgdw = jg.jgdm
+                                WHERE bgk.vc_gldw = jg.jgdm
                                   AND jg.jbgjb IN ('乡级','村级')) 
                            AND bgk.vc_scbz = '0')
                  WHERE ((#{vc_csflx} = '1' AND csfrn = 1) OR
@@ -96,4 +96,4 @@ SELECT sf.vc_sfkid,
          ) sf,
        zjjk_zl_hzxx hzxx
  WHERE sf.vc_hzid = hzxx.vc_personid
-   AND rn >= 0                                                                                                                                                                                                                         
+   AND rn >= 0                                                                                                                                                                                                                                          

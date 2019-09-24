@@ -11,7 +11,7 @@ SELECT fh.id,
        bg.vc_hzxm xm,
        DECODE(bg.vc_hzxb,'1','男','2','女') xb,
        bg.vc_hzsfzh sfzh,
-       (select mc from P_YLJG where dm=bg.vc_bkdwyy) bkdw,
+       (select mc from P_YLJG where dm=bg.vc_gldwdm) bkdw,
 			 decode(bg.vc_czhks,
               '0',
               '浙江省' || pkg_zjmb_tnb.fun_getxzqhmc(bg.vc_czhksi) ||
@@ -34,6 +34,6 @@ SELECT fh.id,
    AND bg.vc_bgkid = sf.vc_bgkid
    AND fh.bllx = #{vc_bllx}
    AND fh.zt = '1'
-   AND fh.bccjgid LIKE #{vc_bgdw}||'%'
+   AND bg.vc_gldwdm LIKE #{vc_bgdw}||'%'
    AND (('1' = #{vc_csflx} AND cctjid=#{cfccsjd}) OR ('2' = #{vc_csflx} AND cctjid=#{sfccsjd})) 
-   order by fh.ccxh asc                                                                                                                                                                                                                                                                                                                                                                                                              
+   order by fh.ccxh asc                                                                                                                                                                                                                                                                                                                                                                                                                                                          

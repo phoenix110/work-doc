@@ -20,15 +20,15 @@ SELECT vc_sfkid,
               vc_czhkxxdz,
               '1',
               '外省') hjdz,
-       vc_bkdwyy vc_bgdw,
+       vc_gldwdm vc_bgdw,
        vc_zyh,
-       (SELECT mc FROM p_yljg WHERE dm = vc_bkdwyy) bkdw,
+       (SELECT mc FROM p_yljg WHERE dm = vc_gldwdm) bkdw,
        rn
   FROM (SELECT vc_sfkid,
                vc_bgkid,
                vc_bgkbh,
                vc_kzt,
-               vc_bkdwyy,
+               vc_gldwdm,
                vc_hzxm,
                vc_hzxb,
                vc_hzsfzh,
@@ -45,7 +45,7 @@ SELECT vc_sfkid,
                        vc_bgkid,
                        vc_bgkbh,
                        vc_kzt,
-                       vc_bkdwyy,
+                       vc_gldwdm,
                        vc_hzxm,
                        vc_hzxb,
                        vc_hzsfzh,
@@ -57,15 +57,15 @@ SELECT vc_sfkid,
                        vc_czhkjw,
                        vc_czhkxxdz,
                        vc_zyh,
-                       row_number() OVER(PARTITION BY vc_bkdwyy ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
-                       COUNT(1) over(PARTITION BY vc_bkdwyy) countnumber
+                       row_number() OVER(PARTITION BY vc_gldwdm ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
+                       COUNT(1) over(PARTITION BY vc_gldwdm) countnumber
                   FROM (SELECT row_number() over(PARTITION BY sfk.vc_bgkid ORDER BY sfk.dt_cjsj) csfrn,
                                sfk.vc_sfkid,
                                sfk.vc_bgkid,
                                sfk.dt_cjsj,
                                bgk.vc_bgkbh,
                                bgk.vc_kzt,
-                               bgk.vc_bkdwyy,
+                               bgk.vc_gldwdm,
                                bgk.vc_hzxm,
                                bgk.vc_hzxb,
                                bgk.vc_hzsfzh,
@@ -80,11 +80,11 @@ SELECT vc_sfkid,
                                bgk.vc_zyh
                           FROM zjjk_xnxg_sfk sfk, zjjk_xnxg_bgk bgk
                          WHERE sfk.vc_bgkid = bgk.vc_bgkid
-                           AND bgk.vc_bkdwyy LIKE #{vc_bgdw}||'%'
+                           AND bgk.vc_gldwdm LIKE #{vc_bgdw}||'%'
                            AND bgk.vc_scbz = '2'
                            AND EXISTS (SELECT 1
                                  FROM p_yljgjb jg
-                                WHERE bgk.vc_bkdwyy = jg.jgdm
+                                WHERE bgk.vc_gldwdm = jg.jgdm
                                   AND jg.jbgjb IN ('乡级','村级')) 
                            AND ((#{vc_bllx} = '1' AND bgk.vc_gxbzd IS NULL) OR
                                (#{vc_bllx} = '2' AND bgk.vc_gxbzd IS NOT NULL)))
@@ -116,4 +116,4 @@ SELECT vc_sfkid,
              (SELECT tj.ccts FROM zjjk_zlfhsj_sf tj WHERE tj.zt = '1')
          </if>
          )
- WHERE rn >= 0                                                                                                                                                                                                                                                                                                                                          
+ WHERE rn >= 0                                                                                                                                                                                                                                                                                                                                                               
