@@ -102,7 +102,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     END IF;
     --如果抽查区县
     IF v_bccjgid IS NULL THEN
-      SELECT wm_concat((SELECT bgk.vc_bkdwyy
+      SELECT wm_concat((SELECT bgk.vc_gldwdm
                          FROM zjjk_xnxg_bgk bgk
                         WHERE bgk.vc_bgkid = sfk.vc_bgkid))
         INTO v_bccjgid
@@ -192,7 +192,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid,
+                      (SELECT bgk.vc_gldwdm FROM zjjk_xnxg_bgk bgk, zjjk_xnxg_sfk sfk WHERE bgk.vc_bgkid = sfk.vc_bgkid and sfk.vc_sfkid = column_value),
                       rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
@@ -294,7 +294,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     END IF;
     --如果抽查区县
     IF v_bccjgid IS NULL THEN
-      SELECT wm_concat((SELECT bgk.vc_bkdwyy
+      SELECT wm_concat((SELECT bgk.vc_gldwdm
                          FROM zjjk_xnxg_bgk bgk
                         WHERE bgk.vc_bgkid = sfk.vc_bgkid))
         INTO v_bccjgid
@@ -384,7 +384,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid,
+                      (SELECT bgk.vc_gldwdm FROM zjjk_xnxg_bgk bgk, zjjk_xnxg_sfk sfk WHERE bgk.vc_bgkid = sfk.vc_bgkid and sfk.vc_sfkid = column_value),
                       rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
@@ -486,7 +486,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     END IF;
     --如果抽查区县
     IF v_bccjgid IS NULL THEN
-      SELECT wm_concat((SELECT bgk.vc_bgdw
+      SELECT wm_concat((SELECT bgk.vc_gldw
                          FROM zjjk_tnb_bgk bgk
                         WHERE bgk.vc_bgkid = sfk.vc_bgkid))
         INTO v_bccjgid
@@ -576,7 +576,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid,
+                      (SELECT bgk.vc_gldw FROM zjjk_tnb_bgk bgk, zjjk_tnb_sfk sfk WHERE bgk.vc_bgkid = sfk.vc_bgkid and sfk.vc_sfkid = column_value),
                       rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
@@ -678,7 +678,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     END IF;
     --如果抽查区县
     IF v_bccjgid IS NULL THEN
-      SELECT wm_concat((SELECT bgk.vc_bgdw
+      SELECT wm_concat((SELECT bgk.vc_gldw
                          FROM zjjk_zl_bgk bgk
                         WHERE bgk.vc_bgkid = sfk.vc_bgkid))
         INTO v_bccjgid
@@ -768,7 +768,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid,
+                      (SELECT bgk.vc_gldw FROM zjjk_zl_bgk bgk, zjjk_zl_sfk sfk WHERE bgk.vc_bgkid = sfk.vc_bgkid and sfk.vc_sfkid = column_value),
                       rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
@@ -958,7 +958,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
                       '1',
                       '0',
                       '0',
-                      v_bccjgid,
+                      (select bgk.vc_gldwdm from zjmb_sw_bgk bgk where bgk.vc_bgkid = column_value),
                       rownum
         FROM TABLE(split(v_sfkid_s, ','));
     result_out := return_succ_json(v_json_return);
