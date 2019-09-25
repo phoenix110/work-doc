@@ -56,7 +56,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     v_shyj    zjjk_csf_zlfh.shyj%TYPE; --审核意见
   
     --其他变量
-    v_sfkid_s VARCHAR2(2000); --被抽查的报告卡IDs
+    v_sfkid_s VARCHAR2(4000); --被抽查的报告卡IDs
   
   BEGIN
     json_data(data_in, '脑卒中随访病例抽查', v_json_data);
@@ -248,7 +248,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     v_shyj    zjjk_csf_zlfh.shyj%TYPE; --审核意见
   
     --其他变量
-    v_sfkid_s VARCHAR2(2000); --被抽查的报告卡IDs
+    v_sfkid_s VARCHAR2(4000); --被抽查的报告卡IDs
   
   BEGIN
     json_data(data_in, '冠心病初随访病例抽查', v_json_data);
@@ -440,7 +440,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     v_shyj    zjjk_csf_zlfh.shyj%TYPE; --审核意见
   
     --其他变量
-    v_sfkid_s VARCHAR2(2000); --被抽查的报告卡IDs
+    v_sfkid_s VARCHAR2(4000); --被抽查的报告卡IDs
   
   BEGIN
     json_data(data_in, '糖尿病初随访病例抽查', v_json_data);
@@ -632,7 +632,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     v_shyj    zjjk_csf_zlfh.shyj%TYPE; --审核意见
   
     --其他变量
-    v_sfkid_s VARCHAR2(2000); --被抽查的报告卡IDs
+    v_sfkid_s VARCHAR2(4000); --被抽查的报告卡IDs
   
   BEGIN
     json_data(data_in, '肿瘤初随访病例抽查', v_json_data);
@@ -824,7 +824,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_zlfh_csf AS
     v_shyj    zjjk_csf_zlfh.shyj%TYPE; --审核意见
   
     --其他变量
-    v_sfkid_s VARCHAR2(2000); --被抽查的报告卡IDs
+    v_sfkid_s VARCHAR2(4000); --被抽查的报告卡IDs
   
   BEGIN
     json_data(data_in, '死亡初访病例抽查', v_json_data);
