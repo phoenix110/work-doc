@@ -3,8 +3,8 @@ select * from TB_GXY_YYSZCXYYYMX
 
 -- 报表对应的表
 -- rp_bdkz.bdflbs
-/*  1 */     select * from rp_rkfnlxb            -- 人口分年龄性别统计表
-/* 2,3 */    select * from rp_czrk_bdqk          -- 常住人口变动情况统计
+/*  1, 3 */     select * from rp_rkfnlxb            -- 人口分年龄性别统计表
+/* 2*/    select * from rp_czrk_bdqk          -- 常住人口变动情况统计表
 /* 4 */      select * from rp_ldrk_bdqk          -- 流动人口变动情况统计表
 /* 5 */      select * from rp_Czrk_Jkdahz        -- 常住人口家庭档案建档情况汇总表
 /* 6 */      select * from rp_Czrk_Grdahz        -- 常住人口个人档案建档情况汇总

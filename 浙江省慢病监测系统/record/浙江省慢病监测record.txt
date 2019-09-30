@@ -1196,20 +1196,127 @@ bug 190823004 伤害报告卡导出填报日期去除，肿瘤报告卡，心脑
 	/zjmb/web/swdjgl/bgkgl/wmsbgkgl.js
 	已发
 
+0909
+190904006 只有可用卡需要进行属地确认
+	sqldy 020202-1
+	sqldy 020305-01
+	sqldy 020405-1
+	sqldy 020502-1
+	sqldy 020602-1
+	sqldy 020602-2
 
-性能问题
-	zjmb\public\js\commonUtil.js 获取serviceUrl更改，未提交，未发
+0910
+	糖尿病，肿瘤，出生，死亡，伤害，无名尸查询和导出优化
+	部分sql中获取市，区县，街道的逻辑更改，由旧的code_info表改为取新的p_xzdm，与新系统中其它地方保持一致
+190902002
+	1.（331181003，QQ678600）死亡卡33010300220190106 这条记录审核时改了个街道代码，然后区县疾控就不能编辑了。
+	2.属地确认无法分配，问题账号：东阳市疾控(330783000  dy86698167),问题模块：所有病种
+	3.文件中死亡卡统计分类号有问题，查明是因为之前icd-10表使用109版本遗留的错误数据，还是地市传上来的报卡本身带的统计分类号是错的
+
+0912
+190911003
+	医院权限下的账号：只查询报告单位为该单位的报卡。
+	社区权限下的账号：只有在状态为医院审核通过状态下的报告卡只查询报告单位为该单位的报告卡；其他状态查询不变
+	/zjmb/web/csdjgl/bgkgl/csbgkgl.js
+	/zjmb/web/shjcgl/bgkgl/shjcbgkgl.js
+	/zjmb/web/swdjgl/bgkgl/swbgkgl.js
+	/zjmb/web/swdjgl/bgkgl/wmsbgkgl.js
+	/zjmb/web/tnbgl/bbgl/tnbbgkgl.js
+	/zjmb/web/xnxggl/bbgl/xnxggl.js
+	/zjmb/web/zlgl/bbgl/zlbgkgl.js
+	sqldy 020201-1
+	sqldy 020201-4
+	sqldy 020201-6
+	sqldy 020301-01
+	sqldy 020301-05
+	sqldy 020301-07
+	sqldy 020401-01
+	sqldy 020401-02
+	sqldy 020401-11
+	sqldy 020501-1
+	sqldy 020601-1
+	sqldy 020601-8
+	sqldy 020601-9
+	sqldy 020701-1
+	sqldy 020701-3
+	sqldy 020601-5
+	sqldy 020601-10
+
+死亡卡随访时间修改
+	pkg_zjmb_smtj
+	已发
+
+0916
+伤害报告卡地市上传接收和excel导入时报卡单位市，报卡单位区县，没有值的问题
+	ZJJK_DATAEX_VALIDATE_NEW
+	zjjkjk2019/src/com/wondersgroup/zjjk/model/ZjmbShjcBgkEntity.java
+处理伤害报卡旧数据
+	--update zjmb_shjc_bgk set vc_jksdm = substr(vc_jkdw, 1, 4)||'0000', vc_jkqxdm = substr(vc_jkdw, 1, 6)||'00' where vc_jksdm is null or vc_jkqxdm is null;
+
+去除异地初随访卡回传
+	zjjkjk2019/src/com/wondersgroup/zjjk/task/Task_https.java
+
+初随访病例抽查条件显示修复
+	zjmb\web\zlfhgl\csfbl\csfblcc.js
+
+
+0917
+慢病系统所有的导出改为通过统一的开关进行控制
+	建表 USER_PERMISSION,往 USER_PERMISSION 中插入数据
+	pkg_auth
+	zjmb/public/js/commonUtil.js
+	zjmb/web/	66个文件
+
+1.初随访病例抽查条件显示修复。
+2.慢病系统所有导出功能改为可配置，由统一的开关进行控制。
+3.糖尿病，肿瘤，心脑，出生，死亡，无名尸，伤害七种报各卡的新增按钮，改为由统一的开关进行控制。
+
+
+0919
+各病种报卡更改户籍地址时，如果需要属地确认，管理单位统一改为区县代码
+	pkg_zjmb_smtj
+	pkg_zjmb_tnb
+	pkg_zjmb_xnxg
+	pkg_zjmb_zl
+
+慢病系统所有的导出关闭，代谢病面访和社区填报正式服务关闭。
+
+
+0920
+质量复核-死亡卡初访抽查逻辑修复
+	sqldy 021005-05
 
 
 
-			    // 不出现外地户籍的
-				if(window.user.jgjb == '1'){
-					param.vc_hkjddm_like = window.user.xzqh.substr(0, 2);
-				}else if(user.jgjb == '2'){
-					param.vc_hkjddm_like = window.user.xzqh.substr(0, 4);
-				}else if(user.jgjb == '3'){
-					param.vc_hkjddm_like = window.user.xzqh.substr(0, 6);
-				}else{
-					param.vc_hkjddm_like = window.user.xzqh;
-				}
+潘劲-杭州疾控 2019/9/16 15:42:44
+领导的最新要求，9月20日（周五）下班后，关停监测系统的导出功能，
+停止代谢面访系统的服务；
+监测系统的界面上挂通告：”按照上级部门的“迎大庆，保平安”工作要求，监测系统在9月20日～10月7日期间将关停各个界面的导出功能，以确保数据安全，国庆期间加强含敏感个人信息的监测数据管理，请相互转告“
+
+
+0924
+质量复核-初随访抽查，复核，审核 ，等逻辑更改
+	pkg_zjmb_zlfh_csf
+	pkg_zjmb_zlfh_bgk
+	/zjmb/web/zlfhgl/csfbl/csfblcc.html
+	/zjmb/web/zlfhgl/csfbl/csfblcc.js
+	/zjmb/web/zlfhgl/csfbl/csfblfh.html
+	/zjmb/web/zlfhgl/csfbl/csfblfh.js
+	/zjmb/web/zlfhgl/csfbl/csfblzlsh.html
+	/zjmb/web/zlfhgl/csfbl/csfblzlsh.js
+	/zjmb/web/zlfhgl/mxbbl/mbblcc.js
+	select * from sqldy
+
+
+
+质量复核部分情况下无法确认的问题修复
+	pkg_zjmb_zlfh_csf
+	pkg_zjmb_zlfh_bgk
+
+
+社区填报新需求沟通
+
+
+
+
 
