@@ -7,13 +7,14 @@
 
 1、生成报表总控，执行存储过程
 --1季报
-call exe_rp_bdkz_jb('2018'，'04'，'1');
+call exe_rp_bdkz_jb(year，'04'，'1');
 --半年报
-call exe_rp_bdkz_bnb('2018', '07', '2');
+call exe_rp_bdkz_bnb(year, '07', '2');
 --3季报
-call exe_rp_bdkz_jb('2018', '10', '3');
+call exe_rp_bdkz_jb(year, '10', '3');
 --年报
-call exe_rp_bdkz_nb('2018');
+call exe_rp_bdkz_nb(year);
+-- year为年份字符串，如 '2019'
 
 2、执行具体的报表下发，报表下发完成；
 call exe_rp_detail();
