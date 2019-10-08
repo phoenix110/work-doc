@@ -1600,12 +1600,18 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     v_jgdm            p_yljg.dm%type;
     v_jgmc            p_yljg.mc%type;
     v_xzqh            p_yljg.xzqh%type;
+    v_xzqh_organ      organ_node.description%type; -- organ_node 表中的行政区划
     v_xzmc            p_xzdm.mc%type;
     v_xzjb            p_xzdm.jb%type;
     v_jglb            p_yljg.lb%type;
     v_jgjb            varchar2(3);
     v_superadmin      varchar2(1);
-     v_sql             Varchar2(4000);
+    v_sql             Varchar2(4000);
+    v_user_level      varchar2(3);  --用户级别，取开关权限用，1省，2市，3区县，A1医院，B1社区
+    v_json_per        json := json(); --开关权限
+    type rc is ref cursor ;    
+    cur_per rc;
+    v_per_item  USER_PERMISSION%RowType;
   begin
     json_data(data_in, '门户登录', v_json_data);
     v_openid          := Json_Str(v_json_data, 'openid');
@@ -1663,6 +1669,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     if v_jglb = 'J1' then
       --机构类型
       v_json_yhxx.put('jglx', 'J1');
+      v_user_level := v_xzjb;
       --省疾控
       if v_xzjb = 1 then
         v_jgjb := '1';
@@ -1680,14 +1687,24 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
     elsif v_jglb = 'A1' then
       v_jgjb := '4';
       v_json_yhxx.put('jglx', 'A1');
+      v_user_level := 'A1';
       --社区
     elsif v_jglb = 'B1' then
       v_jgjb := '4';
       v_json_yhxx.put('jglx', 'B1');
+      v_user_level := 'B1';
       if v_xzjb < 4 then
         v_err := '社区医院与所在区划不匹配';
         raise Err_Custom;
       end if;
+      -- 社区需要从organ_node表中查找对应的街道，可能有多个
+      select max(a.description) into v_xzqh_organ from organ_node a
+      where a.removed = 0 and a.description is not null
+      and a.code = (
+           select p.dm from p_yljg p where p.id = 
+              (select yh.jgid from xtyh yh where yh.yhm = v_yhm)
+        );
+      v_json_yhxx.put('xzqh_organ', v_xzqh_organ); --organ_node 表中的行政区划
     else
       v_err := '机构类别有误';
       raise Err_Custom;
@@ -1777,6 +1794,16 @@ CREATE OR REPLACE PACKAGE BODY pkg_auth AS
       v_json_cdqx := Json_Dyn.Executelist(v_sql);
     end if;
   
+    -- 取开关权限
+    open cur_per for select * from USER_PERMISSION where user_level = v_user_level;    
+    loop
+      fetch cur_per into v_per_item;
+      EXIT WHEN cur_per%NOTFOUND;
+      v_json_per.put(v_per_item.code, v_per_item.state);
+    end loop;
+    close cur_per;  
+    v_json_yhxx.put('permission', v_json_per);
+    
     --用户信息
     v_json_out.put('ryxx', v_json_yhxx);
     --权限信息
