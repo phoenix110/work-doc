@@ -125,11 +125,6 @@ job 23 zjjk_dataex_validate_new.Proc_Zjjk_Exe_Validate  每6小时（心脑，伤害）
 job 41 zjjk_dataex_validate_new.Proc_Zjjk_Sw_Validate;  每10分钟（死亡）
 
 
--- 杭州，临安，青山湖街道 下有两个医院
-select count(1), wm_concat(code) from organ_node where removed = '0' and description like '%33018503%'
-select dm , mc from p_yljg where xzqh in ('33018503','33018568','33018569','33011450')
-
-
 update user_permission set state = '0' where code = 'export'; -- 禁用所有用户的导出
 update user_permission set state = '1' where code = 'export'; -- 放开所有用户的导出
 update user_permission set state = '0' where code = 'export' and user_level = 'X'; -- 禁用某级别用户的导出，user_level 1省，2市，3区县，A1医院，B1社区
