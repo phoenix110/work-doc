@@ -33,5 +33,6 @@ SELECT fh.id,
    AND bg.vc_bgkid = bg.vc_bgkid
    AND fh.bllx = '5'
    AND fh.zt = '1'
-   AND bg.vc_gldwdm LIKE #{vc_bgdw}||'%'     
-   order by fh.ccxh asc                                                                                                                                                                                                                                                                                                                                       
+   AND bg.vc_gldwdm LIKE #{vc_bgdw}||'%'   
+   AND (('1' = #{vc_csflx} AND cctjid=#{cfccsjd}) OR ('2' = #{vc_csflx} AND cctjid=#{sfccsjd}))    
+   order by fh.ccxh asc                                                                                                                                                                                                                                                                                                                                                                             
