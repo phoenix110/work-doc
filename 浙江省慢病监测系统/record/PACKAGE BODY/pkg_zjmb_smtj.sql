@@ -8289,7 +8289,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
              vc_ssbwmc2      = v_vc_ssbwmc2,
              vc_ssbwmc3      = v_vc_ssbwmc3,
              dt_bgrq         = v_dt_bgrq,
-             dt_yyshsj       = v_dt_yyshsj,
              vc_gxbz         = v_vc_gxbz,
              vc_jksdm        = v_vc_jksdm,
              vc_jkqxdm       = v_vc_jkqxdm,
