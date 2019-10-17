@@ -11,7 +11,7 @@ SELECT a.vc_bgkid bgkid,
        (SELECT icd10_code || '-' || icd10_name
           FROM t_icd10
          WHERE t_icd10.icd10_code = a.vc_icd10) zdmc,
-       dts(a.dt_sczdrq, 0) fbrq,
+       dts(a.dt_zdrq, 0) fbrq,
        decode(b.vc_hksfdm,
               '0',
               '浙江省' || pkg_zjmb_tnb.fun_getxzqhmc(b.vc_hksdm) ||
@@ -26,4 +26,4 @@ SELECT a.vc_bgkid bgkid,
        a.vc_swyy gbsy
   FROM zjjk_zl_bgk a, zjjk_zl_hzxx b
  WHERE a.vc_hzid = b.vc_personid
-   AND a.vc_bgkid = #{vc_bgkid}     
+   AND a.vc_bgkid = #{vc_bgkid}          

@@ -23,6 +23,15 @@ SELECT sf.vc_sfkid,
        vc_gldw vc_bgdw,
        vc_zyh,
        (SELECT mc FROM p_yljg WHERE dm = sf.vc_gldw) bkdw,
+       decode(hzxx.vc_hkshen, '0', hzxx.vc_hkqx || ' ' || pkg_zjmb_tnb.fun_getxzqhmc(hzxx.vc_hkqx), '1', '') hkqx_text,
+       decode(hzxx.vc_hkshen, '0', hzxx.vc_hkjd || ' ' || pkg_zjmb_tnb.fun_getxzqhmc(hzxx.vc_hkjd), '1', '') hkjd_text,
+       DECODE(sf.vc_bgkzt,'0','可用卡','2','死卡','3','误诊卡','4','重复卡','5','删除卡','6','失访卡','7','死亡卡') kpzt_text,
+       hzxx.vc_hzxb || ' ' || decode(hzxx.vc_hzxb, '1', '男', '2', '女') xb_text,
+       pkg_zjmb_tnb.fun_getcommdic('C_TNB_TNBLX', vc_tnblx) tnblx_text,
+       decode(vc_sfsw, '0', '否', '1', '是') sfsw_text,
+       vc_swicdmc swicdmc,
+       dts(dt_swrq, 0) swrq,
+       dts(dt_sczdrq, 0) sczdrq,
        rn
   FROM (SELECT vc_sfkid,
                vc_bgkid,
@@ -31,6 +40,11 @@ SELECT sf.vc_sfkid,
                vc_bgkzt,
                vc_gldw,
                vc_zyh,
+               vc_tnblx,
+               vc_sfsw,
+               vc_swicdmc,
+               dt_swrq,
+               dt_sczdrq,
                rownum rn
           FROM (SELECT vc_sfkid,
                        vc_bgkid,
@@ -39,6 +53,11 @@ SELECT sf.vc_sfkid,
                        vc_bgkzt,
                        vc_gldw,
                        vc_zyh,
+                       vc_tnblx,
+                       vc_sfsw,
+                       vc_swicdmc,
+                       dt_swrq,
+                       dt_sczdrq,
                        row_number() OVER(PARTITION BY vc_gldw ORDER BY nvl2(vc_zyh, 0, 1) asc, dbms_random.value) rowsnumber,
                        COUNT(1) over(PARTITION BY vc_gldw) countnumber
                   FROM (SELECT row_number() over(PARTITION BY sfk.vc_bgkid ORDER BY sfk.dt_cjsj) csfrn,
@@ -50,7 +69,12 @@ SELECT sf.vc_sfkid,
                                bgk.vc_bgkzt,
                                bgk.vc_icd10,
                                bgk.vc_zyh,
-                               bgk.vc_gldw
+                               bgk.vc_gldw,
+                               bgk.vc_tnblx,
+                               bgk.vc_sfsw,
+                               bgk.vc_swicdmc,
+                               bgk.dt_swrq,
+                               bgk.dt_sczdrq
                           FROM zjjk_tnb_sfk sfk, zjjk_tnb_bgk bgk
                          WHERE sfk.vc_bgkid = bgk.vc_bgkid
                            AND bgk.vc_gldw LIKE #{vc_bgdw}||'%'
@@ -96,4 +120,4 @@ SELECT sf.vc_sfkid,
          ) sf,
        zjjk_tnb_hzxx hzxx
  WHERE sf.vc_hzid = hzxx.vc_personid
-   AND rn >= 0                                                                                                                                                                                                                                                                                      
+   AND rn >= 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
