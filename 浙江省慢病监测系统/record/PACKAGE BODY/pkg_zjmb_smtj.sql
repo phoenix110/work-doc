@@ -1047,9 +1047,9 @@ CREATE OR REPLACE PACKAGE BODY pkg_zjmb_smtj AS
                  else
                   v_vc_hkhs
              end,
-             dt_sfsj = case when v_vc_hkhs is not null and v_vc_shbz <> '1' and dt_sfsj is null then
+             dt_sfsj = case when v_vc_hkhs is not null and v_vc_shbz <> '1' and v_vc_shbz <> '3' and dt_sfsj is null then
                v_sysdate
-               when v_vc_hkhs is not null and v_vc_shbz <> '1' and dt_sfsj is not null then
+               when (v_vc_hkhs is not null and v_vc_shbz <> '1' and dt_sfsj is not null) or v_vc_shbz = '3' then
                  dt_sfsj
              else
                null
